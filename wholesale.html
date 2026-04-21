@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en" data-page="wholesale">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wholesale | Yum Yum Delight — Sydney Wholesale Bakery</title>
+  <meta name="description" content="Become a Yum Yum Delight wholesale stockist. Open accounts for Sydney cafés and distributors. MOQ $50, Sydney-wide delivery, email ordering.">
+  <link rel="icon" type="image/png" href="brand_assets/logos/only_logo_transparent.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --brown:      #46280A;
+      --gold:       #B47832;
+      --gold-light: #C8914A;
+      --parchment:  #F5F0E8;
+      --cream:      #FAF3E0;
+      --midnight:   #1A1208;
+      --midnight2:  #221509;
+      --warm:       #6B3F1A;
+      --border:     rgba(70,40,10,0.12);
+      --border-dark:rgba(250,243,224,0.15);
+      --font-display: 'Manrope', sans-serif;
+      --font-body:    'Nunito', sans-serif;
+      --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; background: #FAF3E0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--parchment);
+      color: var(--brown);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* ─── Header — always solid ─── */
+    /* ─── Navbar (Augen-inspired floating pills) ──────────── */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 20px 5%; pointer-events: none;
+      transition: opacity 0.5s var(--ease-out), visibility 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+    }
+    .header.depleted { opacity: 0; visibility: hidden; transform: translateY(-10px); }
+    .h-logo {
+      pointer-events: all; display: flex; align-items: center;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1);
+      border-radius: 100px; padding: 10px 20px;
+      box-shadow: 0 2px 16px rgba(70,40,10,0.08); flex-shrink: 0; transition: background 0.2s;
+    }
+    .h-logo:hover { background: rgba(250,243,224,0.62); }
+    .h-logo img { height: 34px; width: auto; }
+    .h-nav {
+      pointer-events: all; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1);
+      border-radius: 100px; padding: 0 30px; height: 54px;
+      display: flex; align-items: center; box-shadow: 0 2px 16px rgba(70,40,10,0.08);
+    }
+    .n-menu { display: flex; align-items: center; gap: 30px; }
+    .n-item .n-link {
+      font-family: var(--font-body); font-size: 13.5px; font-weight: 500;
+      letter-spacing: 0.01em; color: var(--brown); transition: opacity 0.25s; position: relative;
+    }
+    .n-item .n-link.active::after {
+      content: ''; position: absolute; bottom: -5px; left: 50%;
+      transform: translateX(-50%); width: 4px; height: 4px; background: var(--gold); border-radius: 50%;
+    }
+    .n-menu:has(.n-item:hover) .n-item:not(:hover) .n-link { opacity: 0.3; }
+    .h-cta-pill {
+      pointer-events: all; display: flex; align-items: center;
+      background: var(--gold); border: 1px solid var(--gold);
+      border-radius: 100px; padding: 0 24px; height: 54px;
+      color: var(--cream); font-family: var(--font-body); font-size: 12px;
+      font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      white-space: nowrap; flex-shrink: 0; box-shadow: 0 2px 16px rgba(180,120,50,0.25);
+      transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .h-cta-pill:hover { background: var(--brown); border-color: var(--brown); box-shadow: 0 4px 24px rgba(70,40,10,0.3); color: var(--cream); }
+    .nav-toggle {
+      display: none; pointer-events: all; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1);
+      border-radius: 14px; width: 54px; height: 54px; cursor: pointer;
+      flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      box-shadow: 0 2px 16px rgba(70,40,10,0.08); transition: background 0.2s; flex-shrink: 0;
+    }
+    .nav-toggle:hover { background: rgba(250,243,224,0.62); }
+    .burger-line { display: block; width: 20px; height: 1.5px; background: var(--brown); transition: transform 0.3s var(--ease-out), opacity 0.3s; }
+    .nav-toggle.open .burger-line:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .nav-toggle.open .burger-line:nth-child(2) { opacity: 0; }
+    .nav-toggle.open .burger-line:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+    .nav-mobile-bg { display: none; position: fixed; inset: 0; background: rgba(26,18,8,0.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.4s var(--ease-out); z-index: 195; }
+    .nav-mobile-bg.open { opacity: 1; pointer-events: all; }
+    .h-nav-mobile {
+      display: none; position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(245,240,232,0.49); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      z-index: 196; padding: 110px 7% 52px; flex-direction: column; gap: 0;
+      transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s; opacity: 0;
+    }
+    .h-nav-mobile.open { transform: translateY(0); opacity: 1; }
+    .h-nav-mobile .m-link { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--brown); letter-spacing: -0.02em; padding: 14px 0; border-bottom: 1px solid rgba(70,40,10,0.1); display: block; transition: color 0.2s; }
+    .h-nav-mobile .m-link:hover, .h-nav-mobile .m-link.active { color: var(--gold); }
+    .h-nav-mobile .m-cta { margin-top: 24px; display: inline-flex; align-items: center; background: var(--gold); border-radius: 100px; padding: 14px 30px; color: var(--cream); font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: background 0.2s; }
+    .h-nav-mobile .m-cta:hover { background: var(--brown); }
+
+    /* ─── Buttons ─── */
+    .btn { display: inline-flex; align-items: center; position: relative; overflow: hidden; border-radius: 2px; cursor: pointer; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s var(--ease-out); }
+    .btn .btn-fill { position: absolute; inset: 0; transform: translateY(101%); transition: transform 0.35s var(--ease-out); z-index: 0; }
+    .btn:hover .btn-fill { transform: translateY(0); }
+    .btn .btn-text-wrapper { position: relative; z-index: 1; display: flex; overflow: hidden; height: 1.1em; }
+    .btn .btn-text, .btn .btn-text-hover { display: block; transition: transform 0.3s var(--ease-out); white-space: nowrap; }
+    .btn .btn-text-hover { position: absolute; top: 0; left: 0; transform: translateY(110%); }
+    .btn:hover .btn-text { transform: translateY(-110%); }
+    .btn:hover .btn-text-hover { transform: translateY(0); }
+    .btn-primary { background: var(--brown); color: var(--cream); border: 1.5px solid var(--brown); }
+    .btn-primary .btn-fill { background: var(--gold); }
+    .btn-primary:hover { border-color: var(--gold); }
+    .btn-outline { background: transparent; color: var(--brown); border: 1.5px solid var(--brown); }
+    .btn-outline .btn-fill { background: var(--brown); }
+    .btn-outline:hover { color: var(--cream); }
+    .btn-s { font-size: 12px; padding: 11px 24px; }
+    .btn-m { font-size: 13px; padding: 14px 32px; }
+
+    /* ─── Arrows ─── */
+    .arrows { display: flex; position: relative; width: 24px; height: 24px; overflow: hidden; }
+    .arrows .arrow { position: absolute; top: 0; left: 0; transition: transform 0.3s var(--ease-out), opacity 0.3s; }
+    .arrows .arrow:first-child { transform: translateX(0); opacity: 1; }
+    .arrows .arrow:last-child  { transform: translateX(-24px); opacity: 0; }
+    *:hover > .arrows .arrow:first-child { transform: translateX(24px); opacity: 0; }
+    *:hover > .arrows .arrow:last-child  { transform: translateX(0); opacity: 1; }
+
+    /* ─── Section system ─── */
+    .section { position: relative; overflow: hidden; }
+    .s-inner { max-width: 1320px; margin: 0 auto; padding: 0 60px; }
+    .s-content { position: relative; z-index: 2; }
+
+    /* ─── Page Hero ─── */
+    .section-hero {
+      background: var(--parchment);
+      padding-top: 72px;
+      display: flex;
+      align-items: center;
+    }
+    .section-hero .s-inner {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: flex-start;
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+    .section-hero .s-content { display: flex; flex-direction: column; gap: 32px; }
+    .s-title {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5.5vw, 76px);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      color: var(--brown);
+    }
+    .s-subtitle {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--gold);
+      line-height: 1.4;
+    }
+    .s-text {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--warm);
+      max-width: 480px;
+    }
+    .s-text p + p { margin-top: 16px; }
+    .s-arrow {
+      width: 56px; height: 56px;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      animation: bob 2.4s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+    .s-media {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .s-media figure {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .s-media figure img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .s-media-badge {
+      position: absolute;
+      bottom: 32px; right: 32px;
+      background: var(--parchment);
+      border: 1.5px solid var(--border);
+      padding: 20px 28px;
+      border-radius: 2px;
+      text-align: right;
+    }
+    .s-media-badge .badge-num {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--brown);
+      line-height: 1;
+    }
+    .s-media-badge .badge-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-top: 4px;
+    }
+
+    /* ─── How It Works (steps) ─── */
+    .section-steps {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 96px 0;
+    }
+    .section-steps .s-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .steps-label {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .steps-label::before {
+      content: ''; display: block;
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+    .section-steps .s-title {
+      font-size: clamp(32px, 4vw, 52px);
+      color: var(--brown);
+      margin-bottom: 40px;
+    }
+    .section-steps .s-text { color: var(--warm); max-width: none; }
+    .step-items { display: flex; flex-direction: column; gap: 0; }
+    .step-item {
+      display: flex; gap: 32px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .step-item:first-child { }
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--gold);
+      min-width: 56px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .step-content h5 {
+      font-family: var(--font-display);
+      font-size: 20px; font-weight: 600;
+      color: var(--brown);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .step-content p {
+      font-family: var(--font-body);
+      font-size: 13px; line-height: 1.7;
+      color: var(--warm);
+    }
+
+    /* ─── Key Details (3-col info grid) ─── */
+    .section-details {
+      background: var(--parchment);
+      padding: 96px 0;
+    }
+    .section-details .s-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      align-items: start;
+      border-top: 1px solid var(--border);
+    }
+    .section-details .s-content {
+      padding: 48px 48px 48px 0;
+      border-right: 1px solid var(--border);
+      grid-column: 1;
+    }
+    .section-details .s-content .s-title {
+      font-size: clamp(24px, 3vw, 40px);
+      margin-bottom: 24px;
+    }
+    .s-detail {
+      padding: 48px;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .s-detail:last-child { border-right: none; }
+    .s-detail-border { width: 32px; height: 2px; background: var(--gold); }
+    .s-detail-title {
+      font-family: var(--font-display);
+      font-size: 22px; font-weight: 600;
+      color: var(--brown);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .s-detail-value {
+      font-family: var(--font-display);
+      font-size: 32px; font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .s-detail-text {
+      font-family: var(--font-body);
+      font-size: 14px; line-height: 1.75;
+      color: var(--warm);
+    }
+
+    /* ─── Inquiry Form ─── */
+    .section-form {
+      background: var(--parchment);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 96px 0;
+    }
+    .section-form .s-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .form-intro { display: flex; flex-direction: column; gap: 24px; }
+    .form-label {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .form-label::before {
+      content: ''; display: block;
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+    .form-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.06;
+      color: var(--brown);
+    }
+    .form-body {
+      font-family: var(--font-body);
+      font-size: 14px; line-height: 1.75;
+      color: var(--warm);
+    }
+    .form-contact-row {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .form-contact-row a {
+      font-family: var(--font-body);
+      font-size: 16px; font-weight: 500;
+      color: var(--gold);
+      transition: opacity 0.2s;
+    }
+    .form-contact-row a:hover { opacity: 0.75; }
+    .form-contact-row span {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--warm);
+      opacity: 0.55;
+    }
+
+    /* Form fields */
+    .form-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 40px;
+    }
+    .w-form { display: flex; flex-direction: column; gap: 20px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field-group { display: flex; flex-direction: column; gap: 8px; }
+    .field-group label {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--warm);
+    }
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      font-family: var(--font-body);
+      font-size: 14px;
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--brown);
+      padding: 12px 16px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s var(--ease-out), background 0.2s;
+      -webkit-appearance: none;
+    }
+    .field-group select {
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%2346280A' stroke-opacity='0.4' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-color: var(--parchment);
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    .field-group select option { background: var(--parchment); color: var(--brown); }
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+      border-color: var(--gold);
+      background: white;
+    }
+    .field-group input::placeholder,
+    .field-group textarea::placeholder { color: rgba(70,40,10,0.3); }
+    .field-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-submit {
+      margin-top: 8px;
+      font-family: var(--font-body); font-size: 13px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 16px 40px;
+      background: var(--brown); color: var(--cream);
+      border: none; border-radius: 2px;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      width: 100%;
+      transition: background 0.3s var(--ease-out);
+    }
+    .form-submit::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--gold);
+      transform: translateY(101%);
+      transition: transform 0.3s var(--ease-out);
+    }
+    .form-submit:hover::after { transform: translateY(0); }
+    .form-disclaimer {
+      font-family: var(--font-body);
+      font-size: 11px; line-height: 1.6;
+      color: var(--warm);
+      opacity: 0.5;
+      text-align: center;
+    }
+
+    /* ─── FAQ Accordion ─── */
+    .section-faq {
+      background: var(--parchment);
+      padding: 96px 0;
+    }
+    .section-faq .s-inner {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .faq-intro { display: flex; flex-direction: column; gap: 24px; }
+    .faq-label {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .faq-label::before {
+      content: ''; display: block;
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+    .faq-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      color: var(--brown);
+    }
+    .faq-body {
+      font-family: var(--font-body);
+      font-size: 14px; line-height: 1.75;
+      color: var(--warm);
+    }
+
+    /* Accordion — exact Yucca pattern */
+    .s-accordion { display: flex; flex-direction: column; }
+    .accordion { position: relative; }
+    .accordion-border {
+      height: 1px; background: var(--border);
+      transition: background 0.3s;
+    }
+    .accordion.open .accordion-border { background: var(--gold); }
+    .accordion-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 0;
+      cursor: pointer;
+      gap: 24px;
+    }
+    .accordion-title {
+      font-family: var(--font-display);
+      font-size: 18px; font-weight: 600;
+      color: var(--brown);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      transition: color 0.2s;
+    }
+    .accordion:hover .accordion-title { color: var(--gold); }
+    .accordion.open .accordion-title { color: var(--gold); }
+    .accordion-toggle {
+      display: flex; flex-shrink: 0;
+      width: 28px; height: 28px;
+      position: relative; align-items: center; justify-content: center;
+    }
+    .accordion-toggle-line {
+      position: absolute;
+      background: var(--brown);
+      border-radius: 1px;
+      transition: transform 0.3s var(--ease-out), opacity 0.3s, background 0.2s;
+    }
+    .accordion-toggle-line.line-1 { width: 16px; height: 1.5px; }
+    .accordion-toggle-line.line-2 { width: 1.5px; height: 16px; }
+    .accordion.open .accordion-toggle-line.line-2 { transform: rotate(90deg); opacity: 0; }
+    .accordion:hover .accordion-toggle-line { background: var(--gold); }
+    .accordion.open .accordion-toggle-line { background: var(--gold); }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s var(--ease-out);
+    }
+    .accordion.open .accordion-body { max-height: 600px; }
+    .accordion-text {
+      padding: 0 0 28px;
+      font-family: var(--font-body);
+      font-size: 14px; line-height: 1.8;
+      color: var(--warm);
+    }
+    .accordion-text p + p { margin-top: 12px; }
+
+    /* Last accordion border at bottom */
+    .accordion:last-child::after {
+      content: '';
+      display: block;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── CTA band ─── */
+    .section-cta {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+    .section-cta .s-inner {
+      padding-top: 96px; padding-bottom: 96px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 40px;
+    }
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 72px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      color: var(--brown);
+      max-width: 760px;
+    }
+    .cta-text {
+      font-family: var(--font-body);
+      font-size: 16px; line-height: 1.7;
+      color: var(--warm);
+      max-width: 480px;
+    }
+
+    /* ─── Footer ─── */
+    .footer { background: var(--cream); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .f-dots-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 62%, black 80%); -webkit-mask-image: linear-gradient(to bottom, transparent 62%, black 80%); }
+    .f-dots-bg canvas { display: block; width: 100% !important; height: 100% !important; border: none; outline: none; }
+    .f-center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 40px 20px; position: relative; z-index: 1; }
+    .f-center-logo { height: 420px; width: auto; max-width: 80%; }
+    .f-footer { display: flex; align-items: center; justify-content: space-between; padding: 20px 60px; gap: 20px; flex-wrap: wrap; position: relative; z-index: 1; }
+    .f-copyright { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; letter-spacing: 0.02em; }
+    .f-links { display: flex; align-items: center; gap: 24px; }
+    .f-link { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; text-decoration: none; letter-spacing: 0.02em; transition: opacity 0.2s; }
+    .f-link:hover { opacity: 1; }
+
+    /* ─── Scroll reveal ─── */
+    body.js-ready [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+    body.js-ready [data-reveal].revealed { opacity: 1; transform: translateY(0); }
+    [data-reveal-delay="100"] { transition-delay: 0.1s; }
+    [data-reveal-delay="200"] { transition-delay: 0.2s; }
+    [data-reveal-delay="300"] { transition-delay: 0.3s; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1024px) {
+      .header { padding: 20px 4%; }
+      .s-inner { padding: 0 28px; }
+      .section-hero .s-inner { grid-template-columns: 1fr; gap: 48px; }
+      .section-steps .s-inner { grid-template-columns: 1fr; gap: 48px; }
+      .section-details .s-inner { grid-template-columns: 1fr; }
+      .section-details .s-content { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 0; }
+      .s-detail { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 0; }
+      .section-form .s-inner { grid-template-columns: 1fr; gap: 48px; }
+      .section-faq .s-inner { grid-template-columns: 1fr; gap: 48px; }
+      .f-footer { padding: 20px 28px; }
+    }
+    @media (max-width: 768px) {
+      .header { padding: 16px 4%; }
+      .h-nav, .h-cta-pill { display: none; }
+      .h-nav-mobile { display: flex; }
+      .nav-toggle { display: flex; }
+      .nav-mobile-bg { display: block; }
+      .field-row { grid-template-columns: 1fr; }
+      .f-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .f-center { padding: 60px 28px 32px; }
+    }
+
+    /* ─── Line-split text animation ─── */
+    .line-wrap { display: block; overflow: hidden; padding-bottom: 0.06em; }
+    .line-inner { display: block; transform: translateY(108%); transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    [data-lines-revealed] .line-inner { transform: translateY(0); }
+
+    /* ─── Scroll progress bar ─── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--brown);
+      transform: scaleX(0);
+      transform-origin: left center;
+      z-index: 300;
+      will-change: transform;
+    }
+  </style>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+</head>
+
+<body>
+  <div class="scroll-progress" id="scroll-progress"></div>
+  <div class="nav-mobile-bg" id="nav-mobile-bg"></div>
+
+  <header class="header" id="header">
+    <a class="h-logo" href="index.html" aria-label="Yum Yum Delight Home">
+      <img src="brand_assets/logos/side_logo_transparent.png" alt="Yum Yum Delight">
+    </a>
+    <nav class="h-nav" id="main-nav">
+      <ul class="n-menu">
+        <li class="n-item"><a href="products.html" class="n-link">Products</a></li>
+        <li class="n-item"><a href="wholesale.html" class="n-link active">Wholesale</a></li>
+        <li class="n-item"><a href="about.html" class="n-link">About</a></li>
+        <li class="n-item"><a href="contact.html" class="n-link">Contact</a></li>
+      </ul>
+    </nav>
+    <a href="#inquiry" class="h-cta-pill">Get Pricing</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </button>
+  </header>
+  <div class="h-nav-mobile" id="h-nav-mobile">
+    <a href="products.html" class="m-link">Products</a>
+    <a href="wholesale.html" class="m-link active">Wholesale</a>
+    <a href="about.html" class="m-link">About</a>
+    <a href="contact.html" class="m-link">Contact</a>
+    <a href="#inquiry" class="m-cta">Get Pricing</a>
+  </div>
+
+  <main id="wholesale">
+
+    <!-- HERO -->
+    <section class="section section-hero">
+      <div class="s-inner">
+        <div class="s-content" data-reveal>
+          <h1 class="s-title">
+            Become a<br>Stockist.
+          </h1>
+          <p class="s-subtitle">
+            Wholesale pastry for cafés and distributors across Sydney.
+          </p>
+          <div class="s-text">
+            <p>Yum Yum Delight supplies premium baked goods direct to Sydney businesses — no retail markup, no middleman. Open a wholesale account and access our full range of croissants, tarts, danish, muffins, tella balls, and cronuts at prices built for B2B.</p>
+            <p>Minimum order $50. Sydney-wide delivery Sunday through Friday. Orders via email — simple, flexible, reliable.</p>
+          </div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;">
+            <a href="#inquiry" class="btn btn-primary btn-m">
+              <span class="btn-fill"></span>
+              <span class="btn-text-wrapper">
+                <span class="btn-text">Request an Account</span>
+                <span class="btn-text-hover">Request an Account</span>
+              </span>
+            </a>
+            <a href="products.html" class="btn btn-outline btn-m" style="border-color:var(--brown);color:var(--brown);">
+              <span class="btn-fill" style="background:var(--brown);"></span>
+              <span class="btn-text-wrapper">
+                <span class="btn-text">View Products</span>
+                <span class="btn-text-hover" style="color:var(--cream);">View Products</span>
+              </span>
+            </a>
+          </div>
+          <div class="s-arrow" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 80 80" fill="none">
+              <path d="M39.994 69.9978L18.8398 48.8436L21.1348 46.4661L38.3273 63.6578V39.9336H41.6607V63.7219L58.8532 46.5494L61.1482 48.8436L39.994 69.9978ZM38.3273 33.2669V23.2669H41.6607V33.2669H38.3273ZM38.3273 16.6003V9.93359H41.6607V16.6003H38.3273Z" fill="#46280A"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="s-media" data-reveal data-reveal-delay="100">
+          <figure>
+            <img src="https://placehold.co/600x450/F5F0E8/46280A?text=Wholesale+Partner" alt="Yum Yum Delight wholesale pastry for cafés and distributors">
+          </figure>
+          <div class="s-media-badge">
+            <div class="badge-num">$50</div>
+            <div class="badge-label">Min. order</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section section-steps">
+      <div class="s-inner">
+        <div data-reveal>
+          <div class="steps-label">How It Works</div>
+          <h2 class="s-title">Three steps to your first order.</h2>
+          <div class="s-text">
+            <p>Getting started with Yum Yum Delight is simple. No complex onboarding, no long-form contracts — just great pastry delivered to your door.</p>
+          </div>
+        </div>
+
+        <div class="step-items" data-reveal data-reveal-delay="100">
+          <div class="step-item">
+            <span class="step-num">01</span>
+            <div class="step-content">
+              <h5>Browse our range</h5>
+              <p>Explore our full wholesale product range and pricing on this site. We carry croissants (13 varieties), tarts, danish, muffins, tella balls, cronuts, and a premium gourmet cronut line — all priced for B2B margins.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">02</span>
+            <div class="step-content">
+              <h5>Send your order by email</h5>
+              <p>Email your order to <a href="mailto:info.yumyumdelight@gmail.com" style="color:var(--gold);text-decoration:underline;text-decoration-color:rgba(180,120,50,0.4);">info.yumyumdelight@gmail.com</a> with the products, sizes, and quantities you need. For first orders, include your business name and delivery address. No order form — just a straightforward email.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">03</span>
+            <div class="step-content">
+              <h5>Receive fresh delivery</h5>
+              <p>We deliver across Sydney Sunday through Friday. Your order arrives fresh, ready for your counter or distribution. Delivery is charged at cost based on your location within the Sydney region.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY DETAILS -->
+    <section class="section section-details" id="details">
+      <div class="s-inner">
+        <div class="s-content" data-reveal>
+          <h2 class="s-title">
+            What to Expect.
+          </h2>
+          <div class="s-text">
+            <p>Straightforward terms, consistent quality, no surprises. Here's what every Yum Yum Delight wholesale account includes.</p>
+          </div>
+        </div>
+
+        <div class="s-detail" data-reveal data-reveal-delay="100">
+          <div class="s-detail-border"></div>
+          <div class="s-detail-title">Minimum Order</div>
+          <div class="s-detail-value">$50</div>
+          <div class="s-detail-text">
+            <p>A $50 minimum order applies per delivery. This keeps logistics efficient and pricing sustainable — for you and for us.</p>
+          </div>
+        </div>
+
+        <div class="s-detail" data-reveal data-reveal-delay="200">
+          <div class="s-detail-border"></div>
+          <div class="s-detail-title">Delivery Schedule</div>
+          <div class="s-detail-value">Sun–Fri</div>
+          <div class="s-detail-text">
+            <p>We deliver Sunday through Friday across greater Sydney. Order by the evening prior for next-day delivery. Saturday delivery is not currently available.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INQUIRY FORM -->
+    <section class="section section-form" id="inquiry">
+      <div class="s-inner">
+        <div class="form-intro" data-reveal>
+          <div class="form-label">Wholesale Inquiry</div>
+          <h2 class="form-title">
+            Open Your Wholesale Account.
+          </h2>
+          <div class="form-body">
+            <p>Send us your details and we'll get back to you within one business day with pricing and delivery information tailored to your business.</p>
+          </div>
+          <div class="form-contact-row">
+            <span>Direct email</span>
+            <a href="mailto:info.yumyumdelight@gmail.com">info.yumyumdelight@gmail.com</a>
+          </div>
+          <div class="form-contact-row">
+            <span>Service area</span>
+            <a style="cursor:default;color:var(--warm);">Greater Sydney, NSW</a>
+          </div>
+        </div>
+
+        <div class="form-card" data-reveal data-reveal-delay="100">
+          <form class="w-form" action="mailto:info.yumyumdelight@gmail.com" method="POST" enctype="text/plain">
+            <div class="field-row">
+              <div class="field-group">
+                <label for="business-name">Business Name *</label>
+                <input type="text" id="business-name" name="business_name" placeholder="Your café or company name" required>
+              </div>
+              <div class="field-group">
+                <label for="contact-name">Contact Name *</label>
+                <input type="text" id="contact-name" name="contact_name" placeholder="Your full name" required>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" placeholder="you@yourbusiness.com.au" required>
+              </div>
+              <div class="field-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="04XX XXX XXX">
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="business-type">Business Type *</label>
+              <select id="business-type" name="business_type" required>
+                <option value="" disabled selected>Select your business type</option>
+                <option value="cafe">Café / Coffee Shop</option>
+                <option value="restaurant">Restaurant / Eatery</option>
+                <option value="distributor">Food Distributor</option>
+                <option value="retail">Retail / Deli</option>
+                <option value="catering">Catering Business</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="interest">Products of Interest</label>
+              <select id="interest" name="interest">
+                <option value="" disabled selected>What products interest you?</option>
+                <option value="all">Full range — all categories</option>
+                <option value="croissants">Croissants</option>
+                <option value="tarts">Tarts</option>
+                <option value="danish">Danish</option>
+                <option value="muffins">Muffins</option>
+                <option value="cronuts">Cronuts</option>
+                <option value="gourmet-cronuts">Gourmet Cronuts</option>
+                <option value="tella-balls">Tella Balls</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="message">Additional Notes</label>
+              <textarea id="message" name="message" placeholder="Tell us about your volume requirements, delivery location, or any questions you have…"></textarea>
+            </div>
+            <button type="submit" class="form-submit">Submit Wholesale Inquiry</button>
+            <p class="form-disclaimer">By submitting this form you agree to be contacted by Yum Yum Delight regarding your wholesale inquiry. All prices are GST-inclusive and subject to change.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-faq" id="faq">
+      <div class="s-inner">
+        <div class="faq-intro" data-reveal>
+          <div class="faq-label">FAQ</div>
+          <h2 class="faq-title">
+            Frequently Asked Questions
+          </h2>
+          <div class="faq-body">
+            <p>Common questions about our wholesale program, ordering, and delivery.</p>
+          </div>
+        </div>
+
+        <div class="s-accordion" data-reveal data-reveal-delay="100">
+
+          <div class="accordion">
+            <div class="accordion-border"></div>
+            <div class="accordion-header">
+              <h6 class="accordion-title">What is the minimum order?</h6>
+              <span class="accordion-toggle">
+                <span class="accordion-toggle-line line-1"></span>
+                <span class="accordion-toggle-line line-2"></span>
+              </span>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-text">
+                <p>Our minimum order value is $50 per delivery. This applies per order regardless of how many product lines you include. There's no maximum — order as much as your business needs.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion">
+            <div class="accordion-border"></div>
+            <div class="accordion-header">
+              <h6 class="accordion-title">How do I place an order?</h6>
+              <span class="accordion-toggle">
+                <span class="accordion-toggle-line line-1"></span>
+                <span class="accordion-toggle-line line-2"></span>
+              </span>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-text">
+                <p>Email your order to <a href="mailto:info.yumyumdelight@gmail.com" style="color:var(--gold);">info.yumyumdelight@gmail.com</a> with the products, sizes, and quantities you need. For recurring orders, we can set up a regular schedule tailored to your business. Online ordering via Ordermentum is coming soon.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion">
+            <div class="accordion-border"></div>
+            <div class="accordion-header">
+              <h6 class="accordion-title">What areas do you deliver to?</h6>
+              <span class="accordion-toggle">
+                <span class="accordion-toggle-line line-1"></span>
+                <span class="accordion-toggle-line line-2"></span>
+              </span>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-text">
+                <p>We deliver across greater Sydney, New South Wales. We are based in Western Sydney and service the metro area and surrounding suburbs Sunday through Friday. Contact us if you're unsure whether your location is in our delivery zone.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion">
+            <div class="accordion-border"></div>
+            <div class="accordion-header">
+              <h6 class="accordion-title">Are your prices GST-inclusive?</h6>
+              <span class="accordion-toggle">
+                <span class="accordion-toggle-line line-1"></span>
+                <span class="accordion-toggle-line line-2"></span>
+              </span>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-text">
+                <p>Yes. All prices shown on our Products page are GST-inclusive wholesale prices. Delivery charges, if applicable, are added separately based on your location. Prices are subject to change — we'll notify you in advance of any adjustments.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion">
+            <div class="accordion-border"></div>
+            <div class="accordion-header">
+              <h6 class="accordion-title">Can distributors order in bulk?</h6>
+              <span class="accordion-toggle">
+                <span class="accordion-toggle-line line-1"></span>
+                <span class="accordion-toggle-line line-2"></span>
+              </span>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-text">
+                <p>Absolutely. We work with distributors as well as individual businesses. If you're looking to place large or recurring bulk orders, get in touch directly to discuss volume pricing and scheduling options that work for your distribution model.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion">
+            <div class="accordion-border"></div>
+            <div class="accordion-header">
+              <h6 class="accordion-title">Do you offer custom or seasonal products?</h6>
+              <span class="accordion-toggle">
+                <span class="accordion-toggle-line line-1"></span>
+                <span class="accordion-toggle-line line-2"></span>
+              </span>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-text">
+                <p>Our standard range covers seven categories with multiple flavour options per category. For seasonal items or special runs, reach out via email and we'll advise on availability. Our Gourmet Cronut line is updated periodically with new flavours.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section section-cta">
+      <div class="s-inner">
+        <h2 class="cta-title" data-reveal>Ready to Stock Your Business?</h2>
+        <p class="cta-text" data-reveal data-reveal-delay="100">
+          Open a wholesale account today. Freshly baked pastry, Sydney-wide delivery, prices that work for your business.
+        </p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+          <a href="#inquiry" class="btn btn-primary btn-m" data-reveal data-reveal-delay="200">
+            <span class="btn-fill"></span>
+            <span class="btn-text-wrapper">
+              <span class="btn-text">Request a Wholesale Account</span>
+              <span class="btn-text-hover">Request a Wholesale Account</span>
+            </span>
+          </a>
+          <a href="contact.html" class="btn btn-outline btn-m" data-reveal data-reveal-delay="300">
+            <span class="btn-fill"></span>
+            <span class="btn-text-wrapper">
+              <span class="btn-text">Contact Us</span>
+              <span class="btn-text-hover">Contact Us</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="site-footer">
+    <div class="f-dots-bg" id="footer-dots-bg"></div>
+    <div class="f-center">
+      <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f-center-logo">
+    </div>
+    <div class="f-footer">
+      <div class="f-copyright">© Yum Yum Delight 2026. All Rights Reserved.</div>
+      <div class="f-links">
+        <a href="contact.html" class="f-link">Contact Us</a>
+        <a href="wholesale.html" class="f-link">Wholesale Terms</a>
+        <a href="about.html" class="f-link">About Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ─── Navbar: depletes at footer ────────────────────────
+    const header = document.getElementById('header');
+    const siteFooter = document.getElementById('site-footer');
+    if (header && siteFooter) {
+      new IntersectionObserver(entries => {
+        entries.forEach(e => header.classList.toggle('depleted', e.isIntersecting));
+      }, { threshold: 0 }).observe(siteFooter);
+    }
+    // ─── Mobile nav ─────────────────────────────────────────
+    const navToggle   = document.getElementById('nav-toggle');
+    const mobileNav   = document.getElementById('h-nav-mobile');
+    const navMobileBg = document.getElementById('nav-mobile-bg');
+    navToggle.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      navToggle.classList.toggle('open', open);
+      navMobileBg.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    navMobileBg.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      navToggle.classList.remove('open');
+      navMobileBg.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+
+    // Accordion
+    document.querySelectorAll('.accordion').forEach(acc => {
+      acc.querySelector('.accordion-header').addEventListener('click', () => {
+        const isOpen = acc.classList.contains('open');
+        document.querySelectorAll('.accordion.open').forEach(a => a.classList.remove('open'));
+        if (!isOpen) acc.classList.add('open');
+      });
+    });
+
+    // Scroll reveal
+    document.body.classList.add('js-ready');
+    const revealEls = document.querySelectorAll('[data-reveal]');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); revealObs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    revealEls.forEach(el => revealObs.observe(el));
+
+    // ─── Lenis smooth scroll ───
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    function lRaf(t) { lenis.raf(t); requestAnimationFrame(lRaf); }
+    requestAnimationFrame(lRaf);
+    const progressBar = document.getElementById('scroll-progress');
+    lenis.on('scroll', ({ progress }) => { progressBar.style.transform = `scaleX(${progress})`; });
+
+    // ─── Line-split heading reveals ───
+    function splitTextLines(el) {
+      const raw = el.innerHTML;
+      const parts = raw.split(/<br\s*\/?>/i);
+      if (parts.length > 1) {
+        el.innerHTML = parts.map((s, i) => `<span class="line-wrap"><span class="line-inner" style="transition-delay:${i * 0.12}s">${s.trim()}</span></span>`).join('');
+        return;
+      }
+      const words = el.textContent.trim().split(/\s+/);
+      el.innerHTML = words.map(w => `<span class="sw" style="display:inline-block;">${w}&nbsp;</span>`).join('');
+      const ws = [...el.querySelectorAll('.sw')];
+      const lines = []; let grp = [], prevTop = -1;
+      ws.forEach(w => {
+        const top = Math.round(w.getBoundingClientRect().top);
+        if (prevTop < 0) prevTop = top;
+        if (Math.abs(top - prevTop) > 4) { lines.push(grp); grp = []; prevTop = top; }
+        grp.push(w.textContent.trimEnd());
+      });
+      if (grp.length) lines.push(grp);
+      el.innerHTML = lines.map((ls, i) => `<span class="line-wrap"><span class="line-inner" style="transition-delay:${i * 0.12}s">${ls.join(' ')}</span></span>`).join('');
+    }
+    const lineObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.setAttribute('data-lines-revealed', ''); lineObs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('h1, h2, .cta-title, .form-title, .faq-title').forEach(el => {
+      splitTextLines(el); lineObs.observe(el);
+    });
+  </script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      const container = document.getElementById('footer-dots-bg');
+      if (!container || typeof THREE === 'undefined') return;
+      const footer = container.parentElement;
+      const AMOUNTX = 50, AMOUNTY = 26, SEP = 110;
+      const w = footer.offsetWidth || window.innerWidth;
+      const h = footer.offsetHeight || 560;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(55, w / h, 1, 10000);
+      camera.position.set(0, 300, 980);
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(w, h);
+      renderer.setClearColor(0x000000, 0);
+      container.appendChild(renderer.domElement);
+      const positions = [], colors = [];
+      for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
+        positions.push(ix * SEP - (AMOUNTX * SEP) / 2, 0, iy * SEP - (AMOUNTY * SEP) / 2);
+        colors.push(0.42, 0.247, 0.102);
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      const mat = new THREE.PointsMaterial({ size: 8, vertexColors: true, transparent: true, opacity: 0.62, sizeAttenuation: true });
+      scene.add(new THREE.Points(geo, mat));
+      const posArr = geo.attributes.position.array;
+      let count = 0;
+      (function tick() {
+        requestAnimationFrame(tick);
+        let i = 0;
+        for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
+          posArr[i * 3 + 1] = Math.sin((ix + count) * 0.3) * 50 + Math.sin((iy + count) * 0.5) * 50;
+          i++;
+        }
+        geo.attributes.position.needsUpdate = true;
+        renderer.render(scene, camera);
+        count += 0.07;
+      })();
+      new ResizeObserver(() => {
+        const nw = footer.offsetWidth, nh = footer.offsetHeight;
+        if (!nw || !nh) return;
+        camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
+      }).observe(footer);
+    });
+  </script>
+</body>
+</html>

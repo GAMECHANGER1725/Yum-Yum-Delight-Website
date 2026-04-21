@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en" data-page="products">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wholesale Products & Pricing | Yum Yum Delight</title>
+  <meta name="description" content="Full wholesale product catalogue: croissants, muffins, tarts, danish, tella balls, cronuts & gourmet cronuts. GST-inclusive pricing. Sydney wholesale bakery.">
+  <link rel="icon" type="image/png" href="brand_assets/logos/only_logo_transparent.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brown:      #46280A;
+      --gold:       #B47832;
+      --gold-light: #C8914A;
+      --parchment:  #F5F0E8;
+      --cream:      #FAF3E0;
+      --midnight:   #1A1208;
+      --midnight2:  #221509;
+      --warm:       #6B3F1A;
+      --warm-light: #8B5A2B;
+      --border:     rgba(70,40,10,0.12);
+      --border-dark:rgba(250,243,224,0.15);
+      --font-display: 'Manrope', sans-serif;
+      --font-body:    'Nunito', sans-serif;
+      --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; background: #FAF3E0; }
+    body { font-family: var(--font-body); background: var(--parchment); color: var(--brown); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* ─── Navbar (Augen-inspired floating pills) ──────────── */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 20px 5%; pointer-events: none;
+      transition: opacity 0.5s var(--ease-out), visibility 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+    }
+    .header.depleted { opacity: 0; visibility: hidden; transform: translateY(-10px); }
+    .h-logo {
+      pointer-events: all; display: flex; align-items: center;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1);
+      border-radius: 100px; padding: 10px 20px;
+      box-shadow: 0 2px 16px rgba(70,40,10,0.06); flex-shrink: 0; transition: background 0.2s;
+    }
+    .h-logo:hover { background: rgba(250,243,224,0.62); }
+    .h-logo img { height: 34px; width: auto; }
+    .h-nav {
+      pointer-events: all; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1);
+      border-radius: 100px; padding: 0 30px; height: 54px;
+      display: flex; align-items: center; box-shadow: 0 2px 16px rgba(70,40,10,0.06);
+    }
+    .n-menu { display: flex; align-items: center; gap: 30px; }
+    .n-item .n-link { font-family: var(--font-body); font-size: 13.5px; font-weight: 500; letter-spacing: 0.01em; color: var(--brown); transition: opacity 0.25s; position: relative; }
+    .n-item .n-link.active::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: var(--gold); border-radius: 50%; }
+    .n-menu:has(.n-item:hover) .n-item:not(:hover) .n-link { opacity: 0.3; }
+    .h-cta-pill { pointer-events: all; display: flex; align-items: center; background: var(--gold); border: 1px solid var(--gold); border-radius: 100px; padding: 0 24px; height: 54px; color: var(--cream); font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; box-shadow: 0 2px 16px rgba(180,120,50,0.25); transition: background 0.25s, border-color 0.25s, box-shadow 0.25s; }
+    .h-cta-pill:hover { background: var(--brown); border-color: var(--brown); box-shadow: 0 4px 24px rgba(70,40,10,0.3); color: var(--cream); }
+    .nav-toggle { display: none; pointer-events: all; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1); border-radius: 14px; width: 54px; height: 54px; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 16px rgba(70,40,10,0.06); transition: background 0.2s; flex-shrink: 0; }
+    .nav-toggle:hover { background: rgba(250,243,224,0.62); }
+    .burger-line { display: block; width: 20px; height: 1.5px; background: var(--brown); transition: transform 0.3s var(--ease-out), opacity 0.3s; }
+    .nav-toggle.open .burger-line:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .nav-toggle.open .burger-line:nth-child(2) { opacity: 0; }
+    .nav-toggle.open .burger-line:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+    .nav-mobile-bg { display: none; position: fixed; inset: 0; background: rgba(26,18,8,0.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.4s var(--ease-out); z-index: 195; }
+    .nav-mobile-bg.open { opacity: 1; pointer-events: all; }
+    .h-nav-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; background: rgba(245,240,232,0.49); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); z-index: 196; padding: 110px 7% 52px; flex-direction: column; gap: 0; transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s; opacity: 0; }
+    .h-nav-mobile.open { transform: translateY(0); opacity: 1; }
+    .h-nav-mobile .m-link { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--brown); letter-spacing: -0.02em; padding: 14px 0; border-bottom: 1px solid rgba(70,40,10,0.1); display: block; transition: color 0.2s; }
+    .h-nav-mobile .m-link:hover, .h-nav-mobile .m-link.active { color: var(--gold); }
+    .h-nav-mobile .m-cta { margin-top: 24px; display: inline-flex; align-items: center; background: var(--gold); border-radius: 100px; padding: 14px 30px; color: var(--cream); font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: background 0.2s; }
+    .h-nav-mobile .m-cta:hover { background: var(--brown); }
+
+    /* ─── Buttons ─── */
+    .btn { display: inline-flex; align-items: center; position: relative; overflow: hidden; border-radius: 2px; cursor: pointer; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s var(--ease-out); }
+    .btn .btn-fill { position: absolute; inset: 0; transform: translateY(101%); transition: transform 0.35s var(--ease-out); z-index: 0; }
+    .btn:hover .btn-fill { transform: translateY(0); }
+    .btn .btn-text-wrapper { position: relative; z-index: 1; display: flex; overflow: hidden; height: 1.1em; }
+    .btn .btn-text, .btn .btn-text-hover { display: block; transition: transform 0.3s var(--ease-out); white-space: nowrap; }
+    .btn .btn-text-hover { position: absolute; top: 0; left: 0; transform: translateY(110%); }
+    .btn:hover .btn-text { transform: translateY(-110%); }
+    .btn:hover .btn-text-hover { transform: translateY(0); }
+    .btn-primary { background: var(--brown); color: var(--cream); border: 1.5px solid var(--brown); }
+    .btn-primary .btn-fill { background: var(--gold); }
+    .btn-primary:hover { border-color: var(--gold); }
+    .btn-outline { background: transparent; color: var(--brown); border: 1.5px solid var(--brown); }
+    .btn-outline .btn-fill { background: var(--brown); }
+    .btn-outline:hover { color: var(--cream); }
+    .btn-m { font-size: 13px; padding: 14px 32px; }
+
+    /* ─── Page Header ─── */
+    .page-header {
+      background: var(--parchment);
+      padding-top: 72px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-header-inner {
+      max-width: 1320px; margin: 0 auto; padding: 32px 40px 32px;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap;
+    }
+    .page-header-left { display: flex; flex-direction: column; gap: 16px; }
+    .page-header-label {
+      font-family: var(--font-body); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .page-header-label::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+    .page-header-title {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
+      color: var(--brown);
+    }
+    .page-header-sub {
+      font-family: var(--font-body); font-size: 14px; line-height: 1.7; color: var(--warm); max-width: 480px;
+    }
+    .page-header-disclaimer {
+      font-family: var(--font-body); font-size: 11px; font-weight: 500;
+      color: var(--warm); opacity: 0.65;
+      padding: 8px 14px; border: 1px solid var(--border); border-radius: 2px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ─── Filters + Products Layout ─── */
+    .products-section {
+      background: var(--parchment);
+    }
+    .products-layout {
+      max-width: 1320px; margin: 0 auto;
+      display: flex; align-items: flex-start;
+      padding: 0 40px;
+    }
+
+    /* ─── Sidebar ─── */
+    .filters-sidebar {
+      flex-shrink: 0;
+      width: 260px;
+      padding: 40px 0;
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 72px;
+      max-height: calc(100vh - 72px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      transition: width 0.35s var(--ease-out), opacity 0.35s var(--ease-out);
+    }
+    .filters-sidebar.hidden {
+      width: 0;
+      opacity: 0;
+      overflow: hidden;
+      padding: 0;
+      border-right: none;
+    }
+
+    .sidebar-header {
+      padding: 0 28px 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .hide-filters-btn {
+      background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--brown); padding: 0;
+      transition: opacity 0.2s;
+    }
+    .hide-filters-btn:hover { opacity: 0.55; }
+    .hide-filters-chevron {
+      width: 16px; height: 16px;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s var(--ease-out);
+    }
+    .hide-filters-chevron.flipped { transform: rotate(180deg); }
+
+    .sidebar-section { margin-bottom: 4px; }
+    .sidebar-section-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; padding: 14px 28px;
+      background: none; border: none; border-top: 1px solid var(--border);
+      cursor: pointer;
+      font-family: var(--font-body); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--warm); text-align: left;
+      transition: opacity 0.2s;
+    }
+    .sidebar-section-toggle:hover { opacity: 0.7; }
+    .sidebar-chevron { transition: transform 0.25s var(--ease-out); flex-shrink: 0; }
+    .sidebar-section-toggle.collapsed .sidebar-chevron { transform: rotate(-90deg); }
+    .sidebar-section-body { padding: 4px 28px 20px; }
+    .sidebar-section-body.collapsed { display: none; }
+    .sidebar-checkboxes { display: flex; flex-direction: column; gap: 0; }
+    .sidebar-check-label {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      gap: 12px;
+    }
+    .sidebar-check-label:last-child { border-bottom: none; }
+    .sidebar-check-left { display: flex; align-items: center; gap: 12px; }
+    .sidebar-check-label input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: var(--gold);
+      cursor: pointer; flex-shrink: 0;
+    }
+    .sidebar-check-text {
+      font-family: var(--font-body); font-size: 13px; font-weight: 500;
+      color: var(--brown);
+    }
+    .sidebar-check-count {
+      font-family: var(--font-body); font-size: 11px;
+      color: var(--warm); opacity: 0.5;
+    }
+
+    /* ─── Products Main ─── */
+    .products-main {
+      flex: 1;
+      min-width: 0;
+      padding: 40px 0 40px 40px;
+    }
+
+    /* Filter chips bar */
+    .filter-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .filter-chips { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex: 1; }
+    .filter-chip {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 12px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: var(--brown);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .filter-chip:hover { border-color: var(--brown); }
+    .filter-chip.active {
+      background: var(--brown); color: var(--cream); border-color: var(--brown);
+    }
+    .filter-chip.active:hover { background: var(--gold); border-color: var(--gold); }
+    .chip-x {
+      display: none; width: 14px; height: 14px;
+      align-items: center; justify-content: center;
+      opacity: 0.7;
+    }
+    .filter-chip.active .chip-x { display: flex; }
+
+    .show-filters-btn {
+      display: none;
+      background: none; border: 1px solid var(--border); border-radius: 2px;
+      cursor: pointer;
+      font-family: var(--font-body); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--brown); padding: 8px 16px;
+      align-items: center; gap: 8px;
+      transition: border-color 0.2s;
+      white-space: nowrap;
+    }
+    .show-filters-btn:hover { border-color: var(--brown); }
+    .filters-sidebar.hidden ~ .products-main .show-filters-btn { display: flex; }
+
+    .filter-count {
+      font-family: var(--font-body); font-size: 12px; color: var(--warm);
+      white-space: nowrap;
+    }
+
+    /* ─── Product Sections ─── */
+    .product-category-section { margin-bottom: 56px; }
+    .product-category-section:last-child { margin-bottom: 0; }
+    .cat-header {
+      display: flex; align-items: center; gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .cat-title {
+      font-family: var(--font-display); font-size: 24px; font-weight: 700;
+      color: var(--brown); letter-spacing: -0.02em; flex: 1;
+    }
+    .cat-count {
+      font-family: var(--font-body); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--warm); opacity: 0.5;
+    }
+
+    /* ─── Product Grid ─── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .filters-sidebar.hidden ~ .products-main .product-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* ─── Product Card ─── */
+    .product-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color 0.2s var(--ease-out), transform 0.25s var(--ease-out);
+    }
+    .product-card:hover {
+      border-color: rgba(70,40,10,0.25);
+      transform: translateY(-2px);
+    }
+    .product-card figure {
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: var(--parchment);
+    }
+    .product-card figure img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s var(--ease-out);
+    }
+    .product-card:hover figure img { transform: scale(1.04); }
+    .product-card-body {
+      padding: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1;
+    }
+    .product-card-name {
+      font-family: var(--font-display); font-size: 14px; font-weight: 600;
+      color: var(--brown); line-height: 1.3; letter-spacing: -0.01em;
+    }
+    .product-card-sizes {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+    }
+    .size-badge {
+      font-family: var(--font-body); font-size: 11px; font-weight: 500;
+      padding: 3px 10px;
+      background: var(--parchment); border: 1px solid var(--border);
+      border-radius: 20px; color: var(--warm);
+      letter-spacing: 0.02em;
+    }
+
+    /* ─── CTA Band ─── */
+    .section-cta {
+      background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0;
+    }
+    .section-cta .s-inner {
+      max-width: 1320px; margin: 0 auto; padding: 80px 40px;
+      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px;
+    }
+    .cta-title {
+      font-family: var(--font-display); font-size: clamp(32px, 4.5vw, 64px);
+      font-weight: 700; letter-spacing: -0.025em; line-height: 1.08;
+      color: var(--brown); max-width: 680px;
+    }
+    .cta-text {
+      font-family: var(--font-body); font-size: 15px; line-height: 1.7;
+      color: var(--warm); max-width: 440px;
+    }
+
+    /* ─── Footer ─── */
+    .footer { background: var(--cream); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .f-dots-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 62%, black 80%); -webkit-mask-image: linear-gradient(to bottom, transparent 62%, black 80%); }
+    .f-dots-bg canvas { display: block; width: 100% !important; height: 100% !important; border: none; outline: none; }
+    .f-center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 40px 20px; position: relative; z-index: 1; }
+    .f-center-logo { height: 420px; width: auto; max-width: 80%; }
+    .f-footer { display: flex; align-items: center; justify-content: space-between; padding: 20px 60px; gap: 20px; flex-wrap: wrap; position: relative; z-index: 1; }
+    .f-copyright { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; letter-spacing: 0.02em; }
+    .f-links { display: flex; align-items: center; gap: 24px; }
+    .f-link { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; text-decoration: none; letter-spacing: 0.02em; transition: opacity 0.2s; }
+    .f-link:hover { opacity: 1; }
+
+    /* ─── Scroll reveal ─── */
+    body.js-ready [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
+    body.js-ready [data-reveal].revealed { opacity: 1; transform: translateY(0); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1200px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .filters-sidebar.hidden ~ .products-main .product-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .header { padding: 20px 4%; }
+      .products-layout { padding: 0 28px; }
+      .page-header-inner { padding: 48px 28px 40px; }
+      .filters-sidebar { width: 220px; }
+      .f-footer { padding: 20px 28px; }
+    }
+    @media (max-width: 768px) {
+      .header { padding: 16px 4%; }
+      .h-nav, .h-cta-pill { display: none; }
+      .h-nav-mobile { display: flex; }
+      .nav-toggle { display: flex; }
+      .nav-mobile-bg { display: block; }
+      .products-layout { flex-direction: column; padding: 0 20px; }
+      .filters-sidebar { position: static; width: 100% !important; max-height: none; border-right: none; border-bottom: 1px solid var(--border); padding: 24px 0; opacity: 1 !important; }
+      .products-main { padding: 24px 0; }
+      .product-grid, .filters-sidebar.hidden ~ .products-main .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .show-filters-btn { display: none !important; }
+      .page-header-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .f-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .f-center { padding: 60px 28px 32px; }
+    }
+    @media (max-width: 480px) {
+      .product-grid, .filters-sidebar.hidden ~ .products-main .product-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Line-split text animation ─── */
+    .line-wrap { display: block; overflow: hidden; padding-bottom: 0.06em; }
+    .line-inner { display: block; transform: translateY(108%); transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    [data-lines-revealed] .line-inner { transform: translateY(0); }
+
+    /* ─── Scroll progress bar ─── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--brown);
+      transform: scaleX(0);
+      transform-origin: left center;
+      z-index: 300;
+      will-change: transform;
+    }
+  </style>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+</head>
+
+<body>
+  <div class="scroll-progress" id="scroll-progress"></div>
+  <div class="nav-mobile-bg" id="nav-mobile-bg"></div>
+
+  <header class="header" id="header">
+    <a class="h-logo" href="index.html" aria-label="Yum Yum Delight Home">
+      <img src="brand_assets/logos/side_logo_transparent.png" alt="Yum Yum Delight">
+    </a>
+    <nav class="h-nav" id="main-nav">
+      <ul class="n-menu">
+        <li class="n-item"><a href="products.html" class="n-link active">Products</a></li>
+        <li class="n-item"><a href="wholesale.html" class="n-link">Wholesale</a></li>
+        <li class="n-item"><a href="about.html" class="n-link">About</a></li>
+        <li class="n-item"><a href="contact.html" class="n-link">Contact</a></li>
+      </ul>
+    </nav>
+    <a href="wholesale.html" class="h-cta-pill">Get Pricing</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </button>
+  </header>
+  <div class="h-nav-mobile" id="h-nav-mobile">
+    <a href="products.html" class="m-link active">Products</a>
+    <a href="wholesale.html" class="m-link">Wholesale</a>
+    <a href="about.html" class="m-link">About</a>
+    <a href="contact.html" class="m-link">Contact</a>
+    <a href="wholesale.html" class="m-cta">Get Pricing</a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="page-header-left" data-reveal>
+        <div class="page-header-label">Full Wholesale Catalogue</div>
+        <h1 class="page-header-title">Our Products.</h1>
+        <p class="page-header-sub">
+          Seven categories of premium baked goods, all priced for wholesale. Delivered fresh across Sydney, Sunday to Friday.
+        </p>
+      </div>
+      <div class="page-header-disclaimer">Min. order $50 · Delivered fresh Sydney-wide</div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS SECTION -->
+  <section class="products-section">
+    <div class="products-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="filters-sidebar" id="filters-sidebar">
+        <div class="sidebar-header">
+          <button class="hide-filters-btn" id="hide-filters-btn">
+            <span>Hide Filters</span>
+            <span class="hide-filters-chevron" id="sidebar-chevron">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="#46280A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="sidebar-section">
+          <button class="sidebar-section-toggle collapsed" data-target="size-body">
+            <span>Size</span>
+            <svg class="sidebar-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="#6B3F1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="sidebar-section-body collapsed" id="size-body">
+            <div class="sidebar-checkboxes" id="size-checkboxes">
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-size="all" checked>
+                  <span class="sidebar-check-text">All Sizes</span>
+                </div>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-size="large">
+                  <span class="sidebar-check-text">Large</span>
+                </div>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-size="medium">
+                  <span class="sidebar-check-text">Medium</span>
+                </div>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-size="small">
+                  <span class="sidebar-check-text">Small</span>
+                </div>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-size="box-of-3">
+                  <span class="sidebar-check-text">Box of 3</span>
+                </div>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-size="box-of-4">
+                  <span class="sidebar-check-text">Box of 4</span>
+                </div>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-size="box-of-6">
+                  <span class="sidebar-check-text">Box of 6</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <button class="sidebar-section-toggle" data-target="cat-body">
+            <span>Categories</span>
+            <svg class="sidebar-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="#6B3F1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="sidebar-section-body" id="cat-body">
+            <div class="sidebar-checkboxes" id="cat-checkboxes">
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-cat="all" checked>
+                  <span class="sidebar-check-text">All Products</span>
+                </div>
+                <span class="sidebar-check-count">51</span>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-cat="croissants">
+                  <span class="sidebar-check-text">Croissants</span>
+                </div>
+                <span class="sidebar-check-count">13</span>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-cat="muffins">
+                  <span class="sidebar-check-text">Muffins</span>
+                </div>
+                <span class="sidebar-check-count">5</span>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-cat="tarts">
+                  <span class="sidebar-check-text">Tarts</span>
+                </div>
+                <span class="sidebar-check-count">9</span>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-cat="danish">
+                  <span class="sidebar-check-text">Danish</span>
+                </div>
+                <span class="sidebar-check-count">10</span>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-cat="tella-balls">
+                  <span class="sidebar-check-text">Tella Balls</span>
+                </div>
+                <span class="sidebar-check-count">1</span>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-cat="cronuts">
+                  <span class="sidebar-check-text">Cronuts</span>
+                </div>
+                <span class="sidebar-check-count">7</span>
+              </label>
+              <label class="sidebar-check-label">
+                <div class="sidebar-check-left">
+                  <input type="checkbox" data-cat="gourmet-cronuts">
+                  <span class="sidebar-check-text">Gourmet Cronuts</span>
+                </div>
+                <span class="sidebar-check-count">5</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- PRODUCTS MAIN -->
+      <div class="products-main" id="products-main">
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+          <div class="filter-chips" id="filter-chips">
+            <button class="filter-chip active" data-cat="all">All Products</button>
+            <button class="filter-chip" data-cat="croissants">Croissants</button>
+            <button class="filter-chip" data-cat="muffins">Muffins</button>
+            <button class="filter-chip" data-cat="tarts">Tarts</button>
+            <button class="filter-chip" data-cat="danish">Danish</button>
+            <button class="filter-chip" data-cat="tella-balls">Tella Balls</button>
+            <button class="filter-chip" data-cat="cronuts">Cronuts</button>
+            <button class="filter-chip" data-cat="gourmet-cronuts">Gourmet Cronuts</button>
+          </div>
+          <button class="show-filters-btn" id="show-filters-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 3h12M3 7h8M5 11h4" stroke="#46280A" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show Filters
+          </button>
+          <span class="filter-count" id="filter-count">51 products</span>
+        </div>
+
+        <!-- CROISSANTS -->
+        <div class="product-category-section" id="cat-croissants" data-category="croissants">
+          <div class="cat-header">
+            <h2 class="cat-title">Croissants</h2>
+            <span class="cat-count">13 products</span>
+          </div>
+          <div class="product-grid">
+            <div class="product-card" data-reveal data-sizes="large,medium,small">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Plain+Croissant" alt="Plain Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Plain Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Almond+Croissant" alt="Almond Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Almond Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 3</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Premium+Butter" alt="Premium Butter Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Premium Butter Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Chocolate+Croissant" alt="Chocolate Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Chocolate Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 3</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="medium,box-of-3">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Matcha+Croissant" alt="Matcha Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Matcha Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Box of 3</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="medium,box-of-3">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Lemon+Croissant" alt="Lemon Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Lemon Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Box of 3</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,box-of-4">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Roulade+Croissant" alt="Roulade Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Roulade Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Box of 4</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Apple+Crumble" alt="Apple Crumble Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Apple Crumble Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 3</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Rhubarb+%26+Pistachio" alt="Rhubarb & Pistachio Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Rhubarb & Pistachio Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 3</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Date+%26+Walnut" alt="Date & Walnut Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Date & Walnut Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 3</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cherry+Ripe" alt="Cherry Ripe Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Cherry Ripe Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 3</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Nutella+Croissant" alt="Nutella Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Nutella Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 3</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,box-of-3">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cookies+Croissant" alt="Cookies Croissant" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Cookies Croissant</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Box of 3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MUFFINS -->
+        <div class="product-category-section" id="cat-muffins" data-category="muffins">
+          <div class="cat-header">
+            <h2 class="cat-title">Muffins</h2>
+            <span class="cat-count">5 products</span>
+          </div>
+          <div class="product-grid">
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Blueberry+Muffin" alt="Blueberry Muffin" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Blueberry Muffin</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Chocolate+Muffin" alt="Chocolate Muffin" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Chocolate Muffin</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Orange+Muffin" alt="Orange Muffin" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Orange Muffin</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Raspberry+Muffin" alt="Raspberry Muffin" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Raspberry Muffin</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=All-Top+Muffin" alt="All-Top Muffin" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">All-Top Muffin</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TARTS -->
+        <div class="product-category-section" id="cat-tarts" data-category="tarts">
+          <div class="cat-header">
+            <h2 class="cat-title">Tarts</h2>
+            <span class="cat-count">9 products</span>
+          </div>
+          <div class="product-grid">
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Lemon+Tart" alt="Lemon Tart" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Lemon Tart</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Lemon+Meringue" alt="Lemon Meringue Tart" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Lemon Meringue Tart</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Chocolate+Tart" alt="Chocolate Tart" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Chocolate Tart</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Caramel+Tart" alt="Caramel Tart" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Caramel Tart</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Apple+Tart" alt="Apple Tart" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Apple Tart</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Blueberry+Tart" alt="Blueberry Tart" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Blueberry Tart</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Fresh+Fruit+Tart" alt="Fresh Fruit Tart" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Fresh Fruit Tart</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,box-of-4">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Custard+Tart" alt="Custard Tart" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Custard Tart</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Box of 4</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,box-of-4">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Custard+Tart+Deep" alt="Custard Tart Deep" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Custard Tart Deep</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Box of 4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DANISH -->
+        <div class="product-category-section" id="cat-danish" data-category="danish">
+          <div class="cat-header">
+            <h2 class="cat-title">Danish</h2>
+            <span class="cat-count">10 products</span>
+          </div>
+          <div class="product-grid">
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Blueberry+Danish" alt="Blueberry Danish" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Blueberry Danish</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Sour+Cherry+Danish" alt="Sour Cherry Danish" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Sour Cherry Danish</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Raspberry+Danish" alt="Raspberry Danish" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Raspberry Danish</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Apple+Danish" alt="Apple Danish" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Apple Danish</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Lychee+Danish" alt="Lychee Danish" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Lychee Danish</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Pear+Danish" alt="Pear Danish" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Pear Danish</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Fresh+Mixed+Fruit" alt="Fresh Mixed Fruit Danish" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Fresh Mixed Fruit Danish</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cinnamon+Snail" alt="Cinnamon Snail" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Cinnamon Snail</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,box-of-4">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Apple+%26+Cinnamon" alt="Apple & Cinnamon Snail" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Apple & Cinnamon Snail</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Box of 4</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-3,box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Premium+Danish" alt="Premium Danish" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Premium Danish</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 3</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TELLA BALLS -->
+        <div class="product-category-section" id="cat-tella-balls" data-category="tella-balls">
+          <div class="cat-header">
+            <h2 class="cat-title">Tella Balls</h2>
+            <span class="cat-count">1 product</span>
+          </div>
+          <div class="product-grid">
+            <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Tella+Ball" alt="Tella Ball" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Tella Ball</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRONUTS -->
+        <div class="product-category-section" id="cat-cronuts" data-category="cronuts">
+          <div class="cat-header">
+            <h2 class="cat-title">Cronuts</h2>
+            <span class="cat-count">7 products</span>
+          </div>
+          <div class="product-grid">
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cinnamon+Cronut" alt="Cinnamon Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Cinnamon Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Glazed+Cronut" alt="Glazed Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Glazed Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Nutella+Cronut" alt="Nutella Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Nutella Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Chocolate+Cronut" alt="Chocolate Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Chocolate Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Red+Velvet+Cronut" alt="Red Velvet Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Red Velvet Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Salted+Caramel" alt="Salted Caramel Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Salted Caramel Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cookies+%26+Cream" alt="Cookies & Cream Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Cookies & Cream Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GOURMET CRONUTS -->
+        <div class="product-category-section" id="cat-gourmet-cronuts" data-category="gourmet-cronuts">
+          <div class="cat-header">
+            <h2 class="cat-title">Gourmet Cronuts</h2>
+            <span class="cat-count">5 products</span>
+          </div>
+          <div class="product-grid">
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Melties+Choc" alt="Melties Chocolate Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Melties Chocolate Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Snickers+Cronut" alt="Snickers Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Snickers Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Kit+Kat+Cronut" alt="Kit Kat Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Kit Kat Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=M%26M+Cronut" alt="M&M Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">M&amp;M Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
+              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Ferrero+Cronut" alt="Ferrero Cronut" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Ferrero Cronut</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /products-main -->
+    </div><!-- /products-layout -->
+  </section>
+
+  <!-- CTA -->
+  <section class="section-cta">
+    <div class="s-inner">
+      <h2 class="cta-title" data-reveal>Ready to Stock Your Business?</h2>
+      <p class="cta-text" data-reveal>
+        Open a wholesale account with Yum Yum Delight. Order by email, delivered fresh across Sydney.
+      </p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;" data-reveal>
+        <a href="wholesale.html" class="btn btn-primary btn-m">
+          <span class="btn-fill"></span>
+          <span class="btn-text-wrapper">
+            <span class="btn-text">Request a Wholesale Account</span>
+            <span class="btn-text-hover">Request a Wholesale Account</span>
+          </span>
+        </a>
+        <a href="contact.html" class="btn btn-outline btn-m">
+          <span class="btn-fill"></span>
+          <span class="btn-text-wrapper">
+            <span class="btn-text">Contact Us</span>
+            <span class="btn-text-hover">Contact Us</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="site-footer">
+    <div class="f-dots-bg" id="footer-dots-bg"></div>
+    <div class="f-center">
+      <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f-center-logo">
+    </div>
+    <div class="f-footer">
+      <div class="f-copyright">© Yum Yum Delight 2026. All Rights Reserved.</div>
+      <div class="f-links">
+        <a href="contact.html" class="f-link">Contact Us</a>
+        <a href="wholesale.html" class="f-link">Wholesale Terms</a>
+        <a href="about.html" class="f-link">About Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ─── Navbar: depletes at footer ────────────────────────
+    const header = document.getElementById('header');
+    const siteFooter = document.getElementById('site-footer');
+    if (header && siteFooter) {
+      new IntersectionObserver(entries => {
+        entries.forEach(e => header.classList.toggle('depleted', e.isIntersecting));
+      }, { threshold: 0 }).observe(siteFooter);
+    }
+    // ─── Mobile nav ─────────────────────────────────────────
+    const navToggle   = document.getElementById('nav-toggle');
+    const mobileNav   = document.getElementById('h-nav-mobile');
+    const navMobileBg = document.getElementById('nav-mobile-bg');
+    navToggle.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      navToggle.classList.toggle('open', open);
+      navMobileBg.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    navMobileBg.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      navToggle.classList.remove('open');
+      navMobileBg.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+
+    /* ─── Sidebar hide/show ─── */
+    const sidebar     = document.getElementById('filters-sidebar');
+    const hideBtn     = document.getElementById('hide-filters-btn');
+    const showBtn     = document.getElementById('show-filters-btn');
+    const chevron     = document.getElementById('sidebar-chevron');
+
+    hideBtn.addEventListener('click', () => {
+      sidebar.classList.add('hidden');
+      chevron.classList.add('flipped');
+    });
+    if (showBtn) {
+      showBtn.addEventListener('click', () => {
+        sidebar.classList.remove('hidden');
+        chevron.classList.remove('flipped');
+      });
+    }
+
+    /* ─── Sidebar accordion toggles ─── */
+    document.querySelectorAll('.sidebar-section-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const body = document.getElementById(btn.dataset.target);
+        const collapsed = body.classList.toggle('collapsed');
+        btn.classList.toggle('collapsed', collapsed);
+      });
+    });
+
+    /* ─── Multi-select filtering (category + size) ─── */
+    const sections      = document.querySelectorAll('.product-category-section');
+    const chips         = document.querySelectorAll('.filter-chips .filter-chip');
+    const catCheckboxes = document.querySelectorAll('#cat-checkboxes input[data-cat]');
+    const sizeCheckboxes= document.querySelectorAll('#size-checkboxes input[data-size]');
+    const countEl       = document.getElementById('filter-count');
+
+    let activeCats  = new Set(); // empty = all categories
+    let activeSizes = new Set(); // empty = all sizes
+
+    function applyFilters() {
+      let visible = 0;
+      sections.forEach(sec => {
+        const catMatch = activeCats.size === 0 || activeCats.has(sec.dataset.category);
+        if (!catMatch) { sec.style.display = 'none'; return; }
+        const cards = sec.querySelectorAll('.product-card');
+        let secVisible = 0;
+        cards.forEach(card => {
+          if (activeSizes.size === 0) {
+            card.style.display = '';
+            secVisible++;
+          } else {
+            const sizes = (card.dataset.sizes || '').split(',').map(s => s.trim()).filter(Boolean);
+            const match = sizes.some(s => activeSizes.has(s));
+            card.style.display = match ? '' : 'none';
+            if (match) secVisible++;
+          }
+        });
+        sec.style.display = secVisible > 0 ? '' : 'none';
+        visible += secVisible;
+      });
+
+      // Sync cat checkboxes
+      catCheckboxes.forEach(cb => {
+        cb.checked = cb.dataset.cat === 'all' ? activeCats.size === 0 : activeCats.has(cb.dataset.cat);
+      });
+      // Sync size checkboxes
+      sizeCheckboxes.forEach(cb => {
+        cb.checked = cb.dataset.size === 'all' ? activeSizes.size === 0 : activeSizes.has(cb.dataset.size);
+      });
+      // Sync chips
+      chips.forEach(c => {
+        c.classList.toggle('active', c.dataset.cat === 'all' ? activeCats.size === 0 : activeCats.has(c.dataset.cat));
+      });
+      countEl.textContent = visible + ' product' + (visible === 1 ? '' : 's');
+    }
+
+    // Cat checkboxes
+    catCheckboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        if (cb.dataset.cat === 'all') { activeCats.clear(); }
+        else if (cb.checked) { activeCats.add(cb.dataset.cat); }
+        else { activeCats.delete(cb.dataset.cat); }
+        applyFilters();
+      });
+    });
+
+    // Size checkboxes
+    sizeCheckboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        if (cb.dataset.size === 'all') { activeSizes.clear(); }
+        else if (cb.checked) { activeSizes.add(cb.dataset.size); }
+        else { activeSizes.delete(cb.dataset.size); }
+        applyFilters();
+      });
+    });
+
+    // Chips — multi-select toggle
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        if (chip.dataset.cat === 'all') { activeCats.clear(); }
+        else if (activeCats.has(chip.dataset.cat)) { activeCats.delete(chip.dataset.cat); }
+        else { activeCats.add(chip.dataset.cat); }
+        applyFilters();
+      });
+    });
+
+    applyFilters();
+
+    /* ─── Scroll reveal ─── */
+    document.body.classList.add('js-ready');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); revealObs.unobserve(e.target); } });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+
+    // ─── Lenis smooth scroll ───
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    function lRaf(t) { lenis.raf(t); requestAnimationFrame(lRaf); }
+    requestAnimationFrame(lRaf);
+    const progressBar = document.getElementById('scroll-progress');
+    lenis.on('scroll', ({ progress }) => { progressBar.style.transform = `scaleX(${progress})`; });
+
+    // ─── Line-split heading reveals ───
+    function splitTextLines(el) {
+      const raw = el.innerHTML;
+      const parts = raw.split(/<br\s*\/?>/i);
+      if (parts.length > 1) {
+        el.innerHTML = parts.map((s, i) => `<span class="line-wrap"><span class="line-inner" style="transition-delay:${i * 0.12}s">${s.trim()}</span></span>`).join('');
+        return;
+      }
+      const words = el.textContent.trim().split(/\s+/);
+      el.innerHTML = words.map(w => `<span class="sw" style="display:inline-block;">${w}&nbsp;</span>`).join('');
+      const ws = [...el.querySelectorAll('.sw')];
+      const lines = []; let grp = [], prevTop = -1;
+      ws.forEach(w => {
+        const top = Math.round(w.getBoundingClientRect().top);
+        if (prevTop < 0) prevTop = top;
+        if (Math.abs(top - prevTop) > 4) { lines.push(grp); grp = []; prevTop = top; }
+        grp.push(w.textContent.trimEnd());
+      });
+      if (grp.length) lines.push(grp);
+      el.innerHTML = lines.map((ls, i) => `<span class="line-wrap"><span class="line-inner" style="transition-delay:${i * 0.12}s">${ls.join(' ')}</span></span>`).join('');
+    }
+    const lineObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.setAttribute('data-lines-revealed', ''); lineObs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('h1, h2, .cta-title, .form-title, .faq-title').forEach(el => {
+      splitTextLines(el); lineObs.observe(el);
+    });
+  </script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script>
+    /* ─── Footer dots wave ─── */
+    window.addEventListener('load', function() {
+      const container = document.getElementById('footer-dots-bg');
+      if (!container || typeof THREE === 'undefined') return;
+      const footer = container.parentElement;
+      const AMOUNTX = 50, AMOUNTY = 26, SEP = 110;
+      const w = footer.offsetWidth || window.innerWidth;
+      const h = footer.offsetHeight || 560;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(55, w / h, 1, 10000);
+      camera.position.set(0, 300, 980);
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(w, h);
+      renderer.setClearColor(0x000000, 0);
+      container.appendChild(renderer.domElement);
+      const positions = [], colors = [];
+      for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
+        positions.push(ix * SEP - (AMOUNTX * SEP) / 2, 0, iy * SEP - (AMOUNTY * SEP) / 2);
+        colors.push(0.42, 0.247, 0.102);
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      const mat = new THREE.PointsMaterial({ size: 8, vertexColors: true, transparent: true, opacity: 0.62, sizeAttenuation: true });
+      scene.add(new THREE.Points(geo, mat));
+      const posArr = geo.attributes.position.array;
+      let count = 0;
+      (function tick() {
+        requestAnimationFrame(tick);
+        let i = 0;
+        for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
+          posArr[i * 3 + 1] = Math.sin((ix + count) * 0.3) * 50 + Math.sin((iy + count) * 0.5) * 50;
+          i++;
+        }
+        geo.attributes.position.needsUpdate = true;
+        renderer.render(scene, camera);
+        count += 0.07;
+      })();
+      new ResizeObserver(() => {
+        const nw = footer.offsetWidth, nh = footer.offsetHeight;
+        if (!nw || !nh) return;
+        camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
+      }).observe(footer);
+    });
+  </script>
+</body>
+</html>

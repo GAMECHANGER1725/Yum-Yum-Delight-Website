@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en" data-page="home">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wholesale Pastry & Bakery Supplier Sydney | Yum Yum Delight</title>
+  <meta name="description" content="Sydney's wholesale bakery supplier for cafés and distributors. Premium croissants, tarts, danish, muffins, cronuts & more. GST-inclusive pricing. Sun–Fri delivery. Min. order $50.">
+  <link rel="icon" type="image/png" href="brand_assets/logos/only_logo_transparent.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── Design tokens ─────────────────────────────────────── */
+    :root {
+      --brown:      #46280A;
+      --gold:       #B47832;
+      --gold-light: #C8914A;
+      --parchment:  #F5F0E8;
+      --cream:      #FAF3E0;
+      --midnight:   #1A1208;
+      --midnight2:  #221509;
+      --warm:       #6B3F1A;
+      --warm-light: #8B5A2B;
+      --border:     rgba(70,40,10,0.12);
+      --border-dark:rgba(250,243,224,0.15);
+
+      --font-display: 'Manrope', sans-serif;
+      --font-body:    'Nunito', sans-serif;
+
+      --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ─── Reset & base ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; background: #FAF3E0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--parchment);
+      color: var(--brown);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* ─── Navbar (Augen-inspired floating pills) ──────────── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 20px 5%;
+      pointer-events: none;
+      transition: opacity 0.5s var(--ease-out), visibility 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+    }
+    .header.depleted { opacity: 0; visibility: hidden; transform: translateY(-10px); }
+    .h-logo {
+      pointer-events: all; display: flex; align-items: center;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1);
+      border-radius: 100px; padding: 10px 20px;
+      box-shadow: 0 2px 16px rgba(70,40,10,0.08);
+      flex-shrink: 0; transition: background 0.2s;
+    }
+    .h-logo:hover { background: rgba(250,243,224,0.62); }
+    .h-logo img { height: 34px; width: auto; }
+    .h-nav {
+      pointer-events: all;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1);
+      border-radius: 100px; padding: 0 30px; height: 54px;
+      display: flex; align-items: center;
+      box-shadow: 0 2px 16px rgba(70,40,10,0.08);
+    }
+    .n-menu { display: flex; align-items: center; gap: 30px; }
+    .n-item .n-link {
+      font-family: var(--font-body); font-size: 13.5px; font-weight: 500;
+      letter-spacing: 0.01em; color: var(--brown); transition: opacity 0.25s; position: relative;
+    }
+    .n-item .n-link.active::after {
+      content: ''; position: absolute; bottom: -5px; left: 50%;
+      transform: translateX(-50%); width: 4px; height: 4px;
+      background: var(--gold); border-radius: 50%;
+    }
+    .n-menu:has(.n-item:hover) .n-item:not(:hover) .n-link { opacity: 0.3; }
+    .h-cta-pill {
+      pointer-events: all; display: flex; align-items: center;
+      background: var(--gold); border: 1px solid var(--gold);
+      border-radius: 100px; padding: 0 24px; height: 54px;
+      color: var(--cream); font-family: var(--font-body); font-size: 12px;
+      font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      white-space: nowrap; flex-shrink: 0;
+      box-shadow: 0 2px 16px rgba(180,120,50,0.25);
+      transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .h-cta-pill:hover {
+      background: var(--brown); border-color: var(--brown);
+      box-shadow: 0 4px 24px rgba(70,40,10,0.3); color: var(--cream);
+    }
+    .nav-toggle {
+      display: none; pointer-events: all;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1);
+      border-radius: 14px; width: 54px; height: 54px; cursor: pointer;
+      flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      box-shadow: 0 2px 16px rgba(70,40,10,0.08); transition: background 0.2s; flex-shrink: 0;
+    }
+    .nav-toggle:hover { background: rgba(250,243,224,0.62); }
+    .burger-line {
+      display: block; width: 20px; height: 1.5px;
+      background: var(--brown); transition: transform 0.3s var(--ease-out), opacity 0.3s;
+    }
+    .nav-toggle.open .burger-line:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .nav-toggle.open .burger-line:nth-child(2) { opacity: 0; }
+    .nav-toggle.open .burger-line:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+    .nav-mobile-bg {
+      display: none; position: fixed; inset: 0;
+      background: rgba(26,18,8,0.45);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      opacity: 0; transition: opacity 0.4s var(--ease-out); z-index: 195;
+    }
+    .nav-mobile-bg.open { opacity: 1; pointer-events: all; }
+    .h-nav-mobile {
+      display: none; position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(245,240,232,0.49);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      z-index: 196; padding: 110px 7% 52px;
+      flex-direction: column; gap: 0;
+      transform: translateY(-100%);
+      transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s; opacity: 0;
+    }
+    .h-nav-mobile.open { transform: translateY(0); opacity: 1; }
+    .h-nav-mobile .m-link {
+      font-family: var(--font-display); font-size: 28px; font-weight: 700;
+      color: var(--brown); letter-spacing: -0.02em;
+      padding: 14px 0; border-bottom: 1px solid rgba(70,40,10,0.1);
+      display: block; transition: color 0.2s;
+    }
+    .h-nav-mobile .m-link:hover, .h-nav-mobile .m-link.active { color: var(--gold); }
+    .h-nav-mobile .m-cta {
+      margin-top: 24px; display: inline-flex; align-items: center;
+      background: var(--gold); border-radius: 100px; padding: 14px 30px;
+      color: var(--cream); font-family: var(--font-body); font-size: 12px;
+      font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: background 0.2s;
+    }
+    .h-nav-mobile .m-cta:hover { background: var(--brown); }
+
+    /* ─── Buttons ────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: var(--font-body);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.3s var(--ease-out);
+    }
+    .btn .btn-fill {
+      position: absolute; inset: 0;
+      transform: translateY(101%);
+      transition: transform 0.35s var(--ease-out);
+      z-index: 0;
+    }
+    .btn:hover .btn-fill { transform: translateY(0); }
+    .btn .btn-text-wrapper {
+      position: relative; z-index: 1;
+      display: flex; overflow: hidden; height: 1.1em;
+    }
+    .btn .btn-text,
+    .btn .btn-text-hover {
+      display: block;
+      transition: transform 0.3s var(--ease-out);
+      white-space: nowrap;
+    }
+    .btn .btn-text-hover {
+      position: absolute; top: 0; left: 0;
+      transform: translateY(110%);
+    }
+    .btn:hover .btn-text { transform: translateY(-110%); }
+    .btn:hover .btn-text-hover { transform: translateY(0); }
+
+    /* Primary */
+    .btn-primary {
+      background: var(--brown);
+      color: var(--cream);
+      border: 1.5px solid var(--brown);
+    }
+    .btn-primary .btn-fill { background: var(--gold); }
+    .btn-primary:hover { border-color: var(--gold); }
+
+    /* Outline */
+    .btn-outline {
+      background: transparent;
+      color: var(--brown);
+      border: 1.5px solid var(--brown);
+    }
+    .btn-outline .btn-fill { background: var(--brown); }
+    .btn-outline:hover { color: var(--cream); }
+
+    /* Outline dark */
+    .btn-outline-dark {
+      background: transparent;
+      color: var(--brown);
+      border: 1.5px solid var(--brown);
+    }
+    .btn-outline-dark .btn-fill { background: var(--brown); }
+    .btn-outline-dark:hover { color: var(--cream); }
+
+    /* Sizes */
+    .btn-s { font-size: 12px; padding: 11px 24px; }
+    .btn-m { font-size: 13px; padding: 14px 32px; }
+    .btn-l { font-size: 14px; padding: 17px 40px; }
+
+    /* ─── Arrow component ───────────────────────────────────── */
+    .arrows {
+      display: flex;
+      position: relative;
+      width: 24px;
+      height: 24px;
+      overflow: hidden;
+    }
+    .arrows .arrow {
+      position: absolute; top: 0; left: 0;
+      transition: transform 0.3s var(--ease-out), opacity 0.3s;
+    }
+    .arrows .arrow:first-child { transform: translateX(0); opacity: 1; }
+    .arrows .arrow:last-child  { transform: translateX(-24px); opacity: 0; }
+    *:hover > .arrows .arrow:first-child { transform: translateX(24px); opacity: 0; }
+    *:hover > .arrows .arrow:last-child  { transform: translateX(0); opacity: 1; }
+
+    /* ─── Section system ────────────────────────────────────── */
+    .section { position: relative; overflow: hidden; }
+    .s-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .s-content { position: relative; z-index: 2; }
+
+    /* ─── HERO — centered infinite grid ─────────────────────── */
+    .section-hero {
+      background: var(--parchment);
+      padding-top: 72px; /* clear fixed nav */
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    /* Grid layers */
+    .hero-grid-base {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(to right, rgba(107,63,26,0.14) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(107,63,26,0.14) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: heroGridScroll 5s linear infinite;
+    }
+    .hero-grid-reveal {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(to right, rgba(107,63,26,0.65) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(107,63,26,0.65) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: heroGridScroll 5s linear infinite;
+      -webkit-mask-image: radial-gradient(300px circle at -9999px -9999px, black, transparent);
+      mask-image: radial-gradient(300px circle at -9999px -9999px, black, transparent);
+      transition: -webkit-mask-image 0.05s, mask-image 0.05s;
+    }
+    @keyframes heroGridScroll {
+      0%   { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+    .section-hero .s-inner {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-top: 24px;
+      padding-bottom: 60px;
+    }
+    .section-hero .s-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      max-width: 820px;
+    }
+    .hero-overline {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold);
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .hero-overline::before {
+      content: ''; display: block;
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+    .hero-overline::after {
+      content: ''; display: block;
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+    .s-title {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 5.5vw, 82px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--brown);
+    }
+    .s-subtitle {
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--warm);
+      max-width: 520px;
+      text-align: center;
+    }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .hero-stats {
+      display: flex; gap: 40px; flex-wrap: wrap; justify-content: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      width: 100%;
+    }
+    .hero-stat { display: flex; flex-direction: column; gap: 4px; }
+    .hero-stat-value {
+      font-family: var(--font-display);
+      font-size: 28px; font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--warm);
+    }
+    /* Hero media panel */
+    .hero-media {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      align-self: stretch;
+    }
+    .hero-media figure {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .hero-media figure img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .hero-badge {
+      position: absolute;
+      bottom: 32px; right: 32px;
+      background: var(--parchment);
+      border: 1.5px solid var(--border);
+      padding: 20px 28px;
+      border-radius: 2px;
+      text-align: right;
+    }
+    .hero-badge-num {
+      font-family: var(--font-display);
+      font-size: 36px; font-weight: 700;
+      color: var(--brown); line-height: 1;
+    }
+    .hero-badge-label {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--warm); margin-top: 4px;
+    }
+
+    /* Solutions bar — below hero */
+    .s-solutions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border);
+    }
+    .s-solution {
+      padding: 32px 40px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      background: var(--cream);
+    }
+    .s-solution:last-child { border-right: none; }
+    .s-solution-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--brown);
+      line-height: 1.2;
+    }
+    .s-solution-title-text { display: block; }
+    .s-solution-title-extra {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: 700;
+      color: var(--gold);
+      opacity: 0.05;
+      white-space: nowrap;
+      pointer-events: none;
+      padding: 12px 40px;
+    }
+    .s-solution-text {
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--warm);
+      flex: 1;
+    }
+    .s-solution .border {
+      display: block;
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
+    .s-solution-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brown);
+      transition: gap 0.3s var(--ease-out);
+    }
+    .s-solution-link:hover { gap: 18px; }
+    .s-solution-link-text { overflow: hidden; height: 1.1em; }
+    .s-solution-link-text-inner { display: block; }
+    .arrow-wrapper { flex-shrink: 0; }
+    .arrow-wrapper svg path { fill: var(--brown); }
+
+    /* ─── MARQUEE — light with border ──────────────────────── */
+    .section-marquee {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .s-marquee-wrapper {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+    }
+    .s-marquee-wrapper > img { display: none; }
+    .s-marquees {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+    }
+    .s-marquee {
+      overflow: hidden;
+      padding: 8px 0;
+    }
+    .s-marquee-loop {
+      display: flex;
+      gap: 0;
+      animation: marquee 28s linear infinite;
+      width: max-content;
+    }
+    .s-marquee:nth-child(2) .s-marquee-loop {
+      animation-direction: reverse;
+      animation-duration: 34s;
+    }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .s-marquee-item {
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      position: relative;
+    }
+    .s-marquee-item::after {
+      content: '·';
+      position: absolute;
+      right: -4px;
+      color: var(--gold);
+      font-size: 24px;
+      line-height: 1;
+    }
+    .s-marquee-text {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 700;
+      color: var(--brown);
+      opacity: 0.25;
+      white-space: nowrap;
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+
+    /* ─── SHOP CTA (mini band) ──────────────────────────────── */
+    .section-shop-cta {
+      background: var(--parchment);
+      border-bottom: 1px solid var(--border);
+    }
+    .section-shop-cta .s-inner {
+      padding-top: 80px;
+      padding-bottom: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 32px;
+    }
+    .section-shop-cta .s-text {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 40px);
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--brown);
+      max-width: 720px;
+    }
+    .btn-wrapper { display: flex; gap: 16px; }
+
+    /* ─── SOLUTIONS (Why Choose Us) ─────────────────────────── */
+    .section-solutions { background: var(--parchment); position: relative; }
+    .section-solutions .s-backgrounds {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .section-solutions .s-backgrounds img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      position: absolute; inset: 0;
+      transition: opacity 0.6s var(--ease-out);
+    }
+    .section-solutions .s-backgrounds img.active { opacity: 0.08; }
+    .section-solutions .s-solutions {
+      position: relative; z-index: 2;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+    }
+    .section-solutions .s-solution {
+      border-right: 1px solid var(--border);
+      padding: 56px 48px;
+    }
+    .section-solutions .s-solution:last-child { border-right: none; }
+    .section-solutions .s-solution-title {
+      font-size: 26px;
+      color: var(--brown);
+    }
+    .section-solutions .s-solution-title-extra {
+      color: var(--gold);
+      opacity: 0.06;
+    }
+    .section-solutions .s-solution-text { color: var(--warm); }
+    .section-solutions .s-solution .border { background: var(--border); }
+    .section-solutions .s-solution-link { color: var(--brown); }
+    .section-solutions .arrow-wrapper svg path { fill: var(--brown); }
+
+    /* ─── CTA BAND — light ──────────────────────────────────── */
+    .section-cta {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+    .section-cta .s-inner {
+      padding-top: 96px;
+      padding-bottom: 96px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 40px;
+    }
+    .section-cta .s-title {
+      font-size: clamp(36px, 5vw, 72px);
+      color: var(--brown);
+      max-width: 760px;
+    }
+    .section-cta .s-text {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--warm);
+      max-width: 480px;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    .footer { background: var(--cream); position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+    .f-dots-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 62%, black 80%); -webkit-mask-image: linear-gradient(to bottom, transparent 62%, black 80%); }
+    .f-dots-bg canvas { display: block; width: 100% !important; height: 100% !important; border: none; outline: none; }
+    .f-center {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 60px 40px 20px;
+      position: relative; z-index: 1;
+    }
+    .f-center-logo { height: auto; width: auto; max-width: 70%; max-height: calc(100vh - 140px); }
+    .f-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 60px; gap: 20px; flex-wrap: wrap;
+      position: relative; z-index: 1;
+    }
+    .f-copyright {
+      font-family: var(--font-body); font-size: 11px;
+      color: var(--warm); opacity: 0.6; letter-spacing: 0.02em;
+    }
+    .f-links { display: flex; align-items: center; gap: 24px; }
+    .f-link {
+      font-family: var(--font-body); font-size: 11px;
+      color: var(--warm); opacity: 0.6; text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: opacity 0.2s;
+    }
+    .f-link:hover { opacity: 1; }
+
+    /* ─── Scroll-reveal animations ───────────────────────────── */
+    /* Only apply hiding AFTER page has loaded (avoids invisible content on first paint) */
+    body.js-ready [data-reveal] {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+    body.js-ready [data-reveal].revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    [data-reveal-delay="100"] { transition-delay: 0.1s; }
+    [data-reveal-delay="200"] { transition-delay: 0.2s; }
+    [data-reveal-delay="300"] { transition-delay: 0.3s; }
+    [data-reveal-delay="400"] { transition-delay: 0.4s; }
+    [data-reveal-delay="500"] { transition-delay: 0.5s; }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .header { padding: 20px 4%; }
+      .s-inner { padding: 0 28px; }
+      .s-solutions { grid-template-columns: repeat(2, 1fr); }
+      .f-footer { padding: 20px 28px; }
+      .section-solutions .s-solutions { grid-template-columns: 1fr; }
+      .section-solutions .s-solution { border-right: none; border-bottom: 1px solid var(--border); }
+      .section-solutions .s-solution:last-child { border-bottom: none; }
+    }
+
+    @media (max-width: 768px) {
+      .header { padding: 16px 4%; }
+      .h-nav, .h-cta-pill { display: none; }
+      .h-nav-mobile { display: flex; }
+      .nav-toggle { display: flex; }
+      .nav-mobile-bg { display: block; }
+      .section-hero .s-content { padding: 0 28px 40px; }
+      .s-solutions { grid-template-columns: 1fr; }
+      .s-solution { border-right: none; border-bottom: 1px solid var(--border-dark); }
+      .f-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .hero-btns { flex-direction: column; }
+    }
+
+    /* ─── Line-split text animation ─── */
+    .line-wrap { display: block; overflow: hidden; padding-bottom: 0.06em; }
+    .line-inner { display: block; transform: translateY(108%); transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    [data-lines-revealed] .line-inner { transform: translateY(0); }
+
+    /* ─── Scroll progress bar ─── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--brown);
+      transform: scaleX(0);
+      transform-origin: left center;
+      z-index: 300;
+      will-change: transform;
+    }
+  </style>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+</head>
+
+<body>
+  <div class="scroll-progress" id="scroll-progress"></div>
+  <div class="nav-mobile-bg" id="nav-mobile-bg"></div>
+
+  <!-- ─── HEADER ─────────────────────────────────────── -->
+  <header class="header" id="header">
+    <a class="h-logo" href="index.html" aria-label="Yum Yum Delight Home">
+      <img src="brand_assets/logos/side_logo_transparent.png" alt="Yum Yum Delight">
+    </a>
+    <nav class="h-nav" id="main-nav">
+      <ul class="n-menu">
+        <li class="n-item"><a href="products.html" class="n-link">Products</a></li>
+        <li class="n-item"><a href="wholesale.html" class="n-link">Wholesale</a></li>
+        <li class="n-item"><a href="about.html" class="n-link">About</a></li>
+        <li class="n-item"><a href="contact.html" class="n-link">Contact</a></li>
+      </ul>
+    </nav>
+    <a href="wholesale.html" class="h-cta-pill">Get Pricing</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </button>
+  </header>
+  <div class="h-nav-mobile" id="h-nav-mobile">
+    <a href="products.html" class="m-link">Products</a>
+    <a href="wholesale.html" class="m-link">Wholesale</a>
+    <a href="about.html" class="m-link">About</a>
+    <a href="contact.html" class="m-link">Contact</a>
+    <a href="wholesale.html" class="m-cta">Get Pricing</a>
+  </div>
+
+  <!-- ─── MAIN ───────────────────────────────────────── -->
+  <main id="home">
+
+    <!-- HERO -->
+    <section class="section section-hero" id="hero-section">
+      <div class="hero-grid-base"></div>
+      <div class="hero-grid-reveal" id="hero-grid-reveal"></div>
+      <div class="s-inner">
+        <div class="s-content" data-reveal>
+          <div class="hero-overline">Sydney Wholesale Bakery · Est. 2021</div>
+          <h1 class="s-title">
+            Wholesale Pastry,<br>Priced for Business.
+          </h1>
+          <p class="s-subtitle">
+            Premium croissants, tarts, danish, muffins, cronuts &amp; more —
+            delivered fresh to Sydney cafés and distributors. GST-inclusive pricing. Sunday to Friday.
+          </p>
+          <div class="hero-btns">
+            <a href="products.html" class="btn btn-primary btn-m">
+              <span class="btn-fill"></span>
+              <span class="btn-text-wrapper">
+                <span class="btn-text">View Products</span>
+                <span class="btn-text-hover">View Products</span>
+              </span>
+            </a>
+            <a href="wholesale.html" class="btn btn-outline btn-m">
+              <span class="btn-fill"></span>
+              <span class="btn-text-wrapper">
+                <span class="btn-text">Become a Stockist</span>
+                <span class="btn-text-hover">Become a Stockist</span>
+              </span>
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-value">7</div>
+              <div class="hero-stat-label">Product categories</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-value">$50</div>
+              <div class="hero-stat-label">Min. order</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-value">6×</div>
+              <div class="hero-stat-label">Weekly deliveries</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORY BAR -->
+    <section class="section section-cats">
+      <div class="s-solutions">
+          <div class="s-solution">
+            <h3 class="s-solution-title">
+              <span class="s-solution-title-text">Croissants</span>
+            </h3>
+            <span class="s-solution-title-extra desktop-only">
+              <span class="s-solution-title-text">Croissants</span>
+            </span>
+            <p class="s-solution-text desktop-only">
+              13 flavours from plain to Gourmet. Plain from $0.83, specialty up to $3.30. Boxes of 3–6 available.
+            </p>
+            <span class="border"></span>
+            <a href="products.html#croissants" class="s-solution-link" aria-label="View Croissants">
+              <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View range</span></span>
+              <span class="arrow-wrapper">
+                <div class="arrows">
+                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
+                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
+                </div>
+              </span>
+            </a>
+          </div>
+
+          <div class="s-solution">
+            <h3 class="s-solution-title">
+              <span class="s-solution-title-text">Tarts & Danish</span>
+            </h3>
+            <span class="s-solution-title-extra desktop-only">
+              <span class="s-solution-title-text">Tarts & Danish</span>
+            </span>
+            <p class="s-solution-text desktop-only">
+              Lemon, chocolate, custard, fruit tarts alongside classic Danish pastries. From $1.18 each.
+            </p>
+            <span class="border"></span>
+            <a href="products.html#tarts" class="s-solution-link" aria-label="View Tarts & Danish">
+              <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View range</span></span>
+              <span class="arrow-wrapper">
+                <div class="arrows">
+                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
+                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
+                </div>
+              </span>
+            </a>
+          </div>
+
+          <div class="s-solution">
+            <h3 class="s-solution-title">
+              <span class="s-solution-title-text">Cronuts</span>
+            </h3>
+            <span class="s-solution-title-extra desktop-only">
+              <span class="s-solution-title-text">Cronuts</span>
+            </span>
+            <p class="s-solution-text desktop-only">
+              Classic and Gourmet cronuts — Snickers, Ferrero, Kit Kat, M&M, and more. From $2.60 each.
+            </p>
+            <span class="border"></span>
+            <a href="products.html#cronuts" class="s-solution-link" aria-label="View Cronuts">
+              <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View range</span></span>
+              <span class="arrow-wrapper">
+                <div class="arrows">
+                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
+                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
+                </div>
+              </span>
+            </a>
+          </div>
+
+          <div class="s-solution">
+            <h3 class="s-solution-title">
+              <span class="s-solution-title-text">Muffins & More</span>
+            </h3>
+            <span class="s-solution-title-extra desktop-only">
+              <span class="s-solution-title-text">Muffins & More</span>
+            </span>
+            <p class="s-solution-text desktop-only">
+              Muffins, Tella Balls, and more. Consistent quality, wholesale pricing that lets you build margin.
+            </p>
+            <span class="border"></span>
+            <a href="products.html#muffins" class="s-solution-link" aria-label="View Muffins">
+              <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View range</span></span>
+              <span class="arrow-wrapper">
+                <div class="arrows">
+                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
+                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
+                </div>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <section class="section section-marquee">
+      <div class="s-marquee-wrapper">
+        <img src="https://placehold.co/1920x280/221509/B47832?text=." alt="" aria-hidden="true">
+        <!-- Two rows scrolling in opposite directions -->
+        <div class="s-marquees">
+          <div class="s-marquee">
+            <div class="s-marquee-loop">
+              <div class="s-marquee-item"><span class="s-marquee-text">Artisan Quality</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Wholesale Pricing</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Sydney-Wide Delivery</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">7 Product Categories</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">GST-Inclusive</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Sunday to Friday</span></div>
+              <!-- Duplicate for seamless loop -->
+              <div class="s-marquee-item"><span class="s-marquee-text">Artisan Quality</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Wholesale Pricing</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Sydney-Wide Delivery</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">7 Product Categories</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">GST-Inclusive</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Sunday to Friday</span></div>
+            </div>
+          </div>
+          <div class="s-marquee">
+            <div class="s-marquee-loop">
+              <div class="s-marquee-item"><span class="s-marquee-text">Croissants</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Muffins</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Tarts</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Danish</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Cronuts</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Gourmet Cronuts</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Tella Balls</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Min. Order $50</span></div>
+              <!-- Duplicate -->
+              <div class="s-marquee-item"><span class="s-marquee-text">Croissants</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Muffins</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Tarts</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Danish</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Cronuts</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Gourmet Cronuts</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Tella Balls</span></div>
+              <div class="s-marquee-item"><span class="s-marquee-text">Min. Order $50</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOP CTA (mini band) -->
+    <section class="section section-shop-cta">
+      <div class="s-inner">
+        <div class="s-content">
+          <p class="s-text" data-reveal>
+            Set the standard for your café counter. Pastry that sells itself, at prices that build your margin.
+          </p>
+          <div class="btn-wrapper">
+            <a href="products.html" class="btn btn-primary btn-s" data-reveal data-reveal-delay="100">
+              <span class="btn-fill"></span>
+              <span class="btn-text-wrapper">
+                <span class="btn-text">See All Products</span>
+                <span class="btn-text-hover">See All Products</span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTIONS / WHY CHOOSE US -->
+    <section class="section section-solutions">
+      <div class="s-backgrounds">
+        <img src="https://placehold.co/1920x900/F5F0E8/46280A?text=." alt="" aria-hidden="true" class="active">
+      </div>
+      <div class="s-solutions">
+        <div class="s-solution" data-reveal>
+          <h3 class="s-solution-title">
+            <span class="s-solution-title-text">Best Value</span>
+          </h3>
+          <span class="s-solution-title-extra desktop-only">
+            <span class="s-solution-title-text">Best Value</span>
+          </span>
+          <p class="s-solution-text desktop-only">
+            Artisan quality at prices competitors can't match. We work directly with cafés and distributors — no retail markup, no middlemen. Pricing that helps you build real margin.
+          </p>
+          <span class="border"></span>
+          <a href="wholesale.html" class="s-solution-link" aria-label="Learn about our pricing">
+            <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View pricing</span></span>
+            <span class="arrow-wrapper">
+              <div class="arrows">
+                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
+                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
+              </div>
+            </span>
+          </a>
+        </div>
+
+        <div class="s-solution" data-reveal data-reveal-delay="100">
+          <h3 class="s-solution-title">
+            <span class="s-solution-title-text">Reliable Supply</span>
+          </h3>
+          <span class="s-solution-title-extra desktop-only">
+            <span class="s-solution-title-text">Reliable Supply</span>
+          </span>
+          <p class="s-solution-text desktop-only">
+            Six-day delivery across Sydney. Consistent stock, consistent quality — the kind of reliability your café counter depends on. Operating since November 2021.
+          </p>
+          <span class="border"></span>
+          <a href="about.html" class="s-solution-link" aria-label="About us">
+            <span class="s-solution-link-text"><span class="s-solution-link-text-inner">Our story</span></span>
+            <span class="arrow-wrapper">
+              <div class="arrows">
+                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
+                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
+              </div>
+            </span>
+          </a>
+        </div>
+
+        <div class="s-solution" data-reveal data-reveal-delay="200">
+          <h3 class="s-solution-title">
+            <span class="s-solution-title-text">Broad Range</span>
+          </h3>
+          <span class="s-solution-title-extra desktop-only">
+            <span class="s-solution-title-text">Broad Range</span>
+          </span>
+          <p class="s-solution-text desktop-only">
+            Seven product categories, dozens of SKUs. One supplier for your full pastry counter — croissants to cronuts, tarts to Tella Balls.
+          </p>
+          <span class="border"></span>
+          <a href="products.html" class="s-solution-link" aria-label="View all products">
+            <span class="s-solution-link-text"><span class="s-solution-link-text-inner">All products</span></span>
+            <span class="arrow-wrapper">
+              <div class="arrows">
+                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
+                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
+              </div>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BAND -->
+    <section class="section section-cta section-cta-main">
+      <div class="s-inner">
+        <div class="s-content" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:40px;">
+          <h2 class="s-title" data-reveal>
+            Ready to Stock Your Business?
+          </h2>
+          <p class="s-text" data-reveal data-reveal-delay="100">
+            Wholesale accounts for cafés and distributors. Minimum order $50 per delivery. Sydney-wide, Sunday to Friday.
+          </p>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+            <a href="wholesale.html" class="btn btn-primary btn-m" data-reveal data-reveal-delay="200">
+              <span class="btn-fill"></span>
+              <span class="btn-text-wrapper">
+                <span class="btn-text">Request a Wholesale Account</span>
+                <span class="btn-text-hover">Request a Wholesale Account</span>
+              </span>
+            </a>
+            <a href="products.html" class="btn btn-outline btn-m" data-reveal data-reveal-delay="300">
+              <span class="btn-fill"></span>
+              <span class="btn-text-wrapper">
+                <span class="btn-text">Browse Products</span>
+                <span class="btn-text-hover">Browse Products</span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── FOOTER ─────────────────────────────────────── -->
+  <footer class="footer" id="site-footer">
+    <div class="f-dots-bg" id="footer-dots-bg"></div>
+    <div class="f-center">
+      <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f-center-logo">
+    </div>
+    <div class="f-footer">
+      <div class="f-copyright">© Yum Yum Delight 2026. All Rights Reserved.</div>
+      <div class="f-links">
+        <a href="contact.html" class="f-link">Contact Us</a>
+        <a href="wholesale.html" class="f-link">Wholesale Terms</a>
+        <a href="about.html" class="f-link">About Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ─── Navbar: depletes at footer ────────────────────────
+    const header = document.getElementById('header');
+    const siteFooter = document.getElementById('site-footer');
+    if (header && siteFooter) {
+      new IntersectionObserver(entries => {
+        entries.forEach(e => header.classList.toggle('depleted', e.isIntersecting));
+      }, { threshold: 0 }).observe(siteFooter);
+    }
+
+    // ─── Mobile nav ─────────────────────────────────────────
+    const navToggle   = document.getElementById('nav-toggle');
+    const mobileNav   = document.getElementById('h-nav-mobile');
+    const navMobileBg = document.getElementById('nav-mobile-bg');
+
+    navToggle.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      navToggle.classList.toggle('open', open);
+      navMobileBg.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+
+    navMobileBg.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      navToggle.classList.remove('open');
+      navMobileBg.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+
+    // ─── Hero grid cursor reveal ─────────────────────────────
+    const heroEl = document.getElementById('hero-section');
+    const gridReveal = document.getElementById('hero-grid-reveal');
+    if (heroEl && gridReveal) {
+      heroEl.addEventListener('mousemove', (e) => {
+        const rect = heroEl.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const mask = `radial-gradient(300px circle at ${x}px ${y}px, black, transparent)`;
+        gridReveal.style.maskImage = mask;
+        gridReveal.style.webkitMaskImage = mask;
+      });
+      heroEl.addEventListener('mouseleave', () => {
+        const mask = 'radial-gradient(300px circle at -9999px -9999px, black, transparent)';
+        gridReveal.style.maskImage = mask;
+        gridReveal.style.webkitMaskImage = mask;
+      });
+    }
+
+    // ─── Scroll reveal ──────────────────────────────────────
+    // Mark body ready so CSS hides/reveals elements
+    document.body.classList.add('js-ready');
+    const revealEls = document.querySelectorAll('[data-reveal]');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('revealed');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    revealEls.forEach(el => revealObs.observe(el));
+
+    // ─── Lenis smooth scroll ───
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    function lRaf(t) { lenis.raf(t); requestAnimationFrame(lRaf); }
+    requestAnimationFrame(lRaf);
+    const progressBar = document.getElementById('scroll-progress');
+    lenis.on('scroll', ({ progress }) => { progressBar.style.transform = `scaleX(${progress})`; });
+
+    // ─── Line-split heading reveals ───
+    function splitTextLines(el) {
+      const raw = el.innerHTML;
+      const parts = raw.split(/<br\s*\/?>/i);
+      if (parts.length > 1) {
+        el.innerHTML = parts.map((s, i) => `<span class="line-wrap"><span class="line-inner" style="transition-delay:${i * 0.12}s">${s.trim()}</span></span>`).join('');
+        return;
+      }
+      const words = el.textContent.trim().split(/\s+/);
+      el.innerHTML = words.map(w => `<span class="sw" style="display:inline-block;">${w}&nbsp;</span>`).join('');
+      const ws = [...el.querySelectorAll('.sw')];
+      const lines = []; let grp = [], prevTop = -1;
+      ws.forEach(w => {
+        const top = Math.round(w.getBoundingClientRect().top);
+        if (prevTop < 0) prevTop = top;
+        if (Math.abs(top - prevTop) > 4) { lines.push(grp); grp = []; prevTop = top; }
+        grp.push(w.textContent.trimEnd());
+      });
+      if (grp.length) lines.push(grp);
+      el.innerHTML = lines.map((ls, i) => `<span class="line-wrap"><span class="line-inner" style="transition-delay:${i * 0.12}s">${ls.join(' ')}</span></span>`).join('');
+    }
+    const lineObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.setAttribute('data-lines-revealed', ''); lineObs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('h1, h2, .cta-title, .form-title, .faq-title').forEach(el => {
+      splitTextLines(el); lineObs.observe(el);
+    });
+  </script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      const container = document.getElementById('footer-dots-bg');
+      if (!container || typeof THREE === 'undefined') return;
+      const footer = container.parentElement;
+      const AMOUNTX = 50, AMOUNTY = 26, SEP = 110;
+      const w = footer.offsetWidth || window.innerWidth;
+      const h = footer.offsetHeight || 560;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(55, w / h, 1, 10000);
+      camera.position.set(0, 300, 980);
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(w, h);
+      renderer.setClearColor(0x000000, 0);
+      container.appendChild(renderer.domElement);
+      const positions = [], colors = [];
+      for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
+        positions.push(ix * SEP - (AMOUNTX * SEP) / 2, 0, iy * SEP - (AMOUNTY * SEP) / 2);
+        colors.push(0.42, 0.247, 0.102);
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      const mat = new THREE.PointsMaterial({ size: 8, vertexColors: true, transparent: true, opacity: 0.62, sizeAttenuation: true });
+      scene.add(new THREE.Points(geo, mat));
+      const posArr = geo.attributes.position.array;
+      let count = 0;
+      (function tick() {
+        requestAnimationFrame(tick);
+        let i = 0;
+        for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
+          posArr[i * 3 + 1] = Math.sin((ix + count) * 0.3) * 50 + Math.sin((iy + count) * 0.5) * 50;
+          i++;
+        }
+        geo.attributes.position.needsUpdate = true;
+        renderer.render(scene, camera);
+        count += 0.07;
+      })();
+      new ResizeObserver(() => {
+        const nw = footer.offsetWidth, nh = footer.offsetHeight;
+        if (!nw || !nh) return;
+        camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
+      }).observe(footer);
+    });
+  </script>
+</body>
+</html>
