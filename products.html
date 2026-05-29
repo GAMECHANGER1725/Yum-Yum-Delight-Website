@@ -79,7 +79,9 @@
     .h-nav-mobile .m-cta:hover { background: var(--brown); }
 
     /* ─── Buttons ─── */
-    .btn { display: inline-flex; align-items: center; position: relative; overflow: hidden; border-radius: 2px; cursor: pointer; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s var(--ease-out); }
+    .btn { display: inline-flex; align-items: center; position: relative; overflow: hidden; border-radius: 100px; cursor: pointer; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s var(--ease-out), transform 0.2s var(--ease-spring), box-shadow 0.2s var(--ease-out); }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: scale(0.97) !important; }
     .btn .btn-fill { position: absolute; inset: 0; transform: translateY(101%); transition: transform 0.35s var(--ease-out); z-index: 0; }
     .btn:hover .btn-fill { transform: translateY(0); }
     .btn .btn-text-wrapper { position: relative; z-index: 1; display: flex; overflow: hidden; height: 1.1em; }
@@ -89,7 +91,7 @@
     .btn:hover .btn-text-hover { transform: translateY(0); }
     .btn-primary { background: var(--brown); color: var(--cream); border: 1.5px solid var(--brown); }
     .btn-primary .btn-fill { background: var(--gold); }
-    .btn-primary:hover { border-color: var(--gold); }
+    .btn-primary:hover { border-color: var(--gold); box-shadow: 0 8px 24px rgba(180,120,50,0.28); }
     .btn-outline { background: transparent; color: var(--brown); border: 1.5px solid var(--brown); }
     .btn-outline .btn-fill { background: var(--brown); }
     .btn-outline:hover { color: var(--cream); }
@@ -98,7 +100,7 @@
     /* ─── Page Header ─── */
     .page-header {
       background: var(--parchment);
-      padding-top: 72px;
+      padding-top: 90px;
       border-bottom: 1px solid var(--border);
     }
     .page-header-inner {
@@ -124,7 +126,7 @@
     .page-header-disclaimer {
       font-family: var(--font-body); font-size: 11px; font-weight: 500;
       color: var(--warm); opacity: 0.65;
-      padding: 8px 14px; border: 1px solid var(--border); border-radius: 2px;
+      padding: 8px 14px; border: 1px solid var(--border); border-radius: 100px;
       white-space: nowrap; flex-shrink: 0;
     }
 
@@ -312,25 +314,29 @@
     .product-card {
       background: var(--cream);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 12px;
       overflow: hidden;
       display: flex; flex-direction: column;
-      transition: border-color 0.2s var(--ease-out), transform 0.25s var(--ease-out);
+      transition: border-color 0.2s var(--ease-out), transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-out);
+      cursor: pointer;
     }
     .product-card:hover {
       border-color: rgba(70,40,10,0.25);
-      transform: translateY(-2px);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(70,40,10,0.14);
     }
     .product-card figure {
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 1 / 1;
       overflow: hidden;
-      background: var(--parchment);
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      padding: 12px;
     }
     .product-card figure img {
-      width: 100%; height: 100%; object-fit: cover;
+      width: 100%; height: 100%; object-fit: contain;
       transition: transform 0.5s var(--ease-out);
     }
-    .product-card:hover figure img { transform: scale(1.04); }
+    .product-card:hover figure img { transform: scale(1.06); }
     .product-card-body {
       padding: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1;
     }
@@ -349,12 +355,93 @@
       letter-spacing: 0.02em;
     }
 
+    /* ─── Quick-View Drawer ─── */
+    .drawer-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26,18,8,0.55);
+      z-index: 290;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.35s var(--ease-out), visibility 0.35s;
+    }
+    .drawer-overlay.open { opacity: 1; visibility: visible; }
+    .product-drawer {
+      position: fixed; right: 0; top: 0;
+      height: 100vh; width: 420px; max-width: 92vw;
+      background: var(--cream);
+      z-index: 300;
+      transform: translateX(100%);
+      transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+      box-shadow: -8px 0 48px rgba(70,40,10,0.14);
+    }
+    .product-drawer.open { transform: translateX(0); }
+    .drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px 20px;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0;
+      background: var(--cream); z-index: 1;
+    }
+    .drawer-eyebrow {
+      font-family: var(--font-body); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .drawer-eyebrow::before { content:''; display:block; width:16px; height:1px; background:var(--gold); }
+    .drawer-close {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--parchment); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s var(--ease-spring);
+    }
+    .drawer-close:hover { background: var(--border); transform: scale(1.1); }
+    .drawer-body { padding: 28px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+    .drawer-name {
+      font-family: var(--font-display); font-size: 26px; font-weight: 700;
+      color: var(--brown); letter-spacing: -0.025em; line-height: 1.15;
+    }
+    .drawer-img {
+      aspect-ratio: 1/1; border-radius: 10px;
+      overflow: hidden; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .drawer-img img { width: 100%; height: 100%; object-fit: contain; }
+    .drawer-sizes-label {
+      font-family: var(--font-body); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(70,40,10,0.45);
+      margin-bottom: 10px;
+    }
+    .drawer-sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+    .drawer-size-tag {
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      padding: 6px 14px;
+      background: var(--parchment); border: 1px solid var(--border);
+      border-radius: 100px; color: var(--warm);
+    }
+    .drawer-cta { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
+    .drawer-cta-btn {
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px 32px;
+      background: var(--brown); color: var(--cream);
+      border: 1.5px solid var(--brown); border-radius: 100px;
+      font-family: var(--font-body); font-size: 13px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none; width: 100%;
+      transition: transform 0.2s var(--ease-spring), box-shadow 0.2s, border-color 0.2s;
+    }
+    .drawer-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(180,120,50,0.28); border-color: var(--gold); }
+
     /* ─── CTA Band ─── */
     .section-cta {
       background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0;
     }
     .section-cta .s-inner {
-      max-width: 1320px; margin: 0 auto; padding: 80px 40px;
+      max-width: 1320px; margin: 0 auto; padding: 100px 40px;
       display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px;
     }
     .cta-title {
@@ -367,17 +454,25 @@
       color: var(--warm); max-width: 440px;
     }
 
-    /* ─── Footer ─── */
-    .footer { background: var(--cream); position: relative; overflow: hidden; display: flex; flex-direction: column; }
-    .f-dots-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 62%, black 80%); -webkit-mask-image: linear-gradient(to bottom, transparent 62%, black 80%); }
-    .f-dots-bg canvas { display: block; width: 100% !important; height: 100% !important; border: none; outline: none; }
-    .f-center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 40px 20px; position: relative; z-index: 1; }
-    .f-center-logo { height: 420px; width: auto; max-width: 80%; }
-    .f-footer { display: flex; align-items: center; justify-content: space-between; padding: 20px 60px; gap: 20px; flex-wrap: wrap; position: relative; z-index: 1; }
-    .f-copyright { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; letter-spacing: 0.02em; }
-    .f-links { display: flex; align-items: center; gap: 24px; }
-    .f-link { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; text-decoration: none; letter-spacing: 0.02em; transition: opacity 0.2s; }
-    .f-link:hover { opacity: 1; }
+        /* ─── FOOTER ────────────────────────────────────────────── */
+    .footer { background: #F5F0E8; position: relative; overflow: hidden; }
+    .f2-inner { max-width: 1200px; margin: 0 auto; padding: 72px 60px 0; }
+    .f2-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px 32px; }
+    .f2-brand { padding-right: 24px; }
+    .f2-logo-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .f2-logo { height: 72px; width: auto; }
+    .f2-tagline { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #46280A; margin-bottom: 12px; letter-spacing: -0.01em; }
+    .f2-desc { font-family: var(--font-body); font-size: 13.5px; line-height: 1.7; color: #6B3F1A; }
+    .f2-col-title { font-family: var(--font-display); font-size: 11px; font-weight: 800; color: #46280A; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; }
+    .f2-col-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    .f2-col-link { font-family: var(--font-body); font-size: 14px; color: #6B3F1A; text-decoration: none; font-weight: 600; transition: color 0.2s; display: block; }
+    .f2-col-link:hover { color: #B47832; }
+    .f2-col-info { font-family: var(--font-body); font-size: 13px; color: rgba(70,40,10,0.45); font-weight: 600; }
+    .f2-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 56px; padding: 24px 0; border-top: 1px solid rgba(70,40,10,0.15); }
+    .f2-copyright { font-family: var(--font-body); font-size: 11.5px; color: rgba(70,40,10,0.5); letter-spacing: 0.02em; }
+    .f2-bottom-links { list-style: none; padding: 0; margin: 0; display: flex; gap: 24px; }
+    .f2-bottom-link { font-family: var(--font-body); font-size: 11.5px; color: rgba(70,40,10,0.5); text-decoration: underline; letter-spacing: 0.02em; transition: color 0.2s; }
+    .f2-bottom-link:hover { color: #B47832; }
 
     /* ─── Scroll reveal ─── */
     body.js-ready [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
@@ -393,7 +488,9 @@
       .products-layout { padding: 0 28px; }
       .page-header-inner { padding: 48px 28px 40px; }
       .filters-sidebar { width: 220px; }
-      .f-footer { padding: 20px 28px; }
+      .f2-inner { padding: 48px 28px 0; }
+      .f2-grid { grid-template-columns: 1fr 1fr 1fr; gap: 36px 20px; }
+      .f2-bottom { padding: 20px 0; }
     }
     @media (max-width: 768px) {
       .header { padding: 16px 4%; }
@@ -407,8 +504,9 @@
       .product-grid, .filters-sidebar.hidden ~ .products-main .product-grid { grid-template-columns: repeat(2, 1fr); }
       .show-filters-btn { display: none !important; }
       .page-header-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
-      .f-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .f-center { padding: 60px 28px 32px; }
+      .f2-grid { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+      .f2-brand { grid-column: 1 / -1; }
+      .f2-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
     @media (max-width: 480px) {
       .product-grid, .filters-sidebar.hidden ~ .products-main .product-grid { grid-template-columns: 1fr; }
@@ -429,6 +527,29 @@
       z-index: 300;
       will-change: transform;
     }
+
+    /* ─── Products nav dropdown ─────────────────────────────── */
+    .n-item-dropdown { position: relative; }
+    .n-item-dropdown > .n-link { display: flex; align-items: center; gap: 4px; }
+    .n-chevron { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.6; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s; }
+    .n-item-dropdown:hover .n-chevron { transform: rotate(180deg); opacity: 1; }
+    .n-dropdown { position: absolute; top: calc(100% + 16px); left: 50%; transform: translateX(-50%) translateY(-10px); background: rgba(248,242,228,0.97); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(70,40,10,0.11); border-radius: 18px; padding: 8px; min-width: 210px; box-shadow: 0 16px 48px rgba(70,40,10,0.14), 0 2px 8px rgba(70,40,10,0.06); opacity: 0; pointer-events: none; transition: opacity 0.22s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.38s cubic-bezier(0.34,1.56,0.64,1); z-index: 202; }
+    .n-dropdown::before { content: ''; position: absolute; top: -18px; left: 0; right: 0; height: 18px; }
+    .n-item-dropdown:hover .n-dropdown { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all; }
+    .n-dropdown-link { display: flex; align-items: center; gap: 11px; padding: 9px 13px; border-radius: 11px; text-decoration: none; transition: background 0.18s, transform 0.28s cubic-bezier(0.34,1.56,0.64,1); }
+    .n-dropdown-link:hover { background: rgba(70,40,10,0.07); transform: translateX(3px); }
+    .n-dropdown-dot { width: 6px; height: 6px; border-radius: 50%; background: #B47832; flex-shrink: 0; opacity: 0.65; transition: opacity 0.18s; }
+    .n-dropdown-link:hover .n-dropdown-dot { opacity: 1; }
+    .n-dropdown-info { display: flex; flex-direction: column; gap: 1px; }
+    .n-dropdown-name { font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--brown); }
+    .n-dropdown-sub { font-family: var(--font-body); font-size: 10.5px; color: var(--warm); opacity: 0.6; }
+    .n-dropdown-sep { height: 1px; background: rgba(70,40,10,0.08); margin: 4px 10px; }
+
+    .btn { transition: color 0.3s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s !important; }
+    .btn:hover { transform: translateY(-3px) scale(1.03) !important; }
+    .btn:active { transform: scale(0.95) !important; }
+    .n-item .n-link::before { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 1.5px; background: #B47832; transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    .n-item .n-link:hover::before { transform: scaleX(1); }
   </style>
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 </head>
@@ -443,7 +564,17 @@
     </a>
     <nav class="h-nav" id="main-nav">
       <ul class="n-menu">
-        <li class="n-item"><a href="products.html" class="n-link active">Products</a></li>
+        <li class="n-item n-item-dropdown">
+          <a href="products.html" class="n-link active">Products<svg class="n-chevron" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="#46280A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <div class="n-dropdown">
+            <a href="croissants.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Croissants</span><span class="n-dropdown-sub">13 varieties</span></span></a>
+            <a href="tarts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Tarts</span><span class="n-dropdown-sub">Lemon, chocolate, custard & more</span></span></a>
+            <a href="danish.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Danish</span><span class="n-dropdown-sub">Blueberry, cinnamon & apple</span></span></a>
+            <a href="cronuts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Cronuts</span><span class="n-dropdown-sub">12 flavours incl. gourmet</span></span></a>
+            <div class="n-dropdown-sep"></div>
+            <a href="muffins.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Muffins & More</span><span class="n-dropdown-sub">Muffins, Tella Balls & more</span></span></a>
+          </div>
+        </li>
         <li class="n-item"><a href="wholesale.html" class="n-link">Wholesale</a></li>
         <li class="n-item"><a href="about.html" class="n-link">About</a></li>
         <li class="n-item"><a href="contact.html" class="n-link">Contact</a></li>
@@ -558,7 +689,7 @@
                   <input type="checkbox" data-cat="all" checked>
                   <span class="sidebar-check-text">All Products</span>
                 </div>
-                <span class="sidebar-check-count">51</span>
+                <span class="sidebar-check-count">53</span>
               </label>
               <label class="sidebar-check-label">
                 <div class="sidebar-check-left">
@@ -579,14 +710,14 @@
                   <input type="checkbox" data-cat="tarts">
                   <span class="sidebar-check-text">Tarts</span>
                 </div>
-                <span class="sidebar-check-count">9</span>
+                <span class="sidebar-check-count">8</span>
               </label>
               <label class="sidebar-check-label">
                 <div class="sidebar-check-left">
                   <input type="checkbox" data-cat="danish">
                   <span class="sidebar-check-text">Danish</span>
                 </div>
-                <span class="sidebar-check-count">10</span>
+                <span class="sidebar-check-count">12</span>
               </label>
               <label class="sidebar-check-label">
                 <div class="sidebar-check-left">
@@ -633,7 +764,7 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 3h12M3 7h8M5 11h4" stroke="#46280A" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show Filters
           </button>
-          <span class="filter-count" id="filter-count">51 products</span>
+          <span class="filter-count" id="filter-count">52 products</span>
         </div>
 
         <!-- CROISSANTS -->
@@ -644,7 +775,7 @@
           </div>
           <div class="product-grid">
             <div class="product-card" data-reveal data-sizes="large,medium,small">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Plain+Croissant" alt="Plain Croissant" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Plain Croissant.png" alt="Plain Croissant" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Plain Croissant</div>
                 <div class="product-card-sizes">
@@ -655,7 +786,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Almond+Croissant" alt="Almond Croissant" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Almond Croissant.png" alt="Almond Croissant" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Almond Croissant</div>
                 <div class="product-card-sizes">
@@ -679,7 +810,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Chocolate+Croissant" alt="Chocolate Croissant" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Chocolate Croissant.png" alt="Chocolate Croissant" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Chocolate Croissant</div>
                 <div class="product-card-sizes">
@@ -711,7 +842,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,box-of-4">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Roulade+Croissant" alt="Roulade Croissant" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Roulade Croissant.png" alt="Roulade Croissant" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Roulade Croissant</div>
                 <div class="product-card-sizes">
@@ -721,7 +852,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Apple+Crumble" alt="Apple Crumble Croissant" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Apple Crumble Croissant.png" alt="Apple Crumble Croissant" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Apple Crumble Croissant</div>
                 <div class="product-card-sizes">
@@ -735,7 +866,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Rhubarb+%26+Pistachio" alt="Rhubarb & Pistachio Croissant" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Rhubarb and Pistachio Croissant.png" alt="Rhubarb & Pistachio Croissant" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Rhubarb & Pistachio Croissant</div>
                 <div class="product-card-sizes">
@@ -763,7 +894,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-3,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cherry+Ripe" alt="Cherry Ripe Croissant" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Cherry Ripe Croissant.png" alt="Cherry Ripe Croissant" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Cherry Ripe Croissant</div>
                 <div class="product-card-sizes">
@@ -791,7 +922,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,box-of-3">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cookies+Croissant" alt="Cookies Croissant" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Cookie Croissant.png" alt="Cookies Croissant" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Cookies Croissant</div>
                 <div class="product-card-sizes">
@@ -811,7 +942,7 @@
           </div>
           <div class="product-grid">
             <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Blueberry+Muffin" alt="Blueberry Muffin" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Blueberry Muffin.png" alt="Blueberry Muffin" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Blueberry Muffin</div>
                 <div class="product-card-sizes">
@@ -822,7 +953,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Chocolate+Muffin" alt="Chocolate Muffin" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Chocolate Muffin.png" alt="Chocolate Muffin" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Chocolate Muffin</div>
                 <div class="product-card-sizes">
@@ -833,7 +964,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Orange+Muffin" alt="Orange Muffin" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Orange Muffin.png" alt="Orange Muffin" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Orange Muffin</div>
                 <div class="product-card-sizes">
@@ -844,7 +975,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,small,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Raspberry+Muffin" alt="Raspberry Muffin" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Raspberry Muffin.png" alt="Raspberry Muffin" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Raspberry Muffin</div>
                 <div class="product-card-sizes">
@@ -871,11 +1002,11 @@
         <div class="product-category-section" id="cat-tarts" data-category="tarts">
           <div class="cat-header">
             <h2 class="cat-title">Tarts</h2>
-            <span class="cat-count">9 products</span>
+            <span class="cat-count">8 products</span>
           </div>
           <div class="product-grid">
             <div class="product-card" data-reveal data-sizes="large,small,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Lemon+Tart" alt="Lemon Tart" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Lemon Tart.png" alt="Lemon Tart" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Lemon Tart</div>
                 <div class="product-card-sizes">
@@ -897,7 +1028,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,small,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Chocolate+Tart" alt="Chocolate Tart" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Chocolate Tart.png" alt="Chocolate Tart" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Chocolate Tart</div>
                 <div class="product-card-sizes">
@@ -919,7 +1050,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,small">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Apple+Tart" alt="Apple Tart" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/apple_crumble_tart.png" alt="Apple Tart" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Apple Tart</div>
                 <div class="product-card-sizes">
@@ -952,19 +1083,9 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,box-of-4">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Custard+Tart" alt="Custard Tart" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Custard_tart.png" alt="Custard Tart" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Custard Tart</div>
-                <div class="product-card-sizes">
-                  <span class="size-badge">Large</span>
-                  <span class="size-badge">Box of 4</span>
-                </div>
-              </div>
-            </div>
-            <div class="product-card" data-reveal data-sizes="large,box-of-4">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Custard+Tart+Deep" alt="Custard Tart Deep" loading="lazy"></figure>
-              <div class="product-card-body">
-                <div class="product-card-name">Custard Tart Deep</div>
                 <div class="product-card-sizes">
                   <span class="size-badge">Large</span>
                   <span class="size-badge">Box of 4</span>
@@ -978,11 +1099,11 @@
         <div class="product-category-section" id="cat-danish" data-category="danish">
           <div class="cat-header">
             <h2 class="cat-title">Danish</h2>
-            <span class="cat-count">10 products</span>
+            <span class="cat-count">12 products</span>
           </div>
           <div class="product-grid">
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Blueberry+Danish" alt="Blueberry Danish" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Blueberry_Danish.png" alt="Blueberry Danish" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Blueberry Danish</div>
                 <div class="product-card-sizes">
@@ -994,8 +1115,14 @@
                 </div>
               </div>
             </div>
-            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Sour+Cherry+Danish" alt="Sour Cherry Danish" loading="lazy"></figure>
+                          <div class="product-card" data-category="danish" data-reveal>
+                <figure><img src="Yum_Yum_Products/Blueberry_Snail.png" alt="Blueberry Danish Round" loading="lazy"></figure>
+                <div class="product-card-inner">
+                  <div class="product-card-name">Blueberry Danish Round</div>
+                </div>
+              </div>
+              <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="Yum_Yum_Products/Sour Cherry Danish.png" alt="Sour Cherry Danish" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Sour Cherry Danish</div>
                 <div class="product-card-sizes">
@@ -1008,7 +1135,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Raspberry+Danish" alt="Raspberry Danish" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Raspberry Danish.png" alt="Raspberry Danish" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Raspberry Danish</div>
                 <div class="product-card-sizes">
@@ -1021,7 +1148,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Apple+Danish" alt="Apple Danish" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Apple Danish.png" alt="Apple Danish" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Apple Danish</div>
                 <div class="product-card-sizes">
@@ -1034,7 +1161,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Lychee+Danish" alt="Lychee Danish" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Lychee Danish.png" alt="Lychee Danish" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Lychee Danish</div>
                 <div class="product-card-sizes">
@@ -1060,7 +1187,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Fresh+Mixed+Fruit" alt="Fresh Mixed Fruit Danish" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Fruit_Danish.png" alt="Fresh Mixed Fruit Danish" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Fresh Mixed Fruit Danish</div>
                 <div class="product-card-sizes">
@@ -1073,7 +1200,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="large,small,box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cinnamon+Snail" alt="Cinnamon Snail" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Cinnamon Snail.png" alt="Cinnamon Snail" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Cinnamon Snail</div>
                 <div class="product-card-sizes">
@@ -1102,6 +1229,32 @@
                   <span class="size-badge">Large</span>
                   <span class="size-badge">Small</span>
                   <span class="size-badge">Box of 3</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="Yum_Yum_Products/Apricot Danish.png" alt="Apricot Danish" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Apricot Danish</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
+                  <span class="size-badge">Box of 4</span>
+                  <span class="size-badge">Box of 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="product-card" data-reveal data-sizes="large,medium,small,box-of-4,box-of-6">
+              <figure><img src="Yum_Yum_Products/Apricot Danish Round.png" alt="Apricot Danish Round" loading="lazy"></figure>
+              <div class="product-card-body">
+                <div class="product-card-name">Apricot Danish Round</div>
+                <div class="product-card-sizes">
+                  <span class="size-badge">Large</span>
+                  <span class="size-badge">Medium</span>
+                  <span class="size-badge">Small</span>
                   <span class="size-badge">Box of 4</span>
                   <span class="size-badge">Box of 6</span>
                 </div>
@@ -1139,7 +1292,7 @@
           </div>
           <div class="product-grid">
             <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cinnamon+Cronut" alt="Cinnamon Cronut" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Cinnamon Cronut.png" alt="Cinnamon Cronut" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Cinnamon Cronut</div>
                 <div class="product-card-sizes">
@@ -1149,7 +1302,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Glazed+Cronut" alt="Glazed Cronut" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Glazed Cronut.png" alt="Glazed Cronut" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Glazed Cronut</div>
                 <div class="product-card-sizes">
@@ -1159,7 +1312,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Nutella+Cronut" alt="Nutella Cronut" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Nutella Cronut.png" alt="Nutella Cronut" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Nutella Cronut</div>
                 <div class="product-card-sizes">
@@ -1169,7 +1322,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Chocolate+Cronut" alt="Chocolate Cronut" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Chocolate Cronut.png" alt="Chocolate Cronut" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Chocolate Cronut</div>
                 <div class="product-card-sizes">
@@ -1179,7 +1332,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Red+Velvet+Cronut" alt="Red Velvet Cronut" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Red Velvet Conut.png" alt="Red Velvet Cronut" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Red Velvet Cronut</div>
                 <div class="product-card-sizes">
@@ -1199,7 +1352,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Cookies+%26+Cream" alt="Cookies & Cream Cronut" loading="lazy"></figure>
+              <figure><img src="https://placehold.co/480x480/ffffff/46280A?text=Cookies+%26+Cream+Cronut" alt="Cookies & Cream Cronut" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Cookies & Cream Cronut</div>
                 <div class="product-card-sizes">
@@ -1229,7 +1382,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Snickers+Cronut" alt="Snickers Cronut" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Snickers Cronut.png" alt="Snickers Cronut" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Snickers Cronut</div>
                 <div class="product-card-sizes">
@@ -1239,7 +1392,7 @@
               </div>
             </div>
             <div class="product-card" data-reveal data-sizes="box-of-4,box-of-6">
-              <figure><img src="https://placehold.co/400x300/FAF3E0/46280A?text=Kit+Kat+Cronut" alt="Kit Kat Cronut" loading="lazy"></figure>
+              <figure><img src="Yum_Yum_Products/Kitkat Cronut.png" alt="Kit Kat Cronut" loading="lazy"></figure>
               <div class="product-card-body">
                 <div class="product-card-name">Kit Kat Cronut</div>
                 <div class="product-card-sizes">
@@ -1302,16 +1455,52 @@
   </section>
 
   <footer class="footer" id="site-footer">
-    <div class="f-dots-bg" id="footer-dots-bg"></div>
-    <div class="f-center">
-      <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f-center-logo">
-    </div>
-    <div class="f-footer">
-      <div class="f-copyright">© Yum Yum Delight 2026. All Rights Reserved.</div>
-      <div class="f-links">
-        <a href="contact.html" class="f-link">Contact Us</a>
-        <a href="wholesale.html" class="f-link">Wholesale Terms</a>
-        <a href="about.html" class="f-link">About Us</a>
+    <div class="f2-inner">
+      <div class="f2-grid">
+        <div class="f2-brand">
+          <div class="f2-logo-wrap">
+            <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f2-logo">
+          </div>
+          <p class="f2-tagline">Baked for your business.</p>
+          <p class="f2-desc">Premium baked goods for cafés and distributors across Sydney. Orders via email, delivery Sun–Fri.</p>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Products</h3>
+          <ul class="f2-col-list">
+            <li><a href="croissants.html" class="f2-col-link">Croissants</a></li>
+            <li><a href="muffins.html" class="f2-col-link">Muffins</a></li>
+            <li><a href="tarts.html" class="f2-col-link">Tarts</a></li>
+            <li><a href="danish.html" class="f2-col-link">Danish</a></li>
+            <li><a href="products.html" class="f2-col-link">Cronuts</a></li>
+            <li><a href="products.html" class="f2-col-link">Tella Balls</a></li>
+          </ul>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Company</h3>
+          <ul class="f2-col-list">
+            <li><a href="about.html" class="f2-col-link">About Us</a></li>
+            <li><a href="wholesale.html" class="f2-col-link">Wholesale</a></li>
+            <li><a href="contact.html" class="f2-col-link">Contact</a></li>
+            <li><a href="products.html" class="f2-col-link">Products</a></li>
+          </ul>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Ordering</h3>
+          <ul class="f2-col-list">
+            <li class="f2-col-info">Sydney-wide Delivery</li>
+            <li class="f2-col-info">Delivery Sun–Fri</li>
+            <li class="f2-col-info">Min. Order $50</li>
+            <li><a href="mailto:info.yumyumdelight@gmail.com" class="f2-col-link">Email to Order</a></li>
+            <li><a href="wholesale.html" class="f2-col-link">Wholesale Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="f2-bottom">
+        <p class="f2-copyright">© Yum Yum Delight 2026. All Rights Reserved.</p>
+        <ul class="f2-bottom-links">
+          <li><a href="wholesale.html" class="f2-bottom-link">Wholesale Terms</a></li>
+          <li><a href="contact.html" class="f2-bottom-link">Contact Us</a></li>
+        </ul>
       </div>
     </div>
   </footer>
@@ -1457,7 +1646,7 @@
     // ─── Lenis smooth scroll ───
     if (history.scrollRestoration) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
-    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    const lenis = new Lenis({ duration: 0.8, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
     function lRaf(t) { lenis.raf(t); requestAnimationFrame(lRaf); }
     requestAnimationFrame(lRaf);
     const progressBar = document.getElementById('scroll-progress');
@@ -1539,5 +1728,70 @@
       }).observe(footer);
     });
   </script>
+
+  <!-- Quick-View Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="product-drawer" id="productDrawer" role="dialog" aria-modal="true" aria-label="Product quick view">
+    <div class="drawer-header">
+      <span class="drawer-eyebrow" id="drawerCat"></span>
+      <button class="drawer-close" id="drawerClose" aria-label="Close drawer">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1L12 12M12 1L1 12" stroke="#46280A" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+      <h2 class="drawer-name" id="drawerName"></h2>
+      <div class="drawer-img"><img id="drawerImg" src="" alt=""></div>
+      <div>
+        <div class="drawer-sizes-label">Available Sizes</div>
+        <div class="drawer-sizes" id="drawerSizes"></div>
+      </div>
+      <div class="drawer-cta">
+        <a href="wholesale.html#inquiry" class="drawer-cta-btn">Request a Quote →</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const drawer  = document.getElementById('productDrawer');
+      const overlay = document.getElementById('drawerOverlay');
+      const btnClose = document.getElementById('drawerClose');
+      const elName  = document.getElementById('drawerName');
+      const elCat   = document.getElementById('drawerCat');
+      const elSizes = document.getElementById('drawerSizes');
+      const elImg   = document.getElementById('drawerImg');
+
+      function openDrawer(card) {
+        elName.textContent = card.querySelector('.product-card-name').textContent;
+        const catEl = card.closest('[data-category]');
+        elCat.textContent = catEl ? catEl.dataset.category.replace(/-/g,' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
+        const imgEl = card.querySelector('figure img');
+        elImg.src = imgEl ? imgEl.src : '';
+        elImg.alt = elName.textContent;
+        elSizes.innerHTML = '';
+        card.querySelectorAll('.size-badge').forEach(b => {
+          const t = document.createElement('span');
+          t.className = 'drawer-size-tag';
+          t.textContent = b.textContent;
+          elSizes.appendChild(t);
+        });
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.product-card').forEach(c => c.addEventListener('click', () => openDrawer(c)));
+      btnClose.addEventListener('click', closeDrawer);
+      overlay.addEventListener('click', closeDrawer);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+    })();
+  </script>
+
 </body>
 </html>

@@ -37,7 +37,7 @@
     html { scroll-behavior: auto; background: #FAF3E0; }
     body {
       font-family: var(--font-body);
-      background: var(--parchment);
+      background: var(--cream);
       color: var(--brown);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
@@ -156,15 +156,17 @@
       align-items: center;
       position: relative;
       overflow: hidden;
-      border-radius: 2px;
+      border-radius: 100px;
       cursor: pointer;
       text-decoration: none;
       font-family: var(--font-body);
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      transition: color 0.3s var(--ease-out);
+      transition: color 0.3s var(--ease-out), transform 0.2s var(--ease-spring), box-shadow 0.2s var(--ease-out);
     }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: scale(0.97) !important; }
     .btn .btn-fill {
       position: absolute; inset: 0;
       transform: translateY(101%);
@@ -196,7 +198,7 @@
       border: 1.5px solid var(--brown);
     }
     .btn-primary .btn-fill { background: var(--gold); }
-    .btn-primary:hover { border-color: var(--gold); }
+    .btn-primary:hover { border-color: var(--gold); box-shadow: 0 8px 24px rgba(180,120,50,0.28); }
 
     /* Outline */
     .btn-outline {
@@ -247,39 +249,47 @@
     }
     .s-content { position: relative; z-index: 2; }
 
-    /* ─── HERO — centered infinite grid ─────────────────────── */
+    /* ─── HERO — rich ambient background ────────────────────── */
     .section-hero {
-      background: var(--parchment);
-      padding-top: 72px; /* clear fixed nav */
+      background: var(--cream);
+      padding-top: 100px;
       min-height: 92vh;
       display: flex;
       align-items: center;
       border-bottom: 1px solid var(--border);
       position: relative;
+      overflow: hidden;
     }
-    /* Grid layers */
-    .hero-grid-base {
+    /* 1. Warm radial gradient mesh */
+    .hero-bg-mesh {
       position: absolute; inset: 0; z-index: 0; pointer-events: none;
-      background-image:
-        linear-gradient(to right, rgba(107,63,26,0.14) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(107,63,26,0.14) 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: heroGridScroll 5s linear infinite;
+      background:
+        radial-gradient(ellipse 80% 60% at 18% 52%, rgba(180,120,50,0.14) 0%, transparent 58%),
+        radial-gradient(ellipse 55% 70% at 82% 28%, rgba(70,40,10,0.07) 0%, transparent 52%),
+        radial-gradient(ellipse 48% 80% at 62% 92%, rgba(180,120,50,0.10) 0%, transparent 50%),
+        var(--cream);
     }
-    .hero-grid-reveal {
-      position: absolute; inset: 0; z-index: 0; pointer-events: none;
-      background-image:
-        linear-gradient(to right, rgba(107,63,26,0.65) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(107,63,26,0.65) 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: heroGridScroll 5s linear infinite;
-      -webkit-mask-image: radial-gradient(300px circle at -9999px -9999px, black, transparent);
-      mask-image: radial-gradient(300px circle at -9999px -9999px, black, transparent);
-      transition: -webkit-mask-image 0.05s, mask-image 0.05s;
+    /* 2. SVG grain texture */
+    .hero-bg-grain {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.042;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
     }
-    @keyframes heroGridScroll {
-      0%   { background-position: 0 0; }
-      100% { background-position: 40px 40px; }
+    /* 3. Concentric arcs */
+    .hero-bg-arcs {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden;
+    }
+    .hero-bg-arcs svg {
+      position: absolute; right: -8%; top: 50%; transform: translateY(-50%);
+      width: 68vw; height: 68vw; max-width: 860px; max-height: 860px; opacity: 0.058;
+    }
+    /* 4. Fine dot grid */
+    .hero-dot-grid {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(107,63,26,0.20) 1px, transparent 1px);
+      background-size: 32px 32px; opacity: 0.48;
+      -webkit-mask-image: radial-gradient(ellipse 88% 78% at 50% 50%, black 28%, transparent 100%);
+      mask-image: radial-gradient(ellipse 88% 78% at 50% 50%, black 28%, transparent 100%);
     }
     .section-hero .s-inner {
       width: 100%;
@@ -369,7 +379,7 @@
     .hero-badge {
       position: absolute;
       bottom: 32px; right: 32px;
-      background: var(--parchment);
+      background: var(--cream);
       border: 1.5px solid var(--border);
       padding: 20px 28px;
       border-radius: 2px;
@@ -456,6 +466,31 @@
     .arrow-wrapper { flex-shrink: 0; }
     .arrow-wrapper svg path { fill: var(--brown); }
 
+    /* ─── PRODUCT EXPLORER ──────────────────────────────────── */
+    .section-prod-explorer { background: var(--midnight); border-top: 1px solid var(--border-dark); overflow: hidden; }
+    .section-prod-explorer .s-inner { display: grid; grid-template-columns: 5fr 7fr; min-height: 500px; padding: 0 40px; }
+    .pe-list { display: flex; flex-direction: column; justify-content: center; padding: 48px 48px 48px 0; border-right: 1px solid var(--border-dark); gap: 0; }
+    .pe-item { display: flex; align-items: center; gap: 20px; padding: 18px 0; border-bottom: 1px solid rgba(250,243,224,0.06); cursor: pointer; }
+    .pe-item:first-child { border-top: 1px solid rgba(250,243,224,0.06); }
+    .pe-line { width: 0; height: 2px; background: var(--gold); flex-shrink: 0; transition: width 0.4s var(--ease-out); }
+    .pe-item.active .pe-line, .pe-item:hover .pe-line { width: 28px; }
+    .pe-name { font-family: var(--font-display); font-size: clamp(26px,2.5vw,40px); font-weight: 700; letter-spacing: -0.02em; color: rgba(250,243,224,0.22); transition: color 0.35s var(--ease-out); line-height: 1.1; }
+    .pe-item.active .pe-name, .pe-item:hover .pe-name { color: var(--cream); }
+    .pe-count { font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: rgba(180,120,50,0); transition: color 0.35s; margin-left: auto; white-space: nowrap; }
+    .pe-item.active .pe-count, .pe-item:hover .pe-count { color: var(--gold); }
+    .pe-panel { position: relative; overflow: hidden; min-height: 440px; }
+    .pe-slide { position: absolute; inset: 0; padding: 48px 0 48px 56px; display: flex; flex-direction: column; justify-content: center; gap: 20px; opacity: 0; transform: translateY(14px); transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out); pointer-events: none; }
+    .pe-slide.active { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .pe-eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 10px; }
+    .pe-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+    .pe-title { font-family: var(--font-display); font-size: clamp(36px,4vw,58px); font-weight: 800; letter-spacing: -0.03em; color: var(--cream); line-height: 1; }
+    .pe-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pe-tag { font-family: var(--font-body); font-size: 12px; font-weight: 500; color: rgba(250,243,224,0.65); border: 1px solid rgba(250,243,224,0.14); border-radius: 100px; padding: 6px 14px; background: rgba(250,243,224,0.04); transition: border-color 0.2s, color 0.2s, background 0.2s; cursor: default; }
+    .pe-tag:hover { border-color: var(--gold); color: var(--cream); background: rgba(180,120,50,0.12); }
+    .pe-cta { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-top: 4px; transition: gap 0.3s var(--ease-out); }
+    .pe-cta:hover { gap: 16px; }
+    .pe-bg-num { position: absolute; right: -20px; bottom: -40px; font-family: var(--font-display); font-size: 200px; font-weight: 800; color: rgba(250,243,224,0.03); line-height: 1; pointer-events: none; letter-spacing: -0.05em; user-select: none; }
+
     /* ─── MARQUEE — light with border ──────────────────────── */
     .section-marquee {
       background: var(--cream);
@@ -520,66 +555,49 @@
       line-height: 1;
     }
 
-    /* ─── SHOP CTA (mini band) ──────────────────────────────── */
-    .section-shop-cta {
-      background: var(--parchment);
-      border-bottom: 1px solid var(--border);
-    }
-    .section-shop-cta .s-inner {
-      padding-top: 80px;
-      padding-bottom: 80px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 32px;
-    }
-    .section-shop-cta .s-text {
-      font-family: var(--font-display);
-      font-size: clamp(24px, 3vw, 40px);
-      font-weight: 600;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      color: var(--brown);
-      max-width: 720px;
-    }
-    .btn-wrapper { display: flex; gap: 16px; }
+    /* ─── WHY US ──────────────────────────────────────────────── */
+    .section-why { background: var(--cream); border-top: 1px solid var(--border); }
+    .section-why .s-inner { padding-top: 90px; padding-bottom: 90px; }
+    .why-eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .why-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+    .why-h { font-family: var(--font-display); font-size: clamp(32px,3.5vw,52px); font-weight: 700; letter-spacing: -0.025em; color: var(--brown); line-height: 1.08; margin-bottom: 48px; }
+    .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+    .why-card { background: var(--cream); padding: 40px; display: flex; flex-direction: column; gap: 16px; cursor: default; position: relative; overflow: hidden; transition: background 0.3s var(--ease-out), transform 0.3s var(--ease-spring); }
+    .why-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease-out); }
+    .why-card:hover { background: #fff; transform: translateY(-4px); }
+    .why-card:hover::after { transform: scaleX(1); }
+    .why-num { font-family: var(--font-display); font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 0.08em; opacity: 0.6; }
+    .why-stat { font-family: var(--font-display); font-size: clamp(48px,5vw,72px); font-weight: 800; color: var(--brown); line-height: 1; letter-spacing: -0.03em; }
+    .why-stat span { color: var(--gold); }
+    .why-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--brown); letter-spacing: -0.01em; }
+    .why-body { font-family: var(--font-body); font-size: 13.5px; line-height: 1.65; color: var(--warm); }
 
-    /* ─── SOLUTIONS (Why Choose Us) ─────────────────────────── */
-    .section-solutions { background: var(--parchment); position: relative; }
-    .section-solutions .s-backgrounds {
-      position: absolute; inset: 0; z-index: 0;
-    }
-    .section-solutions .s-backgrounds img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      position: absolute; inset: 0;
-      transition: opacity 0.6s var(--ease-out);
-    }
-    .section-solutions .s-backgrounds img.active { opacity: 0.08; }
-    .section-solutions .s-solutions {
-      position: relative; z-index: 2;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--border);
-    }
-    .section-solutions .s-solution {
-      border-right: 1px solid var(--border);
-      padding: 56px 48px;
-    }
-    .section-solutions .s-solution:last-child { border-right: none; }
-    .section-solutions .s-solution-title {
-      font-size: 26px;
-      color: var(--brown);
-    }
-    .section-solutions .s-solution-title-extra {
-      color: var(--gold);
-      opacity: 0.06;
-    }
-    .section-solutions .s-solution-text { color: var(--warm); }
-    .section-solutions .s-solution .border { background: var(--border); }
-    .section-solutions .s-solution-link { color: var(--brown); }
-    .section-solutions .arrow-wrapper svg path { fill: var(--brown); }
+    /* ─── TRUST BAND ──────────────────────────────────────────── */
+    .section-trust { background: var(--midnight); border-top: 1px solid var(--border-dark); }
+    .section-trust .s-inner { display: grid; grid-template-columns: repeat(4,1fr); max-width: none; padding: 0; border-left: 1px solid var(--border-dark); }
+    .trust-item { padding: 40px 36px; border-right: 1px solid var(--border-dark); display: flex; flex-direction: column; gap: 10px; transition: background 0.3s var(--ease-out); }
+    .trust-item:hover { background: rgba(250,243,224,0.04); }
+    .trust-val { font-family: var(--font-display); font-size: clamp(32px,3vw,48px); font-weight: 800; color: var(--gold); letter-spacing: -0.03em; line-height: 1; }
+    .trust-label { font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.05em; color: rgba(250,243,224,0.4); }
+    .trust-desc { font-family: var(--font-body); font-size: 13px; line-height: 1.6; color: rgba(250,243,224,0.55); }
+
+    /* ─── PROOF SECTION ─────────────────────────────────────── */
+    .section-proof { background: var(--parchment); border-top: 1px solid var(--border); }
+    .section-proof .s-inner { padding-top: 100px; padding-bottom: 100px; }
+    .proof-layout { display: grid; grid-template-columns: 5fr 7fr; gap: 80px; align-items: start; }
+    .proof-left { position: sticky; top: 100px; }
+    .proof-h { font-family: var(--font-display); font-size: clamp(28px,3vw,44px); font-weight: 800; letter-spacing: -0.025em; color: var(--brown); line-height: 1.1; margin-bottom: 20px; }
+    .proof-intro { font-family: var(--font-body); font-size: 15px; line-height: 1.75; color: var(--warm); margin-bottom: 32px; max-width: 340px; }
+    .proof-cta-link { font-family: var(--font-body); font-size: 12.5px; font-weight: 700; color: var(--gold); text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s; }
+    .proof-cta-link::after { content: '→'; transition: transform 0.2s var(--ease-spring); }
+    .proof-cta-link:hover { color: var(--brown); }
+    .proof-cta-link:hover::after { transform: translateX(4px); }
+    .proof-list { display: flex; flex-direction: column; }
+    .proof-item { display: grid; grid-template-columns: 52px 1fr; gap: 20px; padding: 28px 0; border-bottom: 1px solid var(--border); align-items: start; transition: background 0.2s; }
+    .proof-item:first-child { border-top: 1px solid var(--border); }
+    .proof-num { font-family: var(--font-display); font-size: 11px; font-weight: 800; color: var(--gold); letter-spacing: 0.08em; padding-top: 3px; opacity: 0.7; }
+    .proof-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--brown); letter-spacing: -0.01em; margin-bottom: 8px; }
+    .proof-body { font-family: var(--font-body); font-size: 13.5px; line-height: 1.7; color: var(--warm); }
 
     /* ─── CTA BAND — light ──────────────────────────────────── */
     .section-cta {
@@ -589,8 +607,8 @@
       padding: 0;
     }
     .section-cta .s-inner {
-      padding-top: 96px;
-      padding-bottom: 96px;
+      padding-top: 90px;
+      padding-bottom: 90px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -610,34 +628,25 @@
       max-width: 480px;
     }
 
-    /* ─── FOOTER ────────────────────────────────────────────── */
-    .footer { background: var(--cream); position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 100vh; }
-    .f-dots-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 62%, black 80%); -webkit-mask-image: linear-gradient(to bottom, transparent 62%, black 80%); }
-    .f-dots-bg canvas { display: block; width: 100% !important; height: 100% !important; border: none; outline: none; }
-    .f-center {
-      flex: 1;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 60px 40px 20px;
-      position: relative; z-index: 1;
-    }
-    .f-center-logo { height: auto; width: auto; max-width: 70%; max-height: calc(100vh - 140px); }
-    .f-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 60px; gap: 20px; flex-wrap: wrap;
-      position: relative; z-index: 1;
-    }
-    .f-copyright {
-      font-family: var(--font-body); font-size: 11px;
-      color: var(--warm); opacity: 0.6; letter-spacing: 0.02em;
-    }
-    .f-links { display: flex; align-items: center; gap: 24px; }
-    .f-link {
-      font-family: var(--font-body); font-size: 11px;
-      color: var(--warm); opacity: 0.6; text-decoration: none;
-      letter-spacing: 0.02em;
-      transition: opacity 0.2s;
-    }
-    .f-link:hover { opacity: 1; }
+        /* ─── FOOTER ────────────────────────────────────────────── */
+    .footer { background: #F5F0E8; position: relative; overflow: hidden; }
+    .f2-inner { max-width: 1200px; margin: 0 auto; padding: 72px 60px 0; }
+    .f2-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px 32px; }
+    .f2-brand { padding-right: 24px; }
+    .f2-logo-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .f2-logo { height: 72px; width: auto; }
+    .f2-tagline { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #46280A; margin-bottom: 12px; letter-spacing: -0.01em; }
+    .f2-desc { font-family: var(--font-body); font-size: 13.5px; line-height: 1.7; color: #6B3F1A; }
+    .f2-col-title { font-family: var(--font-display); font-size: 11px; font-weight: 800; color: #46280A; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; }
+    .f2-col-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    .f2-col-link { font-family: var(--font-body); font-size: 14px; color: #6B3F1A; text-decoration: none; font-weight: 600; transition: color 0.2s; display: block; }
+    .f2-col-link:hover { color: #B47832; }
+    .f2-col-info { font-family: var(--font-body); font-size: 13px; color: rgba(70,40,10,0.45); font-weight: 600; }
+    .f2-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 56px; padding: 24px 0; border-top: 1px solid rgba(70,40,10,0.15); }
+    .f2-copyright { font-family: var(--font-body); font-size: 11.5px; color: rgba(70,40,10,0.5); letter-spacing: 0.02em; }
+    .f2-bottom-links { list-style: none; padding: 0; margin: 0; display: flex; gap: 24px; }
+    .f2-bottom-link { font-family: var(--font-body); font-size: 11.5px; color: rgba(70,40,10,0.5); text-decoration: underline; letter-spacing: 0.02em; transition: color 0.2s; }
+    .f2-bottom-link:hover { color: #B47832; }
 
     /* ─── Scroll-reveal animations ───────────────────────────── */
     /* Only apply hiding AFTER page has loaded (avoids invisible content on first paint) */
@@ -660,11 +669,18 @@
     @media (max-width: 1024px) {
       .header { padding: 20px 4%; }
       .s-inner { padding: 0 28px; }
-      .s-solutions { grid-template-columns: repeat(2, 1fr); }
-      .f-footer { padding: 20px 28px; }
-      .section-solutions .s-solutions { grid-template-columns: 1fr; }
-      .section-solutions .s-solution { border-right: none; border-bottom: 1px solid var(--border); }
-      .section-solutions .s-solution:last-child { border-bottom: none; }
+      .f2-inner { padding: 48px 28px 0; }
+      .f2-grid { grid-template-columns: 1fr 1fr 1fr; gap: 36px 20px; }
+      .f2-bottom { padding: 20px 0; }
+      .section-prod-explorer .s-inner { grid-template-columns: 1fr; }
+      .pe-list { padding: 48px 0 0; border-right: none; border-bottom: 1px solid var(--border-dark); }
+      .pe-panel { min-height: 300px; }
+      .pe-slide { padding: 40px 0; }
+      .why-grid { grid-template-columns: 1fr; gap: 2px; }
+      .section-trust .s-inner { grid-template-columns: repeat(2,1fr); }
+      .proof-layout { grid-template-columns: 1fr; gap: 48px; }
+      .proof-left { position: static; }
+      .proof-intro { max-width: none; }
     }
 
     @media (max-width: 768px) {
@@ -674,16 +690,53 @@
       .nav-toggle { display: flex; }
       .nav-mobile-bg { display: block; }
       .section-hero .s-content { padding: 0 28px 40px; }
-      .s-solutions { grid-template-columns: 1fr; }
-      .s-solution { border-right: none; border-bottom: 1px solid var(--border-dark); }
-      .f-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .f2-grid { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+      .f2-brand { grid-column: 1 / -1; }
+      .f2-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
       .hero-btns { flex-direction: column; }
+      .section-trust .s-inner { grid-template-columns: 1fr; }
+      .trust-item { border-right: none; border-bottom: 1px solid var(--border-dark); }
     }
 
     /* ─── Line-split text animation ─── */
     .line-wrap { display: block; overflow: hidden; padding-bottom: 0.06em; }
     .line-inner { display: block; transform: translateY(108%); transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
     [data-lines-revealed] .line-inner { transform: translateY(0); }
+
+    /* ─── Hero animated word rotator ─── */
+    .hero-title-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .hero-word-row {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 5.5vw, 82px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--gold);
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      padding-bottom: 0.12em;
+    }
+    .hero-word-row .hero-word-spacer {
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .hero-word-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      will-change: transform, opacity;
+      transition: transform 0.72s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.38s ease;
+    }
 
     /* ─── Scroll progress bar ─── */
     .scroll-progress {
@@ -695,6 +748,176 @@
       z-index: 300;
       will-change: transform;
     }
+
+    /* ─── Hero title accent — line-to-sketch underline ───────── */
+    .hero-title-accent {
+      position: relative;
+      display: inline-block;
+      color: var(--gold);
+    }
+    .accent-sketch {
+      position: absolute;
+      left: -2px; right: -2px; bottom: -0.09em;
+      height: 13px;
+      pointer-events: none;
+    }
+    .accent-line,
+    .accent-texture {
+      position: absolute;
+      left: 0; top: 5px;
+      width: 100%;
+      height: 2.5px;
+      border-radius: 999px;
+      transform-origin: left center;
+      will-change: transform, opacity, mask-position;
+    }
+    .accent-line {
+      background: var(--gold);
+      transform: scaleX(0.5);
+      opacity: 0.82;
+      animation: lineToSketch 3.4s 0.95s cubic-bezier(0.22,1,0.36,1) forwards;
+      mask-image: linear-gradient(to right, black 0 45%, rgba(0,0,0,0.75) 58%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 0 45%, rgba(0,0,0,0.75) 58%, transparent 100%);
+    }
+    .accent-texture {
+      height: 5px;
+      top: 3px;
+      opacity: 0;
+      transform: scaleX(0.5);
+      background:
+        repeating-linear-gradient(
+          to right,
+          var(--gold) 0 11px,
+          transparent 11px 16px,
+          var(--gold) 16px 23px,
+          transparent 23px 31px
+        );
+      mask-image: linear-gradient(to right, transparent 0 38%, black 50%, rgba(0,0,0,0.7) 78%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0 38%, black 50%, rgba(0,0,0,0.7) 78%, transparent 100%);
+      animation: sketchTextureIn 3.2s 1.18s cubic-bezier(0.2,0.8,0.2,1) forwards;
+    }
+    .accent-texture::before,
+    .accent-texture::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      border-radius: inherit;
+    }
+    .accent-texture::before {
+      transform: translateY(-2px);
+      opacity: 0.44;
+    }
+    .accent-texture::after {
+      transform: translateY(2px);
+      opacity: 0.32;
+      background-size: 21px 100%;
+    }
+    @keyframes lineToSketch {
+      0% { transform: scaleX(0.5); opacity: 0.82; }
+      54% { transform: scaleX(0.5); opacity: 0.82; }
+      100% { transform: scaleX(1); opacity: 0.44; }
+    }
+    @keyframes sketchTextureIn {
+      0% { transform: scaleX(0.5); opacity: 0; }
+      28% { opacity: 0.2; }
+      100% { transform: scaleX(1); opacity: 0.52; }
+    }
+
+
+    /* ─── Button spring lift ────────────────────────────────── */
+    .btn {
+      transition: color 0.3s var(--ease-out),
+                  transform 0.4s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.3s var(--ease-out) !important;
+    }
+    .btn:hover { transform: translateY(-3px) scale(1.03) !important; }
+    .btn:active { transform: scale(0.95) !important; }
+
+    /* ─── Why cards — bouncy ────────────────────────────────── */
+    .why-card {
+      transition: background 0.3s var(--ease-out),
+                  transform 0.5s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.4s var(--ease-out) !important;
+    }
+    .why-card:hover {
+      transform: translateY(-8px) rotate(-0.4deg) scale(1.02) !important;
+      box-shadow: 0 20px 48px rgba(70,40,10,0.12), 0 4px 12px rgba(70,40,10,0.06) !important;
+    }
+
+    /* ─── Trust items — subtle pop ──────────────────────────── */
+    .trust-item {
+      transition: background 0.3s var(--ease-out),
+                  transform 0.45s cubic-bezier(0.34,1.56,0.64,1) !important;
+    }
+    .trust-item:hover { transform: translateY(-4px) !important; }
+
+    /* ─── Nav link elastic underline ────────────────────────── */
+    .n-item .n-link::before {
+      content: '';
+      position: absolute; bottom: -3px; left: 0; right: 0;
+      height: 1.5px; background: var(--gold);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .n-item .n-link:hover::before { transform: scaleX(1); }
+
+    /* ─── PE name tighten on hover ──────────────────────────── */
+    .pe-name {
+      transition: color 0.35s var(--ease-out),
+                  letter-spacing 0.4s cubic-bezier(0.34,1.56,0.64,1) !important;
+    }
+    .pe-item:hover .pe-name, .pe-item.active .pe-name { letter-spacing: -0.01em !important; }
+
+    /* ─── Products nav dropdown ─────────────────────────────── */
+    .n-item-dropdown { position: relative; }
+    .n-item-dropdown > .n-link { display: flex; align-items: center; gap: 4px; }
+    .n-chevron {
+      width: 12px; height: 12px; flex-shrink: 0; opacity: 0.6;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s;
+    }
+    .n-item-dropdown:hover .n-chevron { transform: rotate(180deg); opacity: 1; }
+    .n-dropdown {
+      position: absolute;
+      top: calc(100% + 16px); left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      background: rgba(248,242,228,0.97);
+      backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(70,40,10,0.11);
+      border-radius: 18px; padding: 8px;
+      min-width: 210px;
+      box-shadow: 0 16px 48px rgba(70,40,10,0.14), 0 2px 8px rgba(70,40,10,0.06);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s var(--ease-out), transform 0.38s cubic-bezier(0.34,1.56,0.64,1);
+      z-index: 202;
+    }
+    /* invisible bridge so cursor can travel from pill to dropdown */
+    .n-dropdown::before {
+      content: ''; position: absolute; top: -18px; left: 0; right: 0; height: 18px;
+    }
+    .n-item-dropdown:hover .n-dropdown {
+      opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all;
+    }
+    .n-dropdown-link {
+      display: flex; align-items: center; gap: 11px;
+      padding: 9px 13px; border-radius: 11px; text-decoration: none;
+      transition: background 0.18s var(--ease-out), transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .n-dropdown-link:hover { background: rgba(70,40,10,0.07); transform: translateX(3px); }
+    .n-dropdown-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0; opacity: 0.65;
+      transition: opacity 0.18s;
+    }
+    .n-dropdown-link:hover .n-dropdown-dot { opacity: 1; }
+    .n-dropdown-info { display: flex; flex-direction: column; gap: 1px; }
+    .n-dropdown-name {
+      font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--brown);
+    }
+    .n-dropdown-sub {
+      font-family: var(--font-body); font-size: 10.5px; color: var(--warm); opacity: 0.6;
+    }
+    .n-dropdown-sep { height: 1px; background: rgba(70,40,10,0.08); margin: 4px 10px; }
   </style>
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 </head>
@@ -710,7 +933,17 @@
     </a>
     <nav class="h-nav" id="main-nav">
       <ul class="n-menu">
-        <li class="n-item"><a href="products.html" class="n-link">Products</a></li>
+        <li class="n-item n-item-dropdown">
+          <a href="products.html" class="n-link">Products<svg class="n-chevron" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="#46280A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <div class="n-dropdown">
+            <a href="croissants.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Croissants</span><span class="n-dropdown-sub">13 varieties</span></span></a>
+            <a href="tarts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Tarts</span><span class="n-dropdown-sub">Lemon, chocolate, custard & more</span></span></a>
+            <a href="danish.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Danish</span><span class="n-dropdown-sub">Blueberry, cinnamon & apple</span></span></a>
+            <a href="cronuts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Cronuts</span><span class="n-dropdown-sub">12 flavours incl. gourmet</span></span></a>
+            <div class="n-dropdown-sep"></div>
+            <a href="muffins.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Muffins & More</span><span class="n-dropdown-sub">Muffins, Tella Balls & more</span></span></a>
+          </div>
+        </li>
         <li class="n-item"><a href="wholesale.html" class="n-link">Wholesale</a></li>
         <li class="n-item"><a href="about.html" class="n-link">About</a></li>
         <li class="n-item"><a href="contact.html" class="n-link">Contact</a></li>
@@ -736,14 +969,32 @@
 
     <!-- HERO -->
     <section class="section section-hero" id="hero-section">
-      <div class="hero-grid-base"></div>
-      <div class="hero-grid-reveal" id="hero-grid-reveal"></div>
+      <div class="hero-bg-mesh"></div>
+      <div class="hero-bg-grain"></div>
+      <div class="hero-bg-arcs" aria-hidden="true">
+        <svg viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="400" cy="400" r="120" stroke="#46280A" stroke-width="1.5"/>
+          <circle cx="400" cy="400" r="200" stroke="#46280A" stroke-width="1"/>
+          <circle cx="400" cy="400" r="295" stroke="#46280A" stroke-width="1"/>
+          <circle cx="400" cy="400" r="385" stroke="#B47832" stroke-width="0.7"/>
+          <circle cx="400" cy="400" r="475" stroke="#46280A" stroke-width="0.5"/>
+          <circle cx="400" cy="400" r="565" stroke="#B47832" stroke-width="0.4"/>
+          <line x1="400" y1="0" x2="400" y2="800" stroke="#46280A" stroke-width="0.5"/>
+          <line x1="0" y1="400" x2="800" y2="400" stroke="#46280A" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="hero-dot-grid"></div>
       <div class="s-inner">
         <div class="s-content" data-reveal>
           <div class="hero-overline">Sydney Wholesale Bakery · Est. 2021</div>
-          <h1 class="s-title">
-            Wholesale Pastry,<br>Priced for Business.
-          </h1>
+          <div class="hero-title-block">
+            <h1 class="s-title" id="hero-title">
+              Baked fresh for your
+            </h1>
+            <div class="hero-word-row" aria-hidden="true">
+              <span class="hero-word-spacer">business</span>
+            </div>
+          </div>
           <p class="s-subtitle">
             Premium croissants, tarts, danish, muffins, cronuts &amp; more —
             delivered fresh to Sydney cafés and distributors. GST-inclusive pricing. Sunday to Friday.
@@ -782,95 +1033,51 @@
       </div>
     </section>
 
-    <!-- CATEGORY BAR -->
-    <section class="section section-cats">
-      <div class="s-solutions">
-          <div class="s-solution">
-            <h3 class="s-solution-title">
-              <span class="s-solution-title-text">Croissants</span>
-            </h3>
-            <span class="s-solution-title-extra desktop-only">
-              <span class="s-solution-title-text">Croissants</span>
-            </span>
-            <p class="s-solution-text desktop-only">
-              13 flavours from plain to Gourmet. Plain from $0.83, specialty up to $3.30. Boxes of 3–6 available.
-            </p>
-            <span class="border"></span>
-            <a href="products.html#croissants" class="s-solution-link" aria-label="View Croissants">
-              <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View range</span></span>
-              <span class="arrow-wrapper">
-                <div class="arrows">
-                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
-                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
-                </div>
-              </span>
-            </a>
+    <!-- PRODUCT EXPLORER -->
+    <section class="section section-prod-explorer">
+      <div class="s-inner">
+        <div class="pe-list" id="pe-list">
+          <div class="pe-item active" data-cat="0"><div class="pe-line"></div><div class="pe-name">Croissants</div><div class="pe-count">13 varieties</div></div>
+          <div class="pe-item" data-cat="1"><div class="pe-line"></div><div class="pe-name">Tarts &amp; Danish</div><div class="pe-count">19 products</div></div>
+          <div class="pe-item" data-cat="2"><div class="pe-line"></div><div class="pe-name">Cronuts</div><div class="pe-count">12 flavours</div></div>
+          <div class="pe-item" data-cat="3"><div class="pe-line"></div><div class="pe-name">Muffins &amp; More</div><div class="pe-count">8 products</div></div>
+        </div>
+        <div class="pe-panel" id="pe-panel">
+          <div class="pe-slide active" data-slide="0">
+            <div class="pe-eyebrow">Wholesale range</div>
+            <div class="pe-title">Croissants</div>
+            <div class="pe-tags">
+              <span class="pe-tag">Plain</span><span class="pe-tag">Almond</span><span class="pe-tag">Chocolate</span><span class="pe-tag">Matcha</span><span class="pe-tag">Apple Crumble</span><span class="pe-tag">Rhubarb &amp; Pistachio</span><span class="pe-tag">Nutella</span><span class="pe-tag">Roulade</span>
+            </div>
+            <a class="pe-cta" href="products.html">View full range →</a>
+            <div class="pe-bg-num">01</div>
           </div>
-
-          <div class="s-solution">
-            <h3 class="s-solution-title">
-              <span class="s-solution-title-text">Tarts & Danish</span>
-            </h3>
-            <span class="s-solution-title-extra desktop-only">
-              <span class="s-solution-title-text">Tarts & Danish</span>
-            </span>
-            <p class="s-solution-text desktop-only">
-              Lemon, chocolate, custard, fruit tarts alongside classic Danish pastries. From $1.18 each.
-            </p>
-            <span class="border"></span>
-            <a href="products.html#tarts" class="s-solution-link" aria-label="View Tarts & Danish">
-              <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View range</span></span>
-              <span class="arrow-wrapper">
-                <div class="arrows">
-                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
-                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
-                </div>
-              </span>
-            </a>
+          <div class="pe-slide" data-slide="1">
+            <div class="pe-eyebrow">Wholesale range</div>
+            <div class="pe-title">Tarts &amp; Danish</div>
+            <div class="pe-tags">
+              <span class="pe-tag">Lemon Tart</span><span class="pe-tag">Chocolate Tart</span><span class="pe-tag">Fresh Fruit</span><span class="pe-tag">Custard Tart</span><span class="pe-tag">Blueberry Danish</span><span class="pe-tag">Cinnamon Snail</span><span class="pe-tag">Apple Danish</span>
+            </div>
+            <a class="pe-cta" href="products.html">View full range →</a>
+            <div class="pe-bg-num">02</div>
           </div>
-
-          <div class="s-solution">
-            <h3 class="s-solution-title">
-              <span class="s-solution-title-text">Cronuts</span>
-            </h3>
-            <span class="s-solution-title-extra desktop-only">
-              <span class="s-solution-title-text">Cronuts</span>
-            </span>
-            <p class="s-solution-text desktop-only">
-              Classic and Gourmet cronuts — Snickers, Ferrero, Kit Kat, M&M, and more. From $2.60 each.
-            </p>
-            <span class="border"></span>
-            <a href="products.html#cronuts" class="s-solution-link" aria-label="View Cronuts">
-              <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View range</span></span>
-              <span class="arrow-wrapper">
-                <div class="arrows">
-                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
-                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
-                </div>
-              </span>
-            </a>
+          <div class="pe-slide" data-slide="2">
+            <div class="pe-eyebrow">Hero product</div>
+            <div class="pe-title">Cronuts</div>
+            <div class="pe-tags">
+              <span class="pe-tag">Glazed</span><span class="pe-tag">Red Velvet</span><span class="pe-tag">Salted Caramel</span><span class="pe-tag">Cookies &amp; Cream</span><span class="pe-tag">Snickers ⭐</span><span class="pe-tag">Ferrero ⭐</span><span class="pe-tag">Kit Kat ⭐</span><span class="pe-tag">M&amp;M ⭐</span>
+            </div>
+            <a class="pe-cta" href="products.html">View full range →</a>
+            <div class="pe-bg-num">03</div>
           </div>
-
-          <div class="s-solution">
-            <h3 class="s-solution-title">
-              <span class="s-solution-title-text">Muffins & More</span>
-            </h3>
-            <span class="s-solution-title-extra desktop-only">
-              <span class="s-solution-title-text">Muffins & More</span>
-            </span>
-            <p class="s-solution-text desktop-only">
-              Muffins, Tella Balls, and more. Consistent quality, wholesale pricing that lets you build margin.
-            </p>
-            <span class="border"></span>
-            <a href="products.html#muffins" class="s-solution-link" aria-label="View Muffins">
-              <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View range</span></span>
-              <span class="arrow-wrapper">
-                <div class="arrows">
-                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
-                  <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#B47832"/></svg></div>
-                </div>
-              </span>
-            </a>
+          <div class="pe-slide" data-slide="3">
+            <div class="pe-eyebrow">Wholesale range</div>
+            <div class="pe-title">Muffins &amp; More</div>
+            <div class="pe-tags">
+              <span class="pe-tag">Blueberry Muffin</span><span class="pe-tag">Chocolate Muffin</span><span class="pe-tag">Raspberry Muffin</span><span class="pe-tag">All-Top Muffin</span><span class="pe-tag">Tella Ball</span>
+            </div>
+            <a class="pe-cta" href="products.html">View full range →</a>
+            <div class="pe-bg-num">04</div>
           </div>
         </div>
       </div>
@@ -924,96 +1131,123 @@
       </div>
     </section>
 
-    <!-- SHOP CTA (mini band) -->
-    <section class="section section-shop-cta">
+    <!-- WHY US -->
+    <section class="section section-why">
       <div class="s-inner">
-        <div class="s-content">
-          <p class="s-text" data-reveal>
-            Set the standard for your café counter. Pastry that sells itself, at prices that build your margin.
-          </p>
-          <div class="btn-wrapper">
-            <a href="products.html" class="btn btn-primary btn-s" data-reveal data-reveal-delay="100">
-              <span class="btn-fill"></span>
-              <span class="btn-text-wrapper">
-                <span class="btn-text">See All Products</span>
-                <span class="btn-text-hover">See All Products</span>
-              </span>
-            </a>
+        <div class="why-eyebrow" data-reveal>Why Yum Yum Delight</div>
+        <h2 class="why-h" data-reveal>The business case for switching.</h2>
+        <div class="why-grid">
+          <div class="why-card" data-reveal>
+            <div class="why-num">01</div>
+            <div class="why-stat"><span class="count-up" data-target="7">7</span></div>
+            <div class="why-title">Product categories</div>
+            <div class="why-body">Croissants to Gourmet Cronuts — one supplier for your full pastry counter.</div>
+          </div>
+          <div class="why-card" data-reveal data-reveal-delay="100">
+            <div class="why-num">02</div>
+            <div class="why-stat"><span class="count-up" data-target="6" data-suffix="×">6×</span></div>
+            <div class="why-title">Weekly delivery days</div>
+            <div class="why-body">Sunday through Friday across greater Sydney. Order the night before — arrive fresh next morning.</div>
+          </div>
+          <div class="why-card" data-reveal data-reveal-delay="200">
+            <div class="why-num">03</div>
+            <div class="why-stat" style="font-size:clamp(36px,4vw,60px);">Est. 2021</div>
+            <div class="why-title">Operating since 2021</div>
+            <div class="why-body">Three years supplying Sydney cafés. Consistent quality, reliable supply — every order.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SOLUTIONS / WHY CHOOSE US -->
-    <section class="section section-solutions">
-      <div class="s-backgrounds">
-        <img src="https://placehold.co/1920x900/F5F0E8/46280A?text=." alt="" aria-hidden="true" class="active">
+    <!-- TRUST BAND -->
+    <section class="section section-trust">
+      <div class="s-inner">
+        <div class="trust-item">
+          <div class="trust-val">Sun–Fri</div>
+          <div class="trust-label">Delivery days</div>
+          <div class="trust-desc">Order the evening prior for next-day delivery across Sydney.</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-val">7</div>
+          <div class="trust-label">Product categories</div>
+          <div class="trust-desc">One supplier for your full pastry counter.</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-val">GST</div>
+          <div class="trust-label">All prices inclusive</div>
+          <div class="trust-desc">No surprises at invoice.</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-val">Email</div>
+          <div class="trust-label">How you order</div>
+          <div class="trust-desc">Simple. Just send your list.</div>
+        </div>
       </div>
-      <div class="s-solutions">
-        <div class="s-solution" data-reveal>
-          <h3 class="s-solution-title">
-            <span class="s-solution-title-text">Best Value</span>
-          </h3>
-          <span class="s-solution-title-extra desktop-only">
-            <span class="s-solution-title-text">Best Value</span>
-          </span>
-          <p class="s-solution-text desktop-only">
-            Artisan quality at prices competitors can't match. We work directly with cafés and distributors — no retail markup, no middlemen. Pricing that helps you build real margin.
-          </p>
-          <span class="border"></span>
-          <a href="wholesale.html" class="s-solution-link" aria-label="Learn about our pricing">
-            <span class="s-solution-link-text"><span class="s-solution-link-text-inner">View pricing</span></span>
-            <span class="arrow-wrapper">
-              <div class="arrows">
-                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
-                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
-              </div>
-            </span>
-          </a>
-        </div>
+    </section>
 
-        <div class="s-solution" data-reveal data-reveal-delay="100">
-          <h3 class="s-solution-title">
-            <span class="s-solution-title-text">Reliable Supply</span>
-          </h3>
-          <span class="s-solution-title-extra desktop-only">
-            <span class="s-solution-title-text">Reliable Supply</span>
-          </span>
-          <p class="s-solution-text desktop-only">
-            Six-day delivery across Sydney. Consistent stock, consistent quality — the kind of reliability your café counter depends on. Operating since November 2021.
-          </p>
-          <span class="border"></span>
-          <a href="about.html" class="s-solution-link" aria-label="About us">
-            <span class="s-solution-link-text"><span class="s-solution-link-text-inner">Our story</span></span>
-            <span class="arrow-wrapper">
-              <div class="arrows">
-                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
-                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
-              </div>
-            </span>
-          </a>
-        </div>
+    <!-- PROOF / DIFFERENTIATORS -->
+    <section class="section section-proof">
+      <div class="s-inner">
+        <div class="proof-layout">
 
-        <div class="s-solution" data-reveal data-reveal-delay="200">
-          <h3 class="s-solution-title">
-            <span class="s-solution-title-text">Broad Range</span>
-          </h3>
-          <span class="s-solution-title-extra desktop-only">
-            <span class="s-solution-title-text">Broad Range</span>
-          </span>
-          <p class="s-solution-text desktop-only">
-            Seven product categories, dozens of SKUs. One supplier for your full pastry counter — croissants to cronuts, tarts to Tella Balls.
-          </p>
-          <span class="border"></span>
-          <a href="products.html" class="s-solution-link" aria-label="View all products">
-            <span class="s-solution-link-text"><span class="s-solution-link-text-inner">All products</span></span>
-            <span class="arrow-wrapper">
-              <div class="arrows">
-                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
-                <div class="arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13.6923 17.6155L12.9845 16.8963L17.073 12.8078H5V11.8078H17.073L12.9845 7.71925L13.6923 7L19 12.3078L13.6923 17.6155Z" fill="#46280A"/></svg></div>
+          <div class="proof-left">
+            <div class="why-eyebrow" data-reveal>The Yum Yum Delight difference</div>
+            <h2 class="proof-h" data-reveal>Why cafés choose us over other bakeries.</h2>
+            <p class="proof-intro" data-reveal>Since November 2021, we've been baking fresh for Sydney cafés and distributors. No shortcuts, no cutting corners — just consistent product on your counter, six days a week.</p>
+            <a href="about.html" class="proof-cta-link" data-reveal>About our business</a>
+          </div>
+
+          <div class="proof-list">
+
+            <div class="proof-item" data-reveal>
+              <div class="proof-num">01</div>
+              <div>
+                <div class="proof-title">Artisan quality at wholesale prices</div>
+                <div class="proof-body">We make croissants, muffins, tarts, danish, cronuts, tella balls, and gourmet cronuts to a standard your customers will notice — and at margins your business can actually work with. No inflated pricing, no lock-in contracts.</div>
               </div>
-            </span>
-          </a>
+            </div>
+
+            <div class="proof-item" data-reveal data-reveal-delay="100">
+              <div class="proof-num">02</div>
+              <div>
+                <div class="proof-title">Six-day delivery across greater Sydney</div>
+                <div class="proof-body">Sunday through Friday. Order the evening before, delivered fresh next morning. No bulk lead times, no over-ordering to cover gaps. $50 minimum order per delivery keeps it practical.</div>
+              </div>
+            </div>
+
+            <div class="proof-item" data-reveal data-reveal-delay="200">
+              <div class="proof-num">03</div>
+              <div>
+                <div class="proof-title">Full pastry range, one supplier</div>
+                <div class="proof-body">Seven product categories, all on a single invoice. Croissants to gourmet cronuts — stock your full display case without managing multiple suppliers, delivery windows, and MOQs.</div>
+              </div>
+            </div>
+
+            <div class="proof-item" data-reveal data-reveal-delay="300">
+              <div class="proof-num">04</div>
+              <div>
+                <div class="proof-title">Quality ingredients, Sydney-made</div>
+                <div class="proof-body">Everything is baked fresh in Western Sydney using quality ingredients. No preservatives to extend shelf life — what we deliver is made to be sold that day, the way fresh pastries should be.</div>
+              </div>
+            </div>
+
+            <div class="proof-item" data-reveal data-reveal-delay="400">
+              <div class="proof-num">05</div>
+              <div>
+                <div class="proof-title">B2B only — we don't undercut you</div>
+                <div class="proof-body">We supply cafés and distributors exclusively. We don't sell direct to consumers, so your wholesale pricing is never competing against our own retail. Your margin is protected.</div>
+              </div>
+            </div>
+
+            <div class="proof-item" data-reveal data-reveal-delay="500">
+              <div class="proof-num">06</div>
+              <div>
+                <div class="proof-title">Reliable supply since 2021</div>
+                <div class="proof-body">Established in November 2021, we've built a reputation across Sydney for showing up consistently. Cafés and distributors stay because the product is reliable, the pricing is fair, and ordering is simple — just email your list.</div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </section>
@@ -1052,16 +1286,52 @@
 
   <!-- ─── FOOTER ─────────────────────────────────────── -->
   <footer class="footer" id="site-footer">
-    <div class="f-dots-bg" id="footer-dots-bg"></div>
-    <div class="f-center">
-      <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f-center-logo">
-    </div>
-    <div class="f-footer">
-      <div class="f-copyright">© Yum Yum Delight 2026. All Rights Reserved.</div>
-      <div class="f-links">
-        <a href="contact.html" class="f-link">Contact Us</a>
-        <a href="wholesale.html" class="f-link">Wholesale Terms</a>
-        <a href="about.html" class="f-link">About Us</a>
+    <div class="f2-inner">
+      <div class="f2-grid">
+        <div class="f2-brand">
+          <div class="f2-logo-wrap">
+            <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f2-logo">
+          </div>
+          <p class="f2-tagline">Baked for your business.</p>
+          <p class="f2-desc">Premium baked goods for cafés and distributors across Sydney. Orders via email, delivery Sun–Fri.</p>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Products</h3>
+          <ul class="f2-col-list">
+            <li><a href="croissants.html" class="f2-col-link">Croissants</a></li>
+            <li><a href="muffins.html" class="f2-col-link">Muffins</a></li>
+            <li><a href="tarts.html" class="f2-col-link">Tarts</a></li>
+            <li><a href="danish.html" class="f2-col-link">Danish</a></li>
+            <li><a href="products.html" class="f2-col-link">Cronuts</a></li>
+            <li><a href="products.html" class="f2-col-link">Tella Balls</a></li>
+          </ul>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Company</h3>
+          <ul class="f2-col-list">
+            <li><a href="about.html" class="f2-col-link">About Us</a></li>
+            <li><a href="wholesale.html" class="f2-col-link">Wholesale</a></li>
+            <li><a href="contact.html" class="f2-col-link">Contact</a></li>
+            <li><a href="products.html" class="f2-col-link">Products</a></li>
+          </ul>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Ordering</h3>
+          <ul class="f2-col-list">
+            <li class="f2-col-info">Sydney-wide Delivery</li>
+            <li class="f2-col-info">Delivery Sun–Fri</li>
+            <li class="f2-col-info">Min. Order $50</li>
+            <li><a href="mailto:info.yumyumdelight@gmail.com" class="f2-col-link">Email to Order</a></li>
+            <li><a href="wholesale.html" class="f2-col-link">Wholesale Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="f2-bottom">
+        <p class="f2-copyright">© Yum Yum Delight 2026. All Rights Reserved.</p>
+        <ul class="f2-bottom-links">
+          <li><a href="wholesale.html" class="f2-bottom-link">Wholesale Terms</a></li>
+          <li><a href="contact.html" class="f2-bottom-link">Contact Us</a></li>
+        </ul>
       </div>
     </div>
   </footer>
@@ -1095,25 +1365,6 @@
       document.body.style.overflow = '';
     });
 
-    // ─── Hero grid cursor reveal ─────────────────────────────
-    const heroEl = document.getElementById('hero-section');
-    const gridReveal = document.getElementById('hero-grid-reveal');
-    if (heroEl && gridReveal) {
-      heroEl.addEventListener('mousemove', (e) => {
-        const rect = heroEl.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const mask = `radial-gradient(300px circle at ${x}px ${y}px, black, transparent)`;
-        gridReveal.style.maskImage = mask;
-        gridReveal.style.webkitMaskImage = mask;
-      });
-      heroEl.addEventListener('mouseleave', () => {
-        const mask = 'radial-gradient(300px circle at -9999px -9999px, black, transparent)';
-        gridReveal.style.maskImage = mask;
-        gridReveal.style.webkitMaskImage = mask;
-      });
-    }
-
     // ─── Scroll reveal ──────────────────────────────────────
     // Mark body ready so CSS hides/reveals elements
     document.body.classList.add('js-ready');
@@ -1128,10 +1379,91 @@
     }, { threshold: 0.08 });
     revealEls.forEach(el => revealObs.observe(el));
 
+    // ─── Product Explorer ────────────────────────────────────
+    const peItems = document.querySelectorAll('.pe-item');
+    const peSlides = document.querySelectorAll('.pe-slide');
+    function peActivate(cat) {
+      peSlides.forEach(s => s.classList.remove('active'));
+      const target = document.querySelector(`.pe-slide[data-slide="${cat}"]`);
+      if (target) target.classList.add('active');
+    }
+    peItems.forEach(item => {
+      item.addEventListener('click', () => {
+        peItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        peActivate(item.dataset.cat);
+      });
+      item.addEventListener('mouseenter', () => peActivate(item.dataset.cat));
+      item.addEventListener('mouseleave', () => {
+        const active = document.querySelector('.pe-item.active');
+        if (active) peActivate(active.dataset.cat);
+      });
+    });
+
+    // ─── Count-up ────────────────────────────────────────────
+    const countObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseInt(el.dataset.target, 10);
+        const suffix = el.dataset.suffix || '';
+        const dur = 1200, start = performance.now();
+        const step = (now) => {
+          const p = Math.min((now - start) / dur, 1);
+          el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        countObs.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.count-up').forEach(el => countObs.observe(el));
+
+
+    // ─── Hero word rotator ──────────────────────────────────────
+    (function() {
+      var wordRow = document.querySelector('.hero-word-row');
+      if (!wordRow) return;
+      var words = ['café', 'business', 'kitchen', 'menu', 'team'];
+      var idx = 0;
+
+      var els = words.map(function(word, i) {
+        var span = document.createElement('span');
+        span.className = 'hero-word-item';
+        span.textContent = word;
+        span.style.transform = i === 0 ? 'translateY(0)' : 'translateY(110%)';
+        span.style.opacity = i === 0 ? '1' : '0';
+        wordRow.appendChild(span);
+        return span;
+      });
+
+      setInterval(function() {
+        var prev = idx;
+        idx = (idx + 1) % words.length;
+
+        // Snap incoming word to bottom without transition
+        els[idx].style.transition = 'none';
+        els[idx].style.transform = 'translateY(110%)';
+        els[idx].style.opacity = '0';
+        els[idx].offsetHeight; // force reflow
+
+        // Restore transitions
+        els[idx].style.transition = '';
+
+        // Exit current word upward
+        els[prev].style.transform = 'translateY(-110%)';
+        els[prev].style.opacity = '0';
+
+        // Enter new word from below
+        els[idx].style.transform = 'translateY(0)';
+        els[idx].style.opacity = '1';
+      }, 2000);
+    })();
+
     // ─── Lenis smooth scroll ───
     if (history.scrollRestoration) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
-    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    const lenis = new Lenis({ duration: 0.8, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
     function lRaf(t) { lenis.raf(t); requestAnimationFrame(lRaf); }
     requestAnimationFrame(lRaf);
     const progressBar = document.getElementById('scroll-progress');
@@ -1165,52 +1497,54 @@
       splitTextLines(el); lineObs.observe(el);
     });
   </script>
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
+  <!-- Page Loader -->
+  <div id="page-loader" style="
+    position:fixed;inset:0;z-index:9999;
+    background:#fffef0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+    transition:opacity 0.6s ease;
+  ">
+    <img src="brand_assets/logos/reg_logo_transparent.png" style="width:160px;object-fit:contain;" alt="">
+    <div style="position:relative;width:36px;height:36px;">
+      <span class="luma-span"></span>
+      <span class="luma-span luma-delay"></span>
+    </div>
+  </div>
+  <style>
+    @keyframes lumaAnim {
+      0%    { inset: 0 18px 18px 0; }
+      12.5% { inset: 0 18px 0 0; }
+      25%   { inset: 18px 18px 0 0; }
+      37.5% { inset: 18px 0 0 0; }
+      50%   { inset: 18px 0 0 18px; }
+      62.5% { inset: 0 0 0 18px; }
+      75%   { inset: 0 0 18px 18px; }
+      87.5% { inset: 0 0 18px 0; }
+      100%  { inset: 0 18px 18px 0; }
+    }
+    .luma-span {
+      position: absolute;
+      border-radius: 50px;
+      box-shadow: inset 0 0 0 2px #46280A;
+      animation: lumaAnim 2.5s infinite;
+    }
+    .luma-delay {
+      animation-delay: -1.25s;
+    }
+  </style>
   <script>
-    window.addEventListener('load', function() {
-      const container = document.getElementById('footer-dots-bg');
-      if (!container || typeof THREE === 'undefined') return;
-      const footer = container.parentElement;
-      const AMOUNTX = 50, AMOUNTY = 26, SEP = 110;
-      const w = footer.offsetWidth || window.innerWidth;
-      const h = footer.offsetHeight || 560;
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(55, w / h, 1, 10000);
-      camera.position.set(0, 300, 980);
-      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(w, h);
-      renderer.setClearColor(0x000000, 0);
-      container.appendChild(renderer.domElement);
-      const positions = [], colors = [];
-      for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
-        positions.push(ix * SEP - (AMOUNTX * SEP) / 2, 0, iy * SEP - (AMOUNTY * SEP) / 2);
-        colors.push(0.42, 0.247, 0.102);
+    (function() {
+      var loader = document.getElementById('page-loader');
+      function hide() {
+        loader.style.opacity = '0';
+        setTimeout(function() { loader.remove(); }, 600);
       }
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-      const mat = new THREE.PointsMaterial({ size: 8, vertexColors: true, transparent: true, opacity: 0.62, sizeAttenuation: true });
-      scene.add(new THREE.Points(geo, mat));
-      const posArr = geo.attributes.position.array;
-      let count = 0;
-      (function tick() {
-        requestAnimationFrame(tick);
-        let i = 0;
-        for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
-          posArr[i * 3 + 1] = Math.sin((ix + count) * 0.3) * 50 + Math.sin((iy + count) * 0.5) * 50;
-          i++;
-        }
-        geo.attributes.position.needsUpdate = true;
-        renderer.render(scene, camera);
-        count += 0.07;
-      })();
-      new ResizeObserver(() => {
-        const nw = footer.offsetWidth, nh = footer.offsetHeight;
-        if (!nw || !nh) return;
-        camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
-      }).observe(footer);
-    });
+      if (document.readyState === 'complete') { hide(); }
+      else { window.addEventListener('load', hide); }
+    })();
   </script>
+
+
 </body>
 </html>

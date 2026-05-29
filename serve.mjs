@@ -4,7 +4,7 @@ import { join, extname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const PORT = 3000;
+const PORT = 8000;
 
 const mime = {
   '.html': 'text/html; charset=utf-8',

@@ -33,7 +33,7 @@
       font-family: var(--font-body);
       background: var(--parchment);
       color: var(--brown);
-      overflow-x: hidden;
+      overflow-x: clip;
       -webkit-font-smoothing: antialiased;
     }
     a { color: inherit; text-decoration: none; }
@@ -49,6 +49,7 @@
       transition: opacity 0.5s var(--ease-out), visibility 0.5s var(--ease-out), transform 0.5s var(--ease-out);
     }
     .header.depleted { opacity: 0; visibility: hidden; transform: translateY(-10px); }
+    .header.in-timeline { opacity: 0; visibility: hidden; transform: translateY(-8px); }
     .h-logo {
       pointer-events: all; display: flex; align-items: center;
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -111,7 +112,9 @@
     .h-nav-mobile .m-cta:hover { background: var(--brown); }
 
     /* ─── Buttons ─── */
-    .btn { display: inline-flex; align-items: center; position: relative; overflow: hidden; border-radius: 2px; cursor: pointer; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s var(--ease-out); }
+    .btn { display: inline-flex; align-items: center; position: relative; overflow: hidden; border-radius: 100px; cursor: pointer; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s var(--ease-out), transform 0.2s var(--ease-spring), box-shadow 0.2s var(--ease-out); }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: scale(0.97) !important; }
     .btn .btn-fill { position: absolute; inset: 0; transform: translateY(101%); transition: transform 0.35s var(--ease-out); z-index: 0; }
     .btn:hover .btn-fill { transform: translateY(0); }
     .btn .btn-text-wrapper { position: relative; z-index: 1; display: flex; overflow: hidden; height: 1.1em; }
@@ -121,7 +124,7 @@
     .btn:hover .btn-text-hover { transform: translateY(0); }
     .btn-primary { background: var(--brown); color: var(--cream); border: 1.5px solid var(--brown); }
     .btn-primary .btn-fill { background: var(--gold); }
-    .btn-primary:hover { border-color: var(--gold); }
+    .btn-primary:hover { border-color: var(--gold); box-shadow: 0 8px 24px rgba(180,120,50,0.28); }
     .btn-outline { background: transparent; color: var(--brown); border: 1.5px solid var(--brown); }
     .btn-outline .btn-fill { background: var(--brown); }
     .btn-outline:hover { color: var(--cream); }
@@ -143,8 +146,8 @@
 
     /* ─── Page Hero (about) ─── */
     .section-hero {
-      background: var(--parchment);
-      padding-top: 72px; /* nav height */
+      background: var(--cream);
+      padding-top: 100px; /* nav height */
       display: flex;
       align-items: center;
     }
@@ -214,7 +217,7 @@
       background: var(--parchment);
       border: 1.5px solid var(--border);
       padding: 20px 28px;
-      border-radius: 2px;
+      border-radius: 10px;
       text-align: right;
     }
     .s-media-badge .badge-num {
@@ -235,77 +238,160 @@
     }
 
     /* ─── Timeline / Story ─── */
+    /* ─── Interactive Timeline ─── */
     .section-timeline {
-      background: var(--cream);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 96px 0;
+      background: var(--midnight);
+      padding: 0;
+      padding-top: 90px;
+      overflow: visible;
+    }
+    .tl-scroll-driver {
+      height: 350vh;
+      position: relative;
+    }
+    .tl-sticky-panel {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--midnight);
     }
     .section-timeline .s-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      width: 100%;
     }
+    .tl-header { display: flex; flex-direction: column; gap: 16px; }
     .timeline-label {
       font-family: var(--font-body);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 24px;
       display: flex; align-items: center; gap: 12px;
     }
     .timeline-label::before {
-      content: '';
-      display: block;
+      content: ''; display: block;
       width: 32px; height: 1px;
       background: var(--gold);
     }
-    .section-timeline .s-title {
-      font-size: clamp(32px, 4vw, 52px);
-      color: var(--brown);
-      margin-bottom: 40px;
+    .section-timeline .s-title { color: var(--cream); margin-bottom: 0; }
+    .tl-intro-text {
+      font-family: var(--font-body); font-size: 15px; line-height: 1.7;
+      color: rgba(250,243,224,0.55); max-width: 560px;
     }
-    .section-timeline .s-text { color: var(--warm); max-width: none; }
-
-    .timeline-items { display: flex; flex-direction: column; gap: 0; }
-    .timeline-item {
-      display: flex; gap: 32px;
-      padding: 32px 0;
-      border-bottom: 1px solid var(--border);
+    .tl-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 0;
+      min-height: 420px;
+    }
+    .tl-left {
       position: relative;
+      border-right: 1px solid rgba(250,243,224,0.1);
+      padding-right: 40px;
     }
-    .timeline-item:first-child { }
-    .timeline-year {
-      font-family: var(--font-display);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--gold);
-      min-width: 48px;
-      padding-top: 4px;
+    .tl-rail {
+      position: absolute; left: 0; top: 0;
+      width: 2px; height: 100%;
+      background: rgba(250,243,224,0.08);
+    }
+    .tl-rail-fill {
+      position: absolute; left: 0; top: 0;
+      width: 2px; height: 0%;
+      background: var(--gold);
+      transition: height 0.55s var(--ease-out);
+    }
+    .tl-items { display: flex; flex-direction: column; padding-left: 20px; }
+    .tl-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 0;
+      cursor: default;
+      position: relative;
+      transition: opacity 0.25s;
+    }
+    .tl-item:not(.active) { opacity: 0.35; }
+    .tl-item.active { opacity: 1; }
+    .tl-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(250,243,224,0.25);
       flex-shrink: 0;
+      position: absolute; left: -24px;
+      transition: background 0.3s, box-shadow 0.3s;
     }
-    .timeline-content h5 {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--brown);
-      margin-bottom: 8px;
-      line-height: 1.3;
+    .tl-item.active .tl-dot {
+      background: var(--gold);
+      animation: tlPulse 2s ease-in-out infinite;
     }
-    .timeline-content p {
-      font-family: var(--font-body);
-      font-size: 13px;
-      line-height: 1.7;
-      color: var(--warm);
+    @keyframes tlPulse {
+      0%,100% { box-shadow: 0 0 0 3px rgba(180,120,50,0.35); transform: scale(1); }
+      50% { box-shadow: 0 0 0 6px rgba(180,120,50,0.12); transform: scale(1.3); }
+    }
+    .tl-year {
+      font-family: var(--font-display); font-size: 13px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(250,243,224,0.5);
+      transition: color 0.25s;
+    }
+    .tl-item.active .tl-year { color: var(--gold); }
+    .tl-item-subtitle {
+      font-family: var(--font-body); font-size: 11px;
+      color: rgba(250,243,224,0.35);
+      margin-top: 2px;
+      transition: color 0.25s;
+    }
+    .tl-item.active .tl-item-subtitle { color: rgba(250,243,224,0.55); }
+    /* Right panel */
+    .tl-right { position: relative; min-height: 380px; overflow: hidden; }
+    .tl-slide {
+      position: absolute; top: 0; left: 56px; right: 0;
+      opacity: 0;
+      transform: translateY(80px);
+      pointer-events: none;
+      will-change: opacity, transform;
+    }
+    .tl-slide-badge {
+      font-family: var(--font-body); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold);
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .tl-slide-badge::before { content:''; display:block; width:20px; height:1px; background:var(--gold); }
+    .tl-slide-ghost-year {
+      font-family: var(--font-display); font-size: clamp(72px, 9vw, 120px);
+      font-weight: 800; letter-spacing: -0.04em; line-height: 0.85;
+      color: var(--cream); opacity: 0.05;
+      position: absolute; top: -8px; right: 0;
+      user-select: none; pointer-events: none;
+    }
+    .tl-slide-title {
+      font-family: var(--font-display); font-size: clamp(26px, 3.2vw, 42px);
+      font-weight: 700; letter-spacing: -0.025em; line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 18px;
+    }
+    .tl-slide-body {
+      font-family: var(--font-body); font-size: 15px; line-height: 1.75;
+      color: rgba(250,243,224,0.6);
+      max-width: 480px;
+    }
+    .tl-slide-tag {
+      display: inline-block; margin-top: 28px;
+      font-family: var(--font-body); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--gold);
+      padding: 6px 16px;
+      border: 1px solid rgba(180,120,50,0.35);
+      border-radius: 100px;
     }
 
     /* ─── Info section ─── */
     .section-info {
       background: var(--parchment);
-      padding: 96px 0;
+      padding: 100px 0;
     }
     .section-info .s-inner {
       display: grid;
@@ -357,36 +443,49 @@
     .section-standards {
       background: var(--parchment);
       border-bottom: 1px solid var(--border);
-      padding: 80px 0;
+      padding: 100px 0;
     }
     .section-standards .s-inner {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0;
+      gap: 2px;
     }
     .s-standard {
-      padding: 48px 48px;
-      border-right: 1px solid var(--border);
+      background: var(--cream);
+      padding: 40px;
       display: flex; flex-direction: column; gap: 16px;
+      position: relative; overflow: hidden;
+      transition: background 0.3s var(--ease-out), transform 0.3s var(--ease-spring);
+      cursor: default;
     }
-    .s-standard:last-child { border-right: none; }
+    .s-standard::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: var(--gold);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s var(--ease-out);
+    }
+    .s-standard:hover { background: #fff; transform: translateY(-4px); }
+    .s-standard:hover::after { transform: scaleX(1); }
     .s-standard-num {
       font-family: var(--font-display);
-      font-size: 40px;
-      font-weight: 700;
+      font-size: 12px; font-weight: 700;
       color: var(--gold);
+      letter-spacing: 0.08em; opacity: 0.6;
       line-height: 1;
     }
     .s-standard-title {
       font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 600;
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 800;
       color: var(--brown);
+      letter-spacing: -0.03em;
+      line-height: 1;
     }
     .s-standard-text {
       font-family: var(--font-body);
-      font-size: 13px;
-      line-height: 1.7;
+      font-size: 13.5px;
+      line-height: 1.65;
       color: var(--warm);
     }
 
@@ -398,7 +497,7 @@
       padding: 0;
     }
     .section-cta .s-inner {
-      padding-top: 96px; padding-bottom: 96px;
+      padding-top: 90px; padding-bottom: 90px;
       display: flex; flex-direction: column; align-items: center;
       text-align: center; gap: 40px;
     }
@@ -418,17 +517,25 @@
       max-width: 480px;
     }
 
-    /* ─── Footer ─── */
-    .footer { background: var(--cream); position: relative; overflow: hidden; display: flex; flex-direction: column; }
-    .f-dots-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 62%, black 80%); -webkit-mask-image: linear-gradient(to bottom, transparent 62%, black 80%); }
-    .f-dots-bg canvas { display: block; width: 100% !important; height: 100% !important; border: none; outline: none; }
-    .f-center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 40px 20px; position: relative; z-index: 1; }
-    .f-center-logo { height: 420px; width: auto; max-width: 80%; }
-    .f-footer { display: flex; align-items: center; justify-content: space-between; padding: 20px 60px; gap: 20px; flex-wrap: wrap; position: relative; z-index: 1; }
-    .f-copyright { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; letter-spacing: 0.02em; }
-    .f-links { display: flex; align-items: center; gap: 24px; }
-    .f-link { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; text-decoration: none; letter-spacing: 0.02em; transition: opacity 0.2s; }
-    .f-link:hover { opacity: 1; }
+        /* ─── FOOTER ────────────────────────────────────────────── */
+    .footer { background: #F5F0E8; position: relative; overflow: hidden; }
+    .f2-inner { max-width: 1200px; margin: 0 auto; padding: 72px 60px 0; }
+    .f2-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px 32px; }
+    .f2-brand { padding-right: 24px; }
+    .f2-logo-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .f2-logo { height: 72px; width: auto; }
+    .f2-tagline { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #46280A; margin-bottom: 12px; letter-spacing: -0.01em; }
+    .f2-desc { font-family: var(--font-body); font-size: 13.5px; line-height: 1.7; color: #6B3F1A; }
+    .f2-col-title { font-family: var(--font-display); font-size: 11px; font-weight: 800; color: #46280A; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; }
+    .f2-col-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    .f2-col-link { font-family: var(--font-body); font-size: 14px; color: #6B3F1A; text-decoration: none; font-weight: 600; transition: color 0.2s; display: block; }
+    .f2-col-link:hover { color: #B47832; }
+    .f2-col-info { font-family: var(--font-body); font-size: 13px; color: rgba(70,40,10,0.45); font-weight: 600; }
+    .f2-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 56px; padding: 24px 0; border-top: 1px solid rgba(70,40,10,0.15); }
+    .f2-copyright { font-family: var(--font-body); font-size: 11.5px; color: rgba(70,40,10,0.5); letter-spacing: 0.02em; }
+    .f2-bottom-links { list-style: none; padding: 0; margin: 0; display: flex; gap: 24px; }
+    .f2-bottom-link { font-family: var(--font-body); font-size: 11.5px; color: rgba(70,40,10,0.5); text-decoration: underline; letter-spacing: 0.02em; transition: color 0.2s; }
+    .f2-bottom-link:hover { color: #B47832; }
 
     /* ─── Scroll reveal ─── */
     body.js-ready [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
@@ -442,13 +549,23 @@
       .header { padding: 20px 4%; }
       .s-inner { padding: 0 28px; }
       .section-hero .s-inner { grid-template-columns: 1fr; gap: 48px; }
-      .section-timeline .s-inner { grid-template-columns: 1fr; gap: 48px; }
+      .tl-scroll-driver { height: 280vh; }
+      .tl-layout { grid-template-columns: 1fr; }
+      .tl-left { border-right: none; border-bottom: 1px solid rgba(250,243,224,0.1); padding-right: 0; padding-bottom: 24px; margin-bottom: 24px; }
+      .tl-rail { display: none; }
+      .tl-items { flex-direction: row; flex-wrap: wrap; padding-left: 0; gap: 4px; }
+      .tl-item { padding: 8px 0; }
+      .tl-dot { display: none; }
+      .tl-right { min-height: 260px; }
+      .tl-slide { left: 0; }
       .section-info .s-inner { grid-template-columns: 1fr; }
       .section-info .s-content { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 0; }
       .s-info { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 0; }
-      .section-standards .s-inner { grid-template-columns: 1fr; }
-      .s-standard { border-right: none; border-bottom: 1px solid var(--border); }
-      .f-footer { padding: 20px 28px; }
+      .section-standards .s-inner { grid-template-columns: 1fr; gap: 2px; }
+      .s-standard { transform: none !important; }
+      .f2-inner { padding: 48px 28px 0; }
+      .f2-grid { grid-template-columns: 1fr 1fr 1fr; gap: 36px 20px; }
+      .f2-bottom { padding: 20px 0; }
     }
     @media (max-width: 768px) {
       .header { padding: 16px 4%; }
@@ -456,8 +573,9 @@
       .h-nav-mobile { display: flex; }
       .nav-toggle { display: flex; }
       .nav-mobile-bg { display: block; }
-      .f-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .f-center { padding: 60px 28px 32px; }
+      .f2-grid { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+      .f2-brand { grid-column: 1 / -1; }
+      .f2-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
 
     /* ─── Line-split text animation ─── */
@@ -475,6 +593,49 @@
       z-index: 300;
       will-change: transform;
     }
+
+    /* ─── Products nav dropdown ─────────────────────────────── */
+    .n-item-dropdown { position: relative; }
+    .n-item-dropdown > .n-link { display: flex; align-items: center; gap: 4px; }
+    .n-chevron { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.6; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s; }
+    .n-item-dropdown:hover .n-chevron { transform: rotate(180deg); opacity: 1; }
+    .n-dropdown { position: absolute; top: calc(100% + 16px); left: 50%; transform: translateX(-50%) translateY(-10px); background: rgba(248,242,228,0.97); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(70,40,10,0.11); border-radius: 18px; padding: 8px; min-width: 210px; box-shadow: 0 16px 48px rgba(70,40,10,0.14), 0 2px 8px rgba(70,40,10,0.06); opacity: 0; pointer-events: none; transition: opacity 0.22s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.38s cubic-bezier(0.34,1.56,0.64,1); z-index: 202; }
+    .n-dropdown::before { content: ''; position: absolute; top: -18px; left: 0; right: 0; height: 18px; }
+    .n-item-dropdown:hover .n-dropdown { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all; }
+    .n-dropdown-link { display: flex; align-items: center; gap: 11px; padding: 9px 13px; border-radius: 11px; text-decoration: none; transition: background 0.18s, transform 0.28s cubic-bezier(0.34,1.56,0.64,1); }
+    .n-dropdown-link:hover { background: rgba(70,40,10,0.07); transform: translateX(3px); }
+    .n-dropdown-dot { width: 6px; height: 6px; border-radius: 50%; background: #B47832; flex-shrink: 0; opacity: 0.65; transition: opacity 0.18s; }
+    .n-dropdown-link:hover .n-dropdown-dot { opacity: 1; }
+    .n-dropdown-info { display: flex; flex-direction: column; gap: 1px; }
+    .n-dropdown-name { font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--brown); }
+    .n-dropdown-sub { font-family: var(--font-body); font-size: 10.5px; color: var(--warm); opacity: 0.6; }
+    .n-dropdown-sep { height: 1px; background: rgba(70,40,10,0.08); margin: 4px 10px; }
+
+    .btn { transition: color 0.3s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s !important; }
+    .btn:hover { transform: translateY(-3px) scale(1.03) !important; }
+    .btn:active { transform: scale(0.95) !important; }
+    .n-item .n-link::before { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 1.5px; background: #B47832; transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    .n-item .n-link:hover::before { transform: scaleX(1); }
+
+    /* ─── Subtle page background treatments ─────────────────── */
+    .page-bg-grain {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+    .section-hero { position: relative; overflow: hidden; }
+    .hero-bg-mesh {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 55% at 15% 48%, rgba(180,120,50,0.11) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 65% at 85% 25%, rgba(70,40,10,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 45% 70% at 58% 88%, rgba(180,120,50,0.08) 0%, transparent 48%);
+    }
+    .hero-bg-grain {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.038;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
   </style>
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 </head>
@@ -489,7 +650,17 @@
     </a>
     <nav class="h-nav" id="main-nav">
       <ul class="n-menu">
-        <li class="n-item"><a href="products.html" class="n-link">Products</a></li>
+        <li class="n-item n-item-dropdown">
+          <a href="products.html" class="n-link">Products<svg class="n-chevron" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="#46280A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <div class="n-dropdown">
+            <a href="croissants.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Croissants</span><span class="n-dropdown-sub">13 varieties</span></span></a>
+            <a href="tarts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Tarts</span><span class="n-dropdown-sub">Lemon, chocolate, custard & more</span></span></a>
+            <a href="danish.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Danish</span><span class="n-dropdown-sub">Blueberry, cinnamon & apple</span></span></a>
+            <a href="cronuts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Cronuts</span><span class="n-dropdown-sub">12 flavours incl. gourmet</span></span></a>
+            <div class="n-dropdown-sep"></div>
+            <a href="muffins.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Muffins & More</span><span class="n-dropdown-sub">Muffins, Tella Balls & more</span></span></a>
+          </div>
+        </li>
         <li class="n-item"><a href="wholesale.html" class="n-link">Wholesale</a></li>
         <li class="n-item"><a href="about.html" class="n-link active">About</a></li>
         <li class="n-item"><a href="contact.html" class="n-link">Contact</a></li>
@@ -545,53 +716,104 @@
       </div>
     </section>
 
-    <!-- STORY / TIMELINE -->
+    <!-- STORY / TIMELINE (scroll-driven) -->
     <section class="section section-timeline">
-      <div class="s-inner">
-        <div data-reveal>
+      <div class="tl-scroll-driver" id="tlScrollDriver">
+        <div class="tl-sticky-panel">
+        <div class="s-inner">
+        <!-- Header -->
+        <div class="tl-header">
           <div class="timeline-label">Our Journey</div>
           <h2 class="s-title">How We Got Here</h2>
-          <div class="s-text">
-            <p>From a small Western Sydney operation to a trusted supplier for cafés and distributors across the city — here's the Yum Yum Delight story.</p>
-          </div>
+          <p class="tl-intro-text">From a small Western Sydney operation to a trusted supplier for cafés and distributors across the city — here's the Yum Yum Delight story.</p>
         </div>
 
-        <div class="timeline-items" data-reveal data-reveal-delay="100">
-          <div class="timeline-item">
-            <span class="timeline-year">2021</span>
-            <div class="timeline-content">
-              <h5>Yum Yum Delight is founded</h5>
-              <p>Launched in November 2021 in Western Sydney with a clear mission: supply premium pastry to B2B customers at prices the wholesale market genuinely needed.</p>
+        <!-- Body: left rail + right panel -->
+        <div class="tl-layout">
+          <!-- Left: clickable year list -->
+          <div class="tl-left">
+            <div class="tl-rail">
+              <div class="tl-rail-fill" id="tlRailFill"></div>
+            </div>
+            <div class="tl-items">
+              <div class="tl-item active" data-slide="2021">
+                <span class="tl-dot"></span>
+                <div>
+                  <div class="tl-year">2021</div>
+                  <div class="tl-item-subtitle">Founded</div>
+                </div>
+              </div>
+              <div class="tl-item" data-slide="2022">
+                <span class="tl-dot"></span>
+                <div>
+                  <div class="tl-year">2022</div>
+                  <div class="tl-item-subtitle">Core Range</div>
+                </div>
+              </div>
+              <div class="tl-item" data-slide="2023">
+                <span class="tl-dot"></span>
+                <div>
+                  <div class="tl-year">2023</div>
+                  <div class="tl-item-subtitle">Gourmet Line</div>
+                </div>
+              </div>
+              <div class="tl-item" data-slide="2024">
+                <span class="tl-dot"></span>
+                <div>
+                  <div class="tl-year">2024</div>
+                  <div class="tl-item-subtitle">Sydney-Wide</div>
+                </div>
+              </div>
+              <div class="tl-item" data-slide="2026">
+                <span class="tl-dot"></span>
+                <div>
+                  <div class="tl-year">2026</div>
+                  <div class="tl-item-subtitle">Digital Launch</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="timeline-item">
-            <span class="timeline-year">2022</span>
-            <div class="timeline-content">
-              <h5>Building the core range</h5>
-              <p>Developed our flagship categories — croissants, tarts, danish, and muffins — refining flavours and sizing options in response to early customer feedback.</p>
+
+          <!-- Right: content panels -->
+          <div class="tl-right">
+            <div class="tl-slide active" data-slide="2021">
+              <div class="tl-slide-ghost-year">2021</div>
+              <div class="tl-slide-badge">November 2021</div>
+              <h3 class="tl-slide-title">Yum Yum Delight is&nbsp;founded.</h3>
+              <p class="tl-slide-body">Launched in November 2021 in Western Sydney with a clear mission: supply premium pastry to B2B customers at prices the wholesale market genuinely needed.</p>
+              <span class="tl-slide-tag">The Beginning</span>
+            </div>
+            <div class="tl-slide" data-slide="2022">
+              <div class="tl-slide-ghost-year">2022</div>
+              <div class="tl-slide-badge">2022</div>
+              <h3 class="tl-slide-title">Building the core range.</h3>
+              <p class="tl-slide-body">Developed our flagship categories — croissants, tarts, danish, and muffins — refining flavours and sizing options in response to early customer feedback.</p>
+              <span class="tl-slide-tag">Product Growth</span>
+            </div>
+            <div class="tl-slide" data-slide="2023">
+              <div class="tl-slide-ghost-year">2023</div>
+              <div class="tl-slide-badge">2023</div>
+              <h3 class="tl-slide-title">Cronuts, Tella Balls & Gourmet line.</h3>
+              <p class="tl-slide-body">Introduced Cronuts and Tella Balls to meet growing demand for indulgent options. The Gourmet Cronut line (Snickers, Ferrero, Kit Kat, M&amp;M) launched to an enthusiastic reception.</p>
+              <span class="tl-slide-tag">Innovation</span>
+            </div>
+            <div class="tl-slide" data-slide="2024">
+              <div class="tl-slide-ghost-year">2024</div>
+              <div class="tl-slide-badge">2024</div>
+              <h3 class="tl-slide-title">Sydney-wide distribution growth.</h3>
+              <p class="tl-slide-body">Expanded delivery coverage to reach cafés and distributors across greater Sydney, six days a week — Sunday through Friday.</p>
+              <span class="tl-slide-tag">Expansion</span>
+            </div>
+            <div class="tl-slide" data-slide="2026">
+              <div class="tl-slide-ghost-year">2026</div>
+              <div class="tl-slide-badge">2026</div>
+              <h3 class="tl-slide-title">Website launch & digital ordering.</h3>
+              <p class="tl-slide-body">Launched our new website to make our full product range and wholesale pricing accessible online. Ordermentum integration for streamlined online ordering coming soon.</p>
+              <span class="tl-slide-tag">Going Digital</span>
             </div>
           </div>
-          <div class="timeline-item">
-            <span class="timeline-year">2023</span>
-            <div class="timeline-content">
-              <h5>Cronuts, Tella Balls & Gourmet line</h5>
-              <p>Introduced Cronuts and Tella Balls to meet growing demand for indulgent options. The Gourmet Cronut line (Snickers, Ferrero, Kit Kat, M&M) launched to an enthusiastic reception.</p>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-year">2024</span>
-            <div class="timeline-content">
-              <h5>Sydney-wide distribution growth</h5>
-              <p>Expanded delivery coverage to reach cafés and distributors across greater Sydney, six days a week — Sunday through Friday.</p>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-year">2026</span>
-            <div class="timeline-content">
-              <h5>Website launch & digital ordering</h5>
-              <p>Launched our new website to make our full product range and wholesale pricing accessible online. Ordermentum integration for streamlined online ordering coming soon.</p>
-            </div>
-          </div>
+        </div>
+        </div>
         </div>
       </div>
     </section>
@@ -682,16 +904,52 @@
   </main>
 
   <footer class="footer" id="site-footer">
-    <div class="f-dots-bg" id="footer-dots-bg"></div>
-    <div class="f-center">
-      <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f-center-logo">
-    </div>
-    <div class="f-footer">
-      <div class="f-copyright">© Yum Yum Delight 2026. All Rights Reserved.</div>
-      <div class="f-links">
-        <a href="contact.html" class="f-link">Contact Us</a>
-        <a href="wholesale.html" class="f-link">Wholesale Terms</a>
-        <a href="about.html" class="f-link">About Us</a>
+    <div class="f2-inner">
+      <div class="f2-grid">
+        <div class="f2-brand">
+          <div class="f2-logo-wrap">
+            <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f2-logo">
+          </div>
+          <p class="f2-tagline">Baked for your business.</p>
+          <p class="f2-desc">Premium baked goods for cafés and distributors across Sydney. Orders via email, delivery Sun–Fri.</p>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Products</h3>
+          <ul class="f2-col-list">
+            <li><a href="croissants.html" class="f2-col-link">Croissants</a></li>
+            <li><a href="muffins.html" class="f2-col-link">Muffins</a></li>
+            <li><a href="tarts.html" class="f2-col-link">Tarts</a></li>
+            <li><a href="danish.html" class="f2-col-link">Danish</a></li>
+            <li><a href="products.html" class="f2-col-link">Cronuts</a></li>
+            <li><a href="products.html" class="f2-col-link">Tella Balls</a></li>
+          </ul>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Company</h3>
+          <ul class="f2-col-list">
+            <li><a href="about.html" class="f2-col-link">About Us</a></li>
+            <li><a href="wholesale.html" class="f2-col-link">Wholesale</a></li>
+            <li><a href="contact.html" class="f2-col-link">Contact</a></li>
+            <li><a href="products.html" class="f2-col-link">Products</a></li>
+          </ul>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Ordering</h3>
+          <ul class="f2-col-list">
+            <li class="f2-col-info">Sydney-wide Delivery</li>
+            <li class="f2-col-info">Delivery Sun–Fri</li>
+            <li class="f2-col-info">Min. Order $50</li>
+            <li><a href="mailto:info.yumyumdelight@gmail.com" class="f2-col-link">Email to Order</a></li>
+            <li><a href="wholesale.html" class="f2-col-link">Wholesale Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="f2-bottom">
+        <p class="f2-copyright">© Yum Yum Delight 2026. All Rights Reserved.</p>
+        <ul class="f2-bottom-links">
+          <li><a href="wholesale.html" class="f2-bottom-link">Wholesale Terms</a></li>
+          <li><a href="contact.html" class="f2-bottom-link">Contact Us</a></li>
+        </ul>
       </div>
     </div>
   </footer>
@@ -731,7 +989,7 @@
     // ─── Lenis smooth scroll ───
     if (history.scrollRestoration) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
-    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    const lenis = new Lenis({ duration: 0.8, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
     function lRaf(t) { lenis.raf(t); requestAnimationFrame(lRaf); }
     requestAnimationFrame(lRaf);
     const progressBar = document.getElementById('scroll-progress');
@@ -764,53 +1022,84 @@
     document.querySelectorAll('h1, h2, .cta-title, .form-title, .faq-title').forEach(el => {
       splitTextLines(el); lineObs.observe(el);
     });
-  </script>
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script>
-    window.addEventListener('load', function() {
-      const container = document.getElementById('footer-dots-bg');
-      if (!container || typeof THREE === 'undefined') return;
-      const footer = container.parentElement;
-      const AMOUNTX = 50, AMOUNTY = 26, SEP = 110;
-      const w = footer.offsetWidth || window.innerWidth;
-      const h = footer.offsetHeight || 560;
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(55, w / h, 1, 10000);
-      camera.position.set(0, 300, 980);
-      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(w, h);
-      renderer.setClearColor(0x000000, 0);
-      container.appendChild(renderer.domElement);
-      const positions = [], colors = [];
-      for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
-        positions.push(ix * SEP - (AMOUNTX * SEP) / 2, 0, iy * SEP - (AMOUNTY * SEP) / 2);
-        colors.push(0.42, 0.247, 0.102);
+
+    // ─── Scroll-Driven Timeline (continuous) ─────────────────
+    (function() {
+      const driver   = document.getElementById('tlScrollDriver');
+      const tlItems  = Array.from(document.querySelectorAll('.tl-item'));
+      const tlSlides = Array.from(document.querySelectorAll('.tl-slide'));
+      const railFill = document.getElementById('tlRailFill');
+      const n = tlSlides.length;
+
+      const tlRight = driver.querySelector('.tl-right');
+      let h = 400;
+      function measureH() { if (tlRight) h = tlRight.offsetHeight || 400; }
+      measureH();
+      window.addEventListener('resize', measureH);
+
+      function setSlide(s, opacity, ty_px) {
+        s.style.opacity = opacity;
+        s.style.transform = 'translateY(' + ty_px + 'px)';
+        s.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none';
       }
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-      const mat = new THREE.PointsMaterial({ size: 8, vertexColors: true, transparent: true, opacity: 0.62, sizeAttenuation: true });
-      scene.add(new THREE.Points(geo, mat));
-      const posArr = geo.attributes.position.array;
-      let count = 0;
-      (function tick() {
-        requestAnimationFrame(tick);
-        let i = 0;
-        for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
-          posArr[i * 3 + 1] = Math.sin((ix + count) * 0.3) * 50 + Math.sin((iy + count) * 0.5) * 50;
-          i++;
+
+      function updateTimeline() {
+        if (!driver) return;
+        const rect = driver.getBoundingClientRect();
+        const scrolled = -rect.top;
+        const totalScroll = rect.height - window.innerHeight;
+        const rawProgress = totalScroll <= 0 ? 0 : Math.max(0, Math.min(1, scrolled / totalScroll));
+
+        // Dead zone: first 10% of scroll is delay before animation starts
+        const deadZoneEnd = 0.1;
+        const adjustedProgress = rawProgress < deadZoneEnd ? 0 : (rawProgress - deadZoneEnd) / (1 - deadZoneEnd);
+        const floatIndex = adjustedProgress * (n - 1);
+
+        if (floatIndex >= n - 1) {
+          tlSlides.forEach((s, i) => setSlide(s, i === n - 1 ? 1 : 0, i === n - 1 ? 0 : -h));
+          tlItems.forEach((item, i) => item.classList.toggle('active', i === n - 1));
+          if (railFill) railFill.style.height = '100%';
+          return;
         }
-        geo.attributes.position.needsUpdate = true;
-        renderer.render(scene, camera);
-        count += 0.07;
-      })();
-      new ResizeObserver(() => {
-        const nw = footer.offsetWidth, nh = footer.offsetHeight;
-        if (!nw || !nh) return;
-        camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
-      }).observe(footer);
-    });
+
+        const curr = Math.floor(floatIndex);
+        const t    = floatIndex - curr;
+
+        tlSlides.forEach((s, i) => {
+          if (i === curr) {
+            // Current: slides up and fades out
+            setSlide(s, 1 - t, -t * h);
+          } else if (i === curr + 1) {
+            // Next: fades in gently while rising from below, starting higher
+            setSlide(s, t, (1 - t) * 0.5 * h);
+          } else {
+            // All others: parked out of view
+            setSlide(s, 0, i < curr ? -h : 0.5 * h);
+          }
+        });
+
+        const activeIdx = t >= 0.5 ? curr + 1 : curr;
+        tlItems.forEach((item, i) => item.classList.toggle('active', i === activeIdx));
+        if (railFill) railFill.style.height = (adjustedProgress / 1 * 100) + '%';
+      }
+
+      // ─── Navbar fade when inside timeline section ─────────────
+      const tlSection = document.querySelector('.section-timeline');
+      if (tlSection && header) {
+        const tlNavObs = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (!header.classList.contains('depleted')) {
+              header.classList.toggle('in-timeline', e.isIntersecting);
+            }
+          });
+        }, { threshold: 0.05 });
+        tlNavObs.observe(tlSection);
+      }
+
+      lenis.on('scroll', updateTimeline);
+      updateTimeline();
+    })();
   </script>
+
 </body>
 </html>

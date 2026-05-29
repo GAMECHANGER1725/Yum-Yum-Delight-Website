@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tarts | Yum Yum Delight</title>
+  <meta name="description" content="9 varieties of wholesale tarts — lemon, chocolate, caramel, custard, fruit and more. Baked fresh for Sydney cafés and distributors.">
+  <link rel="icon" type="image/png" href="brand_assets/logos/only_logo_transparent.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brown: #46280A; --gold: #B47832; --gold-light: #C8914A;
+      --parchment: #F5F0E8; --cream: #FAF3E0; --midnight: #1A1208;
+      --warm: #6B3F1A; --warm-light: #8B5A2B;
+      --border: rgba(70,40,10,0.12); --border-dark: rgba(250,243,224,0.15);
+      --font-display: 'Manrope', sans-serif; --font-body: 'Nunito', sans-serif;
+      --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; background: #FAF3E0; }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--brown); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; } img { display: block; max-width: 100%; } ul { list-style: none; }
+
+    .header { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: flex-start; justify-content: space-between; padding: 20px 5%; pointer-events: none; transition: opacity 0.5s, transform 0.5s; }
+    .header.depleted { opacity: 0; visibility: hidden; transform: translateY(-10px); }
+    .h-logo { pointer-events: all; display: flex; align-items: center; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1); border-radius: 100px; padding: 10px 20px; box-shadow: 0 2px 16px rgba(70,40,10,0.08); flex-shrink: 0; transition: background 0.2s; }
+    .h-logo:hover { background: rgba(250,243,224,0.62); }
+    .h-logo img { height: 34px; width: auto; }
+    .h-nav { pointer-events: all; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1); border-radius: 100px; padding: 0 30px; height: 54px; display: flex; align-items: center; box-shadow: 0 2px 16px rgba(70,40,10,0.08); }
+    .n-menu { display: flex; align-items: center; gap: 30px; }
+    .n-item .n-link { font-family: var(--font-body); font-size: 13.5px; font-weight: 500; letter-spacing: 0.01em; color: var(--brown); transition: opacity 0.25s; position: relative; }
+    .n-item .n-link.active::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: var(--gold); border-radius: 50%; }
+    .n-menu:has(.n-item:hover) .n-item:not(:hover) .n-link { opacity: 0.3; }
+    .h-cta-pill { pointer-events: all; display: flex; align-items: center; background: var(--gold); border: 1px solid var(--gold); border-radius: 100px; padding: 0 24px; height: 54px; color: var(--cream); font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; box-shadow: 0 2px 16px rgba(180,120,50,0.25); transition: background 0.25s, border-color 0.25s; }
+    .h-cta-pill:hover { background: var(--brown); border-color: var(--brown); color: var(--cream); }
+    .nav-toggle { display: none; pointer-events: all; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(250,243,224,0.44); border: 1px solid rgba(70,40,10,0.1); border-radius: 14px; width: 54px; height: 54px; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 16px rgba(70,40,10,0.08); transition: background 0.2s; flex-shrink: 0; }
+    .burger-line { display: block; width: 20px; height: 1.5px; background: var(--brown); transition: transform 0.3s, opacity 0.3s; }
+    .nav-toggle.open .burger-line:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .nav-toggle.open .burger-line:nth-child(2) { opacity: 0; }
+    .nav-toggle.open .burger-line:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+    .nav-mobile-bg { display: none; position: fixed; inset: 0; background: rgba(26,18,8,0.45); backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.4s; z-index: 195; }
+    .nav-mobile-bg.open { opacity: 1; pointer-events: all; }
+    .h-nav-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; background: rgba(245,240,232,0.49); backdrop-filter: blur(24px); z-index: 196; padding: 110px 7% 52px; flex-direction: column; gap: 0; transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s; opacity: 0; }
+    .h-nav-mobile.open { transform: translateY(0); opacity: 1; }
+    .h-nav-mobile .m-link { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--brown); letter-spacing: -0.02em; padding: 14px 0; border-bottom: 1px solid rgba(70,40,10,0.1); display: block; transition: color 0.2s; }
+    .h-nav-mobile .m-link:hover, .h-nav-mobile .m-link.active { color: var(--gold); }
+    .h-nav-mobile .m-cta { margin-top: 24px; display: inline-flex; align-items: center; background: var(--gold); border-radius: 100px; padding: 14px 30px; color: var(--cream); font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .n-item-dropdown { position: relative; }
+    .n-item-dropdown > .n-link { display: flex; align-items: center; gap: 4px; }
+    .n-chevron { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.6; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s; }
+    .n-item-dropdown:hover .n-chevron { transform: rotate(180deg); opacity: 1; }
+    .n-dropdown { position: absolute; top: calc(100% + 16px); left: 50%; transform: translateX(-50%) translateY(-10px); background: rgba(248,242,228,0.97); backdrop-filter: blur(28px); border: 1px solid rgba(70,40,10,0.11); border-radius: 18px; padding: 8px; min-width: 210px; box-shadow: 0 16px 48px rgba(70,40,10,0.14); opacity: 0; pointer-events: none; transition: opacity 0.22s, transform 0.38s cubic-bezier(0.34,1.56,0.64,1); z-index: 202; }
+    .n-dropdown::before { content: ''; position: absolute; top: -18px; left: 0; right: 0; height: 18px; }
+    .n-item-dropdown:hover .n-dropdown { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all; }
+    .n-dropdown-link { display: flex; align-items: center; gap: 11px; padding: 9px 13px; border-radius: 11px; transition: background 0.18s, transform 0.28s cubic-bezier(0.34,1.56,0.64,1); }
+    .n-dropdown-link:hover { background: rgba(70,40,10,0.07); transform: translateX(3px); }
+    .n-dropdown-dot { width: 6px; height: 6px; border-radius: 50%; background: #B47832; flex-shrink: 0; opacity: 0.65; }
+    .n-dropdown-link:hover .n-dropdown-dot { opacity: 1; }
+    .n-dropdown-info { display: flex; flex-direction: column; gap: 1px; }
+    .n-dropdown-name { font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--brown); }
+    .n-dropdown-sub { font-family: var(--font-body); font-size: 10.5px; color: var(--warm); opacity: 0.6; }
+    .n-dropdown-sep { height: 1px; background: rgba(70,40,10,0.08); margin: 4px 10px; }
+
+    .btn { display: inline-flex; align-items: center; position: relative; overflow: hidden; border-radius: 100px; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s !important; }
+    .btn:hover { transform: translateY(-3px) scale(1.03) !important; }
+    .btn:active { transform: scale(0.95) !important; }
+    .btn .btn-fill { position: absolute; inset: 0; transform: translateY(101%); transition: transform 0.35s; z-index: 0; }
+    .btn:hover .btn-fill { transform: translateY(0); }
+    .btn .btn-text-wrapper { position: relative; z-index: 1; display: flex; overflow: hidden; height: 1.1em; }
+    .btn .btn-text, .btn .btn-text-hover { display: block; transition: transform 0.3s; white-space: nowrap; }
+    .btn .btn-text-hover { position: absolute; top: 0; left: 0; transform: translateY(110%); }
+    .btn:hover .btn-text { transform: translateY(-110%); }
+    .btn:hover .btn-text-hover { transform: translateY(0); }
+    .btn-primary { background: var(--brown); color: var(--cream); border: 1.5px solid var(--brown); }
+    .btn-primary .btn-fill { background: var(--gold); }
+    .btn-primary:hover { border-color: var(--gold); box-shadow: 0 8px 24px rgba(180,120,50,0.28); }
+    .btn-outline { background: transparent; color: var(--brown); border: 1.5px solid var(--brown); }
+    .btn-outline .btn-fill { background: var(--brown); }
+    .btn-outline:hover { color: var(--cream); }
+    .btn-m { font-size: 13px; padding: 14px 32px; }
+
+    .section { position: relative; overflow: hidden; }
+    .s-inner { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+    .s-content { position: relative; z-index: 2; }
+
+    .footer { background: var(--cream); position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 60vh; }
+    .f-dots-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 40%, black 70%); -webkit-mask-image: linear-gradient(to bottom, transparent 40%, black 70%); }
+    .f-dots-bg canvas { display: block; width: 100% !important; height: 100% !important; }
+    .f-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 40px 20px; position: relative; z-index: 1; }
+    .f-center-logo { height: auto; width: auto; max-width: 60%; max-height: 280px; }
+    .f-footer { display: flex; align-items: center; justify-content: space-between; padding: 20px 60px; gap: 20px; flex-wrap: wrap; position: relative; z-index: 1; }
+    .f-copyright { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; }
+    .f-links { display: flex; align-items: center; gap: 24px; }
+    .f-link { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; transition: opacity 0.2s; }
+    .f-link:hover { opacity: 1; }
+
+    body.js-ready [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity 0.8s, transform 0.8s; }
+    body.js-ready [data-reveal].revealed { opacity: 1; transform: translateY(0); }
+    [data-reveal-delay="100"] { transition-delay: 0.1s; } [data-reveal-delay="200"] { transition-delay: 0.2s; }
+
+    .scroll-progress { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--brown); transform: scaleX(0); transform-origin: left; z-index: 300; will-change: transform; }
+
+    .hero-bg-mesh { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 80% 60% at 18% 52%, rgba(180,120,50,0.13) 0%, transparent 58%), radial-gradient(ellipse 55% 70% at 82% 28%, rgba(70,40,10,0.07) 0%, transparent 52%), radial-gradient(ellipse 48% 80% at 62% 92%, rgba(180,120,50,0.09) 0%, transparent 50%), var(--cream); }
+    .hero-bg-grain { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.04; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 200px; }
+    .hero-dot-grid { position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: radial-gradient(circle, rgba(107,63,26,0.20) 1px, transparent 1px); background-size: 32px 32px; opacity: 0.45; -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 25%, transparent 100%); mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 25%, transparent 100%); }
+
+    .cat-hero { background: var(--cream); padding-top: 100px; min-height: 55vh; display: flex; align-items: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+    .cat-hero .s-inner { width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 40px 72px; position: relative; z-index: 2; }
+    .cat-overline { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+    .cat-overline::before, .cat-overline::after { content: ''; display: block; width: 28px; height: 1px; background: currentColor; opacity: 0.6; }
+    .cat-title { font-family: var(--font-display); font-size: clamp(52px, 8vw, 120px); font-weight: 800; letter-spacing: -0.04em; color: var(--brown); line-height: 0.92; margin-bottom: 20px; }
+    .cat-sub { font-family: var(--font-body); font-size: 16px; line-height: 1.7; color: var(--warm); max-width: 480px; margin: 0 auto 32px; }
+    .back-link { font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brown); opacity: 0.55; transition: opacity 0.2s; }
+    .back-link:hover { opacity: 1; }
+
+    .section-craft { background: var(--cream); border-top: 1px solid var(--border); padding: 80px 0; }
+    .craft-eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .craft-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+    .craft-h { font-family: var(--font-display); font-size: clamp(28px,3vw,44px); font-weight: 700; letter-spacing: -0.025em; color: var(--brown); margin-bottom: 48px; line-height: 1.1; }
+    .craft-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .craft-card { background: var(--parchment); padding: 40px; display: flex; flex-direction: column; gap: 14px; transition: background 0.3s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    .craft-card:hover { background: #fff; transform: translateY(-5px); }
+    .craft-card-num { font-family: var(--font-display); font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; opacity: 0.6; }
+    .craft-stat { font-family: var(--font-display); font-size: clamp(36px,4vw,56px); font-weight: 800; color: var(--brown); line-height: 1; letter-spacing: -0.02em; }
+    .craft-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--brown); }
+    .craft-body { font-family: var(--font-body); font-size: 13.5px; line-height: 1.65; color: var(--warm); }
+
+    .section-varieties { background: var(--parchment); border-top: 1px solid var(--border); padding: 80px 0; }
+    .varieties-eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .varieties-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+    .varieties-h { font-family: var(--font-display); font-size: clamp(28px,3vw,44px); font-weight: 700; letter-spacing: -0.025em; color: var(--brown); margin-bottom: 40px; }
+    .varieties-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .variety-card { background: var(--cream); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s; }
+    .variety-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(70,40,10,0.12); }
+    .variety-card figure { overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; padding: 12px; }
+    .variety-card figure img { width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: contain; display: block; transition: transform 0.5s; }
+    .variety-card:hover figure img { transform: scale(1.04); }
+    .variety-card-body { padding: 20px 24px 24px; }
+    .variety-name { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--brown); margin-bottom: 6px; letter-spacing: -0.01em; }
+    .variety-desc { font-family: var(--font-body); font-size: 13px; color: var(--warm); line-height: 1.6; margin-bottom: 10px; }
+    .variety-badge { display: inline-block; font-family: var(--font-body); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(180,120,50,0.3); border-radius: 100px; padding: 3px 10px; }
+
+    .section-cat-cta { background: var(--midnight); padding: 80px 0; border-top: 1px solid var(--border-dark); }
+    .section-cat-cta .s-inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; }
+    .cat-cta-title { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 800; color: var(--cream); letter-spacing: -0.03em; max-width: 640px; line-height: 1.1; }
+    .cat-cta-sub { font-family: var(--font-body); font-size: 15px; line-height: 1.7; color: rgba(250,243,224,0.6); max-width: 400px; }
+    .btn-outline-light { background: transparent; color: var(--cream); border: 1.5px solid rgba(250,243,224,0.35); }
+    .btn-outline-light .btn-fill { background: rgba(250,243,224,0.12); }
+    .btn-outline-light:hover { color: var(--cream); }
+    .cta-btn-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center; }
+
+    @media (max-width: 1024px) { .craft-grid { grid-template-columns: 1fr; gap: 2px; } .varieties-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .header { padding: 16px 4%; } .h-nav, .h-cta-pill { display: none; } .h-nav-mobile { display: flex; } .nav-toggle { display: flex; } .nav-mobile-bg { display: block; } .s-inner { padding: 0 24px; } .f-footer { padding: 20px 28px; } }
+    @media (max-width: 640px) { .varieties-grid { grid-template-columns: 1fr; } .cat-title { font-size: clamp(48px, 12vw, 80px); } }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress" id="scroll-progress"></div>
+  <div class="nav-mobile-bg" id="nav-mobile-bg"></div>
+
+  <header class="header" id="header">
+    <a class="h-logo" href="index.html" aria-label="Yum Yum Delight Home">
+      <img src="brand_assets/logos/side_logo_transparent.png" alt="Yum Yum Delight">
+    </a>
+    <nav class="h-nav" id="main-nav">
+      <ul class="n-menu">
+        <li class="n-item n-item-dropdown">
+          <a href="products.html" class="n-link active">Products<svg class="n-chevron" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="#46280A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <div class="n-dropdown">
+            <a href="croissants.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Croissants</span><span class="n-dropdown-sub">13 varieties</span></span></a>
+            <a href="tarts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Tarts</span><span class="n-dropdown-sub">Lemon, chocolate, custard &amp; more</span></span></a>
+            <a href="danish.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Danish</span><span class="n-dropdown-sub">Blueberry, cinnamon &amp; apple</span></span></a>
+            <a href="cronuts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Cronuts</span><span class="n-dropdown-sub">12 flavours incl. gourmet</span></span></a>
+            <div class="n-dropdown-sep"></div>
+            <a href="muffins.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Muffins &amp; More</span><span class="n-dropdown-sub">Muffins, Tella Balls &amp; more</span></span></a>
+          </div>
+        </li>
+        <li class="n-item"><a href="wholesale.html" class="n-link">Wholesale</a></li>
+        <li class="n-item"><a href="about.html" class="n-link">About</a></li>
+        <li class="n-item"><a href="contact.html" class="n-link">Contact</a></li>
+      </ul>
+    </nav>
+    <a href="wholesale.html" class="h-cta-pill">Get Pricing</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </button>
+  </header>
+  <div class="h-nav-mobile" id="h-nav-mobile">
+    <a href="products.html" class="m-link active">Products</a>
+    <a href="wholesale.html" class="m-link">Wholesale</a>
+    <a href="about.html" class="m-link">About</a>
+    <a href="contact.html" class="m-link">Contact</a>
+    <a href="wholesale.html" class="m-cta">Get Pricing</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="cat-hero section">
+    <div class="hero-bg-mesh"></div>
+    <div class="hero-bg-grain"></div>
+    <div class="hero-dot-grid"></div>
+    <div class="s-inner">
+      <p class="cat-overline" data-reveal>Wholesale Range — Yum Yum Delight</p>
+      <h1 class="cat-title" data-reveal data-reveal-delay="100">Tarts</h1>
+      <p class="cat-sub" data-reveal data-reveal-delay="200">Nine distinct tart varieties in crisp shortcrust shells — from sharp lemon curd to silky custard and seasonal fruit. Baked fresh and delivered daily to cafés across Sydney.</p>
+      <a href="products.html" class="back-link" data-reveal data-reveal-delay="200">← All Products</a>
+    </div>
+  </section>
+
+  <!-- Craft -->
+  <section class="section-craft section">
+    <div class="s-inner">
+      <div class="s-content">
+        <p class="craft-eyebrow" data-reveal>Our Craft</p>
+        <h2 class="craft-h" data-reveal data-reveal-delay="100">What Goes Into Every Tart</h2>
+        <div class="craft-grid">
+          <div class="craft-card" data-reveal>
+            <span class="craft-card-num">01</span>
+            <span class="craft-stat">Blind</span>
+            <h3 class="craft-title">Stone-Baked Shortcrust Shells</h3>
+            <p class="craft-body">Every shell is blind-baked on a stone deck until it reaches a uniform golden finish. This locks in structural rigidity so the pastry stays crisp under refrigeration — no soggy bases in your display cabinet, even through the afternoon trade.</p>
+          </div>
+          <div class="craft-card" data-reveal data-reveal-delay="100">
+            <span class="craft-card-num">02</span>
+            <span class="craft-stat">9</span>
+            <h3 class="craft-title">Distinct Varieties, One Standard</h3>
+            <p class="craft-body">From tart lemon curd and rich dark chocolate ganache to delicate fresh fruit and velvety custard — every variety is made to the same exacting weight and fill specification so your café receives consistent product on every delivery.</p>
+          </div>
+          <div class="craft-card" data-reveal data-reveal-delay="200">
+            <span class="craft-card-num">03</span>
+            <span class="craft-stat">AM</span>
+            <h3 class="craft-title">Same-Day Fresh Delivery</h3>
+            <p class="craft-body">Tarts are filled and finished the morning of delivery — never held overnight in a filled state. What arrives in the box is what your customers pick up at the counter, at peak texture and flavour.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Varieties -->
+  <section class="section-varieties section">
+    <div class="s-inner">
+      <div class="s-content">
+        <p class="varieties-eyebrow" data-reveal>Our Range</p>
+        <h2 class="varieties-h" data-reveal data-reveal-delay="100">Every Tart We Supply</h2>
+        <div class="varieties-grid">
+
+          <div class="variety-card" data-reveal>
+            <figure>
+              <img src="Yum_Yum_Products/Lemon Tart.png" alt="Lemon Tart" loading="lazy">
+            </figure>
+            <div class="variety-card-body">
+              <h3 class="variety-name">Lemon</h3>
+              <p class="variety-desc">A sharp, silky lemon curd set in a crisp shortcrust shell — the tart that keeps regulars coming back every week.</p>
+              <span class="variety-badge">Bestseller</span>
+            </div>
+          </div>
+
+          <div class="variety-card" data-reveal data-reveal-delay="100">
+            <figure>
+              <img src="https://placehold.co/480x320/F5F0E8/46280A?text=REPLACE%3A+Lemon+meringue+tart+with+tall+toasted+meringue+peaks%2C+45+degree+angle+close+up" alt="Lemon Meringue Tart" loading="lazy">
+            </figure>
+            <div class="variety-card-body">
+              <h3 class="variety-name">Lemon Meringue</h3>
+              <p class="variety-desc">Lemon curd topped with pillowy Italian meringue, torched to golden peaks — a guaranteed cabinet showstopper that sells on sight.</p>
+              <span class="variety-badge">Bestseller</span>
+            </div>
+          </div>
+
+          <div class="variety-card" data-reveal data-reveal-delay="200">
+            <figure>
+              <img src="Yum_Yum_Products/Chocolate Tart.png" alt="Chocolate Tart" loading="lazy">
+            </figure>
+            <div class="variety-card-body">
+              <h3 class="variety-name">Chocolate</h3>
+              <p class="variety-desc">Dark couverture ganache poured into a buttery shell and set overnight — rich, dense, and deeply satisfying with an espresso.</p>
+            </div>
+          </div>
+
+          <div class="variety-card" data-reveal>
+            <figure>
+              <img src="https://placehold.co/480x320/F5F0E8/46280A?text=REPLACE%3A+Caramel+tart+with+thick+amber+salted+caramel+filling+in+shortcrust+shell%2C+top+down" alt="Caramel Tart" loading="lazy">
+            </figure>
+            <div class="variety-card-body">
+              <h3 class="variety-name">Caramel</h3>
+              <p class="variety-desc">Smooth, deep amber caramel set firm enough to slice cleanly — a reliably popular sweet-tooth option for any café menu.</p>
+            </div>
+          </div>
+
+          <div class="variety-card" data-reveal data-reveal-delay="100">
+            <figure>
+              <img src="Yum_Yum_Products/apple_crumble_tart.png" alt="Apple Tart" loading="lazy">
+            </figure>
+            <div class="variety-card-body">
+              <h3 class="variety-name">Apple</h3>
+              <p class="variety-desc">Thinly fanned apple slices arranged over a custard base in a buttery shortcrust shell — rustic yet refined, and always a strong seller.</p>
+            </div>
+          </div>
+
+          <div class="variety-card" data-reveal data-reveal-delay="200">
+            <figure>
+              <img src="https://placehold.co/480x320/F5F0E8/46280A?text=REPLACE%3A+Blueberry+tart+with+fresh+blueberries+on+pastry+cream%2C+glazed%2C+overhead+on+white+marble" alt="Blueberry Tart" loading="lazy">
+            </figure>
+            <div class="variety-card-body">
+              <h3 class="variety-name">Blueberry</h3>
+              <p class="variety-desc">Fresh blueberries set on a vanilla pastry cream base with a glossy fruit glaze — vibrant in any display case and reliably consistent across deliveries.</p>
+            </div>
+          </div>
+
+          <div class="variety-card" data-reveal>
+            <figure>
+              <img src="https://placehold.co/480x320/F5F0E8/46280A?text=REPLACE%3A+Fresh+fruit+tart+with+strawberries+kiwi+mandarin+on+custard+cream%2C+bright+overhead" alt="Fresh Fruit Tart" loading="lazy">
+            </figure>
+            <div class="variety-card-body">
+              <h3 class="variety-name">Fresh Fruit</h3>
+              <p class="variety-desc">Seasonal fresh fruit arranged over vanilla pastry cream — a visual anchor for any café display that changes with what's best each week.</p>
+              <span class="variety-badge">Café Favourite</span>
+            </div>
+          </div>
+
+          <div class="variety-card" data-reveal data-reveal-delay="100">
+            <figure>
+              <img src="Yum_Yum_Products/Custard_tart.png" alt="Custard Tart" loading="lazy">
+            </figure>
+            <div class="variety-card-body">
+              <h3 class="variety-name">Custard</h3>
+              <p class="variety-desc">Classic silky egg custard in a crisp shell — baked just until set with a gentle wobble, finished with a light dusting of nutmeg.</p>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-cat-cta section">
+    <div class="s-inner">
+      <h2 class="cat-cta-title" data-reveal>Ready to Stock Tarts?</h2>
+      <p class="cat-cta-sub" data-reveal data-reveal-delay="100">Wholesale pricing for cafés and distributors. Min. order $50. Sydney-wide.</p>
+      <div class="cta-btn-row" data-reveal data-reveal-delay="200">
+        <a href="wholesale.html" class="btn btn-primary btn-m">
+          <div class="btn-fill"></div>
+          <span class="btn-text-wrapper"><span class="btn-text">Request Wholesale Account</span><span class="btn-text-hover">Request Wholesale Account</span></span>
+        </a>
+        <a href="products.html" class="btn btn-outline-light btn-m">
+          <div class="btn-fill"></div>
+          <span class="btn-text-wrapper"><span class="btn-text">View All Products</span><span class="btn-text-hover">View All Products</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="site-footer">
+    <div class="f-dots-bg" id="footer-dots-bg"></div>
+    <div class="f-center">
+      <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f-center-logo">
+    </div>
+    <div class="f-footer">
+      <div class="f-copyright">© Yum Yum Delight 2026. All Rights Reserved.</div>
+      <div class="f-links">
+        <a href="contact.html" class="f-link">Contact Us</a>
+        <a href="wholesale.html" class="f-link">Wholesale Terms</a>
+        <a href="about.html" class="f-link">About Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const mobileNav = document.getElementById('h-nav-mobile');
+    const navMobileBg = document.getElementById('nav-mobile-bg');
+    if (navToggle) {
+      navToggle.addEventListener('click', () => { const open = mobileNav.classList.toggle('open'); navToggle.classList.toggle('open', open); navMobileBg.classList.toggle('open', open); document.body.style.overflow = open ? 'hidden' : ''; });
+      navMobileBg.addEventListener('click', () => { mobileNav.classList.remove('open'); navToggle.classList.remove('open'); navMobileBg.classList.remove('open'); document.body.style.overflow = ''; });
+    }
+    const header = document.getElementById('header');
+    const siteFooter = document.getElementById('site-footer');
+    if (header && siteFooter) { new IntersectionObserver(entries => { entries.forEach(e => header.classList.toggle('depleted', e.isIntersecting)); }, { threshold: 0 }).observe(siteFooter); }
+    document.body.classList.add('js-ready');
+    const revealObs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); revealObs.unobserve(e.target); } }); }, { threshold: 0.06 });
+    document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    window.scrollTo(0,0);
+    const lenis = new Lenis({ duration: 0.9, smoothWheel: true });
+    function lRaf(t) { lenis.raf(t); requestAnimationFrame(lRaf); }
+    requestAnimationFrame(lRaf);
+    const progressBar = document.getElementById('scroll-progress');
+    lenis.on('scroll', ({ progress }) => { if (progressBar) progressBar.style.transform = `scaleX(${progress})`; });
+    window.addEventListener('load', function() {
+      const container = document.getElementById('footer-dots-bg');
+      if (!container || typeof THREE === 'undefined') return;
+      const footer = container.parentElement;
+      const AMOUNTX=50,AMOUNTY=26,SEP=110,w=footer.offsetWidth||window.innerWidth,h=footer.offsetHeight||400;
+      const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(55,w/h,1,10000);
+      camera.position.set(0,300,980);
+      const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setSize(w,h);renderer.setClearColor(0x000000,0);container.appendChild(renderer.domElement);
+      const positions=[],colors=[];
+      for(let ix=0;ix<AMOUNTX;ix++)for(let iy=0;iy<AMOUNTY;iy++){positions.push(ix*SEP-(AMOUNTX*SEP)/2,0,iy*SEP-(AMOUNTY*SEP)/2);colors.push(0.42,0.247,0.102);}
+      const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
+      const mat=new THREE.PointsMaterial({size:8,vertexColors:true,transparent:true,opacity:0.55,sizeAttenuation:true});scene.add(new THREE.Points(geo,mat));
+      const posArr=geo.attributes.position.array;let count=0;
+      (function tick(){requestAnimationFrame(tick);let i=0;for(let ix=0;ix<AMOUNTX;ix++)for(let iy=0;iy<AMOUNTY;iy++){posArr[i*3+1]=Math.sin((ix+count)*0.3)*50+Math.sin((iy+count)*0.5)*50;i++;}geo.attributes.position.needsUpdate=true;renderer.render(scene,camera);count+=0.07;})();
+      new ResizeObserver(()=>{const nw=footer.offsetWidth,nh=footer.offsetHeight;if(!nw||!nh)return;camera.aspect=nw/nh;camera.updateProjectionMatrix();renderer.setSize(nw,nh);}).observe(footer);
+    });
+  </script>
+</body>
+</html>

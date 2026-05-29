@@ -111,7 +111,9 @@
     .h-nav-mobile .m-cta:hover { background: var(--brown); }
 
     /* ─── Buttons ─── */
-    .btn { display: inline-flex; align-items: center; position: relative; overflow: hidden; border-radius: 2px; cursor: pointer; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s var(--ease-out); }
+    .btn { display: inline-flex; align-items: center; position: relative; overflow: hidden; border-radius: 100px; cursor: pointer; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s var(--ease-out), transform 0.2s var(--ease-spring), box-shadow 0.2s var(--ease-out); }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: scale(0.97) !important; }
     .btn .btn-fill { position: absolute; inset: 0; transform: translateY(101%); transition: transform 0.35s var(--ease-out); z-index: 0; }
     .btn:hover .btn-fill { transform: translateY(0); }
     .btn .btn-text-wrapper { position: relative; z-index: 1; display: flex; overflow: hidden; height: 1.1em; }
@@ -121,7 +123,7 @@
     .btn:hover .btn-text-hover { transform: translateY(0); }
     .btn-primary { background: var(--brown); color: var(--cream); border: 1.5px solid var(--brown); }
     .btn-primary .btn-fill { background: var(--gold); }
-    .btn-primary:hover { border-color: var(--gold); }
+    .btn-primary:hover { border-color: var(--gold); box-shadow: 0 8px 24px rgba(180,120,50,0.28); }
     .btn-outline { background: transparent; color: var(--brown); border: 1.5px solid var(--brown); }
     .btn-outline .btn-fill { background: var(--brown); }
     .btn-outline:hover { color: var(--cream); }
@@ -144,15 +146,15 @@
     /* ─── Page Header ─── */
     .section-page-header {
       background: var(--parchment);
-      padding-top: 72px;
+      padding-top: 90px;
       border-bottom: 1px solid var(--border);
     }
     .section-page-header .s-inner {
       display: flex;
       flex-direction: column;
       gap: 24px;
-      padding-top: 40px;
-      padding-bottom: 40px;
+      padding-top: 90px;
+      padding-bottom: 90px;
     }
     .page-label {
       font-family: var(--font-body);
@@ -184,7 +186,7 @@
     /* ─── Contact Main Section ─── */
     .section-contact {
       background: var(--parchment);
-      padding: 96px 0;
+      padding: 100px 0;
     }
     .section-contact .s-inner {
       display: grid;
@@ -255,7 +257,7 @@
     .contact-form-card {
       background: var(--cream);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 16px;
       padding: 48px;
     }
     .contact-form-title {
@@ -287,7 +289,7 @@
       font-size: 14px;
       background: var(--parchment);
       border: 1px solid var(--border);
-      border-radius: 2px;
+      border-radius: 8px;
       color: var(--brown);
       padding: 12px 16px;
       width: 100%;
@@ -310,12 +312,14 @@
       letter-spacing: 0.06em; text-transform: uppercase;
       padding: 16px 40px;
       background: var(--brown); color: var(--cream);
-      border: 1.5px solid var(--brown); border-radius: 2px;
+      border: 1.5px solid var(--brown); border-radius: 100px;
       cursor: pointer;
       position: relative; overflow: hidden;
       width: 100%;
-      transition: border-color 0.3s var(--ease-out);
+      transition: border-color 0.3s var(--ease-out), transform 0.2s var(--ease-spring), box-shadow 0.2s;
     }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(180,120,50,0.28); }
+    .form-submit:active { transform: scale(0.97); }
     .form-submit .submit-fill {
       position: absolute; inset: 0;
       background: var(--gold);
@@ -326,12 +330,90 @@
     .form-submit:hover { border-color: var(--gold); }
     .form-submit span { position: relative; z-index: 1; }
 
+    /* ─── Multi-Step Form ─── */
+    .form-step-indicator {
+      display: flex; align-items: center;
+      margin-bottom: 28px;
+    }
+    .fsi-step { display: flex; align-items: center; gap: 10px; }
+    .fsi-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 11px; font-weight: 700;
+      color: rgba(70,40,10,0.3);
+      flex-shrink: 0;
+      transition: border-color 0.3s, background 0.3s, color 0.3s;
+    }
+    .fsi-dot.active { border-color: var(--gold); background: var(--gold); color: var(--cream); }
+    .fsi-dot.done   { border-color: var(--gold); background: var(--gold); color: var(--cream); }
+    .fsi-label {
+      font-family: var(--font-body); font-size: 12px; font-weight: 500;
+      color: rgba(70,40,10,0.3);
+      transition: color 0.3s;
+    }
+    .fsi-label.active { color: var(--brown); }
+    .fsi-connector {
+      flex: 1; height: 1px;
+      background: var(--border);
+      margin: 0 14px;
+      position: relative; overflow: hidden;
+    }
+    .fsi-connector::after {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      height: 100%; width: 0%;
+      background: var(--gold);
+      transition: width 0.5s var(--ease-out);
+    }
+    .fsi-connector.filled::after { width: 100%; }
+    /* Sliding panels */
+    .form-steps-window { overflow: hidden; }
+    .form-steps-inner {
+      display: flex; width: 200%;
+      transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .form-step-panel { width: 50%; flex-shrink: 0; }
+    .step-panel-fields { display: flex; flex-direction: column; gap: 16px; }
+    .step-back-link {
+      background: none; border: none;
+      font-family: var(--font-body); font-size: 13px;
+      color: rgba(70,40,10,0.45);
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0; margin-bottom: 18px;
+      transition: color 0.2s;
+    }
+    .step-back-link:hover { color: var(--brown); }
+    .step-continue-btn {
+      margin-top: 4px;
+      font-family: var(--font-body); font-size: 13px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 16px 40px;
+      background: var(--brown); color: var(--cream);
+      border: 1.5px solid var(--brown); border-radius: 100px;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      width: 100%;
+      transition: border-color 0.3s var(--ease-out), transform 0.2s var(--ease-spring), box-shadow 0.2s;
+    }
+    .step-continue-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(180,120,50,0.28); border-color: var(--gold); }
+    .step-continue-btn:active { transform: scale(0.97); }
+    .step-continue-btn .btn-fill-inner {
+      position: absolute; inset: 0;
+      background: var(--gold);
+      transform: translateY(101%);
+      transition: transform 0.35s var(--ease-out);
+    }
+    .step-continue-btn:hover .btn-fill-inner { transform: translateY(0); }
+    .step-continue-btn span { position: relative; z-index: 1; }
+
     /* ─── FAQ Accordion ─── */
     .section-faq {
       background: var(--cream);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 96px 0;
+      padding: 100px 0;
     }
     .section-faq .s-inner {
       display: grid;
@@ -429,7 +511,7 @@
     /* ─── CTA band ─── */
     .section-cta {
       background: var(--parchment);
-      padding: 96px 0;
+      padding: 100px 0;
       border-top: 1px solid var(--border);
     }
     .section-cta .s-inner {
@@ -452,17 +534,25 @@
       max-width: 480px;
     }
 
-    /* ─── Footer ─── */
-    .footer { background: var(--cream); position: relative; overflow: hidden; display: flex; flex-direction: column; }
-    .f-dots-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 62%, black 80%); -webkit-mask-image: linear-gradient(to bottom, transparent 62%, black 80%); }
-    .f-dots-bg canvas { display: block; width: 100% !important; height: 100% !important; border: none; outline: none; }
-    .f-center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 40px 20px; position: relative; z-index: 1; }
-    .f-center-logo { height: 420px; width: auto; max-width: 80%; }
-    .f-footer { display: flex; align-items: center; justify-content: space-between; padding: 20px 60px; gap: 20px; flex-wrap: wrap; position: relative; z-index: 1; }
-    .f-copyright { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; letter-spacing: 0.02em; }
-    .f-links { display: flex; align-items: center; gap: 24px; }
-    .f-link { font-family: var(--font-body); font-size: 11px; color: var(--warm); opacity: 0.6; text-decoration: none; letter-spacing: 0.02em; transition: opacity 0.2s; }
-    .f-link:hover { opacity: 1; }
+        /* ─── FOOTER ────────────────────────────────────────────── */
+    .footer { background: #F5F0E8; position: relative; overflow: hidden; }
+    .f2-inner { max-width: 1200px; margin: 0 auto; padding: 72px 60px 0; }
+    .f2-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px 32px; }
+    .f2-brand { padding-right: 24px; }
+    .f2-logo-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .f2-logo { height: 72px; width: auto; }
+    .f2-tagline { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #46280A; margin-bottom: 12px; letter-spacing: -0.01em; }
+    .f2-desc { font-family: var(--font-body); font-size: 13.5px; line-height: 1.7; color: #6B3F1A; }
+    .f2-col-title { font-family: var(--font-display); font-size: 11px; font-weight: 800; color: #46280A; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; }
+    .f2-col-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    .f2-col-link { font-family: var(--font-body); font-size: 14px; color: #6B3F1A; text-decoration: none; font-weight: 600; transition: color 0.2s; display: block; }
+    .f2-col-link:hover { color: #B47832; }
+    .f2-col-info { font-family: var(--font-body); font-size: 13px; color: rgba(70,40,10,0.45); font-weight: 600; }
+    .f2-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 56px; padding: 24px 0; border-top: 1px solid rgba(70,40,10,0.15); }
+    .f2-copyright { font-family: var(--font-body); font-size: 11.5px; color: rgba(70,40,10,0.5); letter-spacing: 0.02em; }
+    .f2-bottom-links { list-style: none; padding: 0; margin: 0; display: flex; gap: 24px; }
+    .f2-bottom-link { font-family: var(--font-body); font-size: 11.5px; color: rgba(70,40,10,0.5); text-decoration: underline; letter-spacing: 0.02em; transition: color 0.2s; }
+    .f2-bottom-link:hover { color: #B47832; }
 
     /* ─── Scroll reveal ─── */
     body.js-ready [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
@@ -477,7 +567,9 @@
       .s-inner { padding: 0 28px; }
       .section-contact .s-inner { grid-template-columns: 1fr; gap: 48px; }
       .section-faq .s-inner { grid-template-columns: 1fr; gap: 48px; }
-      .f-footer { padding: 20px 28px; }
+      .f2-inner { padding: 48px 28px 0; }
+      .f2-grid { grid-template-columns: 1fr 1fr 1fr; gap: 36px 20px; }
+      .f2-bottom { padding: 20px 0; }
     }
     @media (max-width: 768px) {
       .header { padding: 16px 4%; }
@@ -487,8 +579,9 @@
       .nav-mobile-bg { display: block; }
       .field-row { grid-template-columns: 1fr; }
       .contact-form-card { padding: 28px; }
-      .f-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .f-center { padding: 60px 28px 32px; }
+      .f2-grid { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+      .f2-brand { grid-column: 1 / -1; }
+      .f2-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
 
     /* ─── Line-split text animation ─── */
@@ -506,6 +599,29 @@
       z-index: 300;
       will-change: transform;
     }
+
+    /* ─── Products nav dropdown ─────────────────────────────── */
+    .n-item-dropdown { position: relative; }
+    .n-item-dropdown > .n-link { display: flex; align-items: center; gap: 4px; }
+    .n-chevron { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.6; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s; }
+    .n-item-dropdown:hover .n-chevron { transform: rotate(180deg); opacity: 1; }
+    .n-dropdown { position: absolute; top: calc(100% + 16px); left: 50%; transform: translateX(-50%) translateY(-10px); background: rgba(248,242,228,0.97); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(70,40,10,0.11); border-radius: 18px; padding: 8px; min-width: 210px; box-shadow: 0 16px 48px rgba(70,40,10,0.14), 0 2px 8px rgba(70,40,10,0.06); opacity: 0; pointer-events: none; transition: opacity 0.22s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.38s cubic-bezier(0.34,1.56,0.64,1); z-index: 202; }
+    .n-dropdown::before { content: ''; position: absolute; top: -18px; left: 0; right: 0; height: 18px; }
+    .n-item-dropdown:hover .n-dropdown { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all; }
+    .n-dropdown-link { display: flex; align-items: center; gap: 11px; padding: 9px 13px; border-radius: 11px; text-decoration: none; transition: background 0.18s, transform 0.28s cubic-bezier(0.34,1.56,0.64,1); }
+    .n-dropdown-link:hover { background: rgba(70,40,10,0.07); transform: translateX(3px); }
+    .n-dropdown-dot { width: 6px; height: 6px; border-radius: 50%; background: #B47832; flex-shrink: 0; opacity: 0.65; transition: opacity 0.18s; }
+    .n-dropdown-link:hover .n-dropdown-dot { opacity: 1; }
+    .n-dropdown-info { display: flex; flex-direction: column; gap: 1px; }
+    .n-dropdown-name { font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--brown); }
+    .n-dropdown-sub { font-family: var(--font-body); font-size: 10.5px; color: var(--warm); opacity: 0.6; }
+    .n-dropdown-sep { height: 1px; background: rgba(70,40,10,0.08); margin: 4px 10px; }
+
+    .btn { transition: color 0.3s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s !important; }
+    .btn:hover { transform: translateY(-3px) scale(1.03) !important; }
+    .btn:active { transform: scale(0.95) !important; }
+    .n-item .n-link::before { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 1.5px; background: #B47832; transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    .n-item .n-link:hover::before { transform: scaleX(1); }
   </style>
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 </head>
@@ -520,7 +636,17 @@
     </a>
     <nav class="h-nav" id="main-nav">
       <ul class="n-menu">
-        <li class="n-item"><a href="products.html" class="n-link">Products</a></li>
+        <li class="n-item n-item-dropdown">
+          <a href="products.html" class="n-link">Products<svg class="n-chevron" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="#46280A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <div class="n-dropdown">
+            <a href="croissants.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Croissants</span><span class="n-dropdown-sub">13 varieties</span></span></a>
+            <a href="tarts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Tarts</span><span class="n-dropdown-sub">Lemon, chocolate, custard & more</span></span></a>
+            <a href="danish.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Danish</span><span class="n-dropdown-sub">Blueberry, cinnamon & apple</span></span></a>
+            <a href="cronuts.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Cronuts</span><span class="n-dropdown-sub">12 flavours incl. gourmet</span></span></a>
+            <div class="n-dropdown-sep"></div>
+            <a href="muffins.html" class="n-dropdown-link"><span class="n-dropdown-dot"></span><span class="n-dropdown-info"><span class="n-dropdown-name">Muffins & More</span><span class="n-dropdown-sub">Muffins, Tella Balls & more</span></span></a>
+          </div>
+        </li>
         <li class="n-item"><a href="wholesale.html" class="n-link">Wholesale</a></li>
         <li class="n-item"><a href="about.html" class="n-link">About</a></li>
         <li class="n-item"><a href="contact.html" class="n-link active">Contact</a></li>
@@ -598,37 +724,73 @@
           </div>
         </div>
 
-        <!-- Right: contact form -->
+        <!-- Right: 2-step contact form -->
         <div class="contact-form-card" data-reveal data-reveal-delay="100">
+          <!-- Step indicator -->
+          <div class="form-step-indicator">
+            <div class="fsi-step">
+              <div class="fsi-dot active" id="fsiDot1">1</div>
+              <span class="fsi-label active" id="fsiLabel1">About You</span>
+            </div>
+            <div class="fsi-connector" id="fsiConnector"></div>
+            <div class="fsi-step">
+              <div class="fsi-dot" id="fsiDot2">2</div>
+              <span class="fsi-label" id="fsiLabel2">Your Message</span>
+            </div>
+          </div>
+
           <h3 class="contact-form-title">Send us a message.</h3>
-          <p class="contact-form-sub">Fill in the form below and we'll be in touch within one business day.</p>
-          <form class="w-form" action="mailto:info.yumyumdelight@gmail.com" method="POST" enctype="text/plain">
-            <div class="field-row">
-              <div class="field-group">
-                <label for="name">Your Name *</label>
-                <input type="text" id="name" name="name" placeholder="Full name" required>
+          <p class="contact-form-sub" id="formSubText">Tell us a bit about yourself first.</p>
+
+          <form class="w-form" id="contactForm" action="mailto:info.yumyumdelight@gmail.com" method="POST" enctype="text/plain">
+            <div class="form-steps-window">
+              <div class="form-steps-inner" id="formStepsInner">
+
+                <!-- Step 1: About You -->
+                <div class="form-step-panel">
+                  <div class="step-panel-fields">
+                    <div class="field-row">
+                      <div class="field-group">
+                        <label for="name">Your Name *</label>
+                        <input type="text" id="name" name="name" placeholder="Full name">
+                      </div>
+                      <div class="field-group">
+                        <label for="business">Business Name</label>
+                        <input type="text" id="business" name="business" placeholder="Your café or company">
+                      </div>
+                    </div>
+                    <div class="field-group">
+                      <label for="email">Email Address *</label>
+                      <input type="email" id="email" name="email" placeholder="you@yourbusiness.com.au">
+                    </div>
+                    <div class="field-group">
+                      <label for="subject">Subject</label>
+                      <input type="text" id="subject" name="subject" placeholder="e.g. Wholesale inquiry, product question…">
+                    </div>
+                    <button type="button" class="step-continue-btn" id="stepContinueBtn">
+                      <span class="btn-fill-inner"></span>
+                      <span>Continue →</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Step 2: Message -->
+                <div class="form-step-panel">
+                  <div class="step-panel-fields">
+                    <button type="button" class="step-back-link" id="stepBackBtn">← Back</button>
+                    <div class="field-group">
+                      <label for="message">Message *</label>
+                      <textarea id="message" name="message" placeholder="Tell us what you need — product details, delivery location, order size, or any questions…" required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">
+                      <span class="submit-fill"></span>
+                      <span>Send Message</span>
+                    </button>
+                  </div>
+                </div>
+
               </div>
-              <div class="field-group">
-                <label for="business">Business Name</label>
-                <input type="text" id="business" name="business" placeholder="Your café or company">
-              </div>
             </div>
-            <div class="field-group">
-              <label for="email">Email Address *</label>
-              <input type="email" id="email" name="email" placeholder="you@yourbusiness.com.au" required>
-            </div>
-            <div class="field-group">
-              <label for="subject">Subject</label>
-              <input type="text" id="subject" name="subject" placeholder="e.g. Wholesale inquiry, product question…">
-            </div>
-            <div class="field-group">
-              <label for="message">Message *</label>
-              <textarea id="message" name="message" placeholder="Tell us what you need — product details, delivery location, order size, or any questions…" required></textarea>
-            </div>
-            <button type="submit" class="form-submit">
-              <span class="submit-fill"></span>
-              <span>Send Message</span>
-            </button>
           </form>
         </div>
 
@@ -768,16 +930,52 @@
   </main>
 
   <footer class="footer" id="site-footer">
-    <div class="f-dots-bg" id="footer-dots-bg"></div>
-    <div class="f-center">
-      <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f-center-logo">
-    </div>
-    <div class="f-footer">
-      <div class="f-copyright">© Yum Yum Delight 2026. All Rights Reserved.</div>
-      <div class="f-links">
-        <a href="contact.html" class="f-link">Contact Us</a>
-        <a href="wholesale.html" class="f-link">Wholesale Terms</a>
-        <a href="about.html" class="f-link">About Us</a>
+    <div class="f2-inner">
+      <div class="f2-grid">
+        <div class="f2-brand">
+          <div class="f2-logo-wrap">
+            <img src="brand_assets/logos/reg_logo_transparent.png" alt="Yum Yum Delight" class="f2-logo">
+          </div>
+          <p class="f2-tagline">Baked for your business.</p>
+          <p class="f2-desc">Premium baked goods for cafés and distributors across Sydney. Orders via email, delivery Sun–Fri.</p>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Products</h3>
+          <ul class="f2-col-list">
+            <li><a href="croissants.html" class="f2-col-link">Croissants</a></li>
+            <li><a href="muffins.html" class="f2-col-link">Muffins</a></li>
+            <li><a href="tarts.html" class="f2-col-link">Tarts</a></li>
+            <li><a href="danish.html" class="f2-col-link">Danish</a></li>
+            <li><a href="products.html" class="f2-col-link">Cronuts</a></li>
+            <li><a href="products.html" class="f2-col-link">Tella Balls</a></li>
+          </ul>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Company</h3>
+          <ul class="f2-col-list">
+            <li><a href="about.html" class="f2-col-link">About Us</a></li>
+            <li><a href="wholesale.html" class="f2-col-link">Wholesale</a></li>
+            <li><a href="contact.html" class="f2-col-link">Contact</a></li>
+            <li><a href="products.html" class="f2-col-link">Products</a></li>
+          </ul>
+        </div>
+        <div class="f2-col">
+          <h3 class="f2-col-title">Ordering</h3>
+          <ul class="f2-col-list">
+            <li class="f2-col-info">Sydney-wide Delivery</li>
+            <li class="f2-col-info">Delivery Sun–Fri</li>
+            <li class="f2-col-info">Min. Order $50</li>
+            <li><a href="mailto:info.yumyumdelight@gmail.com" class="f2-col-link">Email to Order</a></li>
+            <li><a href="wholesale.html" class="f2-col-link">Wholesale Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="f2-bottom">
+        <p class="f2-copyright">© Yum Yum Delight 2026. All Rights Reserved.</p>
+        <ul class="f2-bottom-links">
+          <li><a href="wholesale.html" class="f2-bottom-link">Wholesale Terms</a></li>
+          <li><a href="contact.html" class="f2-bottom-link">Contact Us</a></li>
+        </ul>
       </div>
     </div>
   </footer>
@@ -828,7 +1026,7 @@
     // ─── Lenis smooth scroll ───
     if (history.scrollRestoration) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
-    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    const lenis = new Lenis({ duration: 0.8, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
     function lRaf(t) { lenis.raf(t); requestAnimationFrame(lRaf); }
     requestAnimationFrame(lRaf);
     const progressBar = document.getElementById('scroll-progress');
@@ -861,53 +1059,47 @@
     document.querySelectorAll('h1, h2, .cta-title, .form-title, .faq-title').forEach(el => {
       splitTextLines(el); lineObs.observe(el);
     });
-  </script>
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script>
-    window.addEventListener('load', function() {
-      const container = document.getElementById('footer-dots-bg');
-      if (!container || typeof THREE === 'undefined') return;
-      const footer = container.parentElement;
-      const AMOUNTX = 50, AMOUNTY = 26, SEP = 110;
-      const w = footer.offsetWidth || window.innerWidth;
-      const h = footer.offsetHeight || 560;
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(55, w / h, 1, 10000);
-      camera.position.set(0, 300, 980);
-      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(w, h);
-      renderer.setClearColor(0x000000, 0);
-      container.appendChild(renderer.domElement);
-      const positions = [], colors = [];
-      for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
-        positions.push(ix * SEP - (AMOUNTX * SEP) / 2, 0, iy * SEP - (AMOUNTY * SEP) / 2);
-        colors.push(0.42, 0.247, 0.102);
+
+    // ─── Multi-Step Form ──────────────────────────────────────
+    (function() {
+      const formInner  = document.getElementById('formStepsInner');
+      const continueBtn = document.getElementById('stepContinueBtn');
+      const backBtn    = document.getElementById('stepBackBtn');
+      const dot1 = document.getElementById('fsiDot1'),   dot2 = document.getElementById('fsiDot2');
+      const lbl1 = document.getElementById('fsiLabel1'), lbl2 = document.getElementById('fsiLabel2');
+      const conn = document.getElementById('fsiConnector');
+      const sub  = document.getElementById('formSubText');
+
+      function toStep2() {
+        const nameEl  = document.getElementById('name');
+        const emailEl = document.getElementById('email');
+        if (!nameEl.value.trim())                            { nameEl.focus();  return; }
+        if (!emailEl.value.trim() || !emailEl.validity.valid){ emailEl.focus(); return; }
+        formInner.style.transform = 'translateX(-50%)';
+        conn.classList.add('filled');
+        dot1.classList.replace('active','done');
+        dot2.classList.add('active');
+        lbl1.classList.remove('active');
+        lbl2.classList.add('active');
+        if (sub) sub.textContent = 'Now tell us what you need.';
+        const msgEl = document.getElementById('message');
+        if (msgEl) msgEl.focus();
       }
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-      const mat = new THREE.PointsMaterial({ size: 8, vertexColors: true, transparent: true, opacity: 0.62, sizeAttenuation: true });
-      scene.add(new THREE.Points(geo, mat));
-      const posArr = geo.attributes.position.array;
-      let count = 0;
-      (function tick() {
-        requestAnimationFrame(tick);
-        let i = 0;
-        for (let ix = 0; ix < AMOUNTX; ix++) for (let iy = 0; iy < AMOUNTY; iy++) {
-          posArr[i * 3 + 1] = Math.sin((ix + count) * 0.3) * 50 + Math.sin((iy + count) * 0.5) * 50;
-          i++;
-        }
-        geo.attributes.position.needsUpdate = true;
-        renderer.render(scene, camera);
-        count += 0.07;
-      })();
-      new ResizeObserver(() => {
-        const nw = footer.offsetWidth, nh = footer.offsetHeight;
-        if (!nw || !nh) return;
-        camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
-      }).observe(footer);
-    });
+
+      function toStep1() {
+        formInner.style.transform = 'translateX(0)';
+        conn.classList.remove('filled');
+        dot1.classList.remove('done'); dot1.classList.add('active');
+        dot2.classList.remove('active');
+        lbl1.classList.add('active');
+        lbl2.classList.remove('active');
+        if (sub) sub.textContent = 'Tell us a bit about yourself first.';
+      }
+
+      if (continueBtn) continueBtn.addEventListener('click', toStep2);
+      if (backBtn)     backBtn.addEventListener('click', toStep1);
+    })();
   </script>
+
 </body>
 </html>

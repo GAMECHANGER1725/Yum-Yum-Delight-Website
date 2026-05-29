@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading | Yum Yum Delight</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #fffef0 0%, #fef9f0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        .crown-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 48px;
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 3px;
+            background: rgba(139, 110, 85, 0.15);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 48px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #8b6e55 0%, #a0845c 50%, #8b6e55 100%);
+            border-radius: 2px;
+            width: 0%;
+            animation: loadProgress 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+            box-shadow: 0 0 12px rgba(139, 110, 85, 0.4);
+        }
+
+        @keyframes loadProgress {
+            0% {
+                width: 0%;
+            }
+            50% {
+                width: 85%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        .loading-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #5a4a3a;
+            letter-spacing: -0.02em;
+            margin-top: 32px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .loading-subtitle {
+            font-family: 'Lato', sans-serif;
+            font-size: 13px;
+            font-weight: 300;
+            color: #8b7a6a;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-top: 12px;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Crown SVG styling */
+        .crown-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="crown-icon">
+            <svg class="crown-svg" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="crownGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#a89070;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#7d6854;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Base band (rounded) -->
+                <ellipse cx="60" cy="72" rx="42" ry="14" fill="url(#crownGradient)"/>
+                <path d="M 18 72 Q 18 58 28 55 L 92 55 Q 102 58 102 72 L 102 82 Q 102 90 60 92 Q 18 90 18 82 Z"
+                      fill="url(#crownGradient)" stroke="none"/>
+
+                <!-- Left point (rounded) -->
+                <path d="M 35 55 Q 28 50 25 35 Q 23 18 32 12 Q 40 8 45 28 Q 46 40 42 55 Z"
+                      fill="url(#crownGradient)" stroke="none"/>
+                <circle cx="32" cy="28" r="5" fill="#c9a56a" opacity="0.9"/>
+
+                <!-- Center point (tallest, rounded) -->
+                <path d="M 60 55 Q 55 48 53 28 Q 51 8 60 2 Q 69 8 67 28 Q 65 48 60 55 Z"
+                      fill="url(#crownGradient)" stroke="none"/>
+                <circle cx="60" cy="15" r="5.5" fill="#c9a56a" opacity="1"/>
+
+                <!-- Right point (rounded) -->
+                <path d="M 85 55 Q 74 40 75 28 Q 75 8 80 12 Q 89 18 87 35 Q 84 50 92 55 Z"
+                      fill="url(#crownGradient)" stroke="none"/>
+                <circle cx="88" cy="28" r="5" fill="#c9a56a" opacity="0.9"/>
+
+                <!-- Small accent gems on base -->
+                <circle cx="42" cy="72" r="2.5" fill="#d4a574" opacity="0.7"/>
+                <circle cx="60" cy="73" r="2.8" fill="#d4a574" opacity="0.75"/>
+                <circle cx="78" cy="72" r="2.5" fill="#d4a574" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div class="loading-text">Loading</div>
+        <div class="loading-subtitle">Preparing Your Experience</div>
+    </div>
+
+    <script>
+        // Simulate loading completion
+        let progress = 0;
+        const progressBar = document.querySelector('.progress-bar');
+
+        // Optional: Reset animation after completion
+        setInterval(() => {
+            progressBar.style.animation = 'none';
+            setTimeout(() => {
+                progressBar.style.animation = 'loadProgress 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite';
+            }, 10);
+        }, 2500);
+
+        // Optional: Auto-redirect after delay (comment out if integrating with page load)
+        // setTimeout(() => {
+        //     window.location.href = '/index.html';
+        // }, 3000);
+    </script>
+</body>
+</html>
