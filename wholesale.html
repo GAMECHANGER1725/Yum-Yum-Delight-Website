@@ -96,7 +96,7 @@
     .nav-toggle.open .burger-line:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
     .nav-toggle.open .burger-line:nth-child(2) { opacity: 0; }
     .nav-toggle.open .burger-line:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
-    .nav-mobile-bg { display: none; position: fixed; inset: 0; background: rgba(26,18,8,0.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.4s var(--ease-out); z-index: 195; }
+    .nav-mobile-bg { display: none; position: fixed; inset: 0; background: rgba(26,18,8,0.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.4s var(--ease-out); z-index: 195; pointer-events: none; }
     .nav-mobile-bg.open { opacity: 1; pointer-events: all; }
     .h-nav-mobile {
       display: none; position: fixed; top: 0; left: 0; right: 0;
