@@ -51,7 +51,6 @@
 | Chocolate Muffin | $1.50 | $1.22 |
 | Orange Muffin | $1.50 | $1.22 |
 | Raspberry Muffin | $1.50 | $1.22 |
-| All-Top Muffin | $1.95 | — |
 
 ### Muffin Boxes
 
