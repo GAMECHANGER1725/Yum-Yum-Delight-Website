@@ -17,6 +17,7 @@
 | Matcha Croissant | — | $2.42 | — |
 | Lemon Croissant | — | $2.42 | — |
 | Roulade Croissant | $2.35 | — | — |
+| Jam Croissant | $2.35 | — | — |
 | Apple Crumble Croissant | $2.88 | $2.21 | $1.67 |
 | Rhubarb & Pistachio Croissant | $2.88 | $2.21 | $1.67 |
 | Date & Walnut Croissant | $2.88 | $2.21 | $1.67 |
@@ -107,6 +108,7 @@
 | Apple & Cinnamon Snail | $2.10 | — | — |
 | Apricot Danish | $2.07 | $1.72 | $1.18 |
 | Apricot Danish Round | $2.07 | $1.72 | $1.18 |
+| Peach Danish | $2.07 | $1.72 | $1.18 |
 | Premium Danish | $2.55 | — | $1.35 |
 
 ### Danish Boxes
@@ -130,6 +132,9 @@
 | Product | Large | Small |
 |---------|-------|-------|
 | Tella Ball | $1.55 | $1.26 |
+| Custard Tella Ball | $1.55 | $1.26 |
+| Jam Tella Ball | $1.55 | $1.26 |
+| Pistachio Tella Ball | $1.75 | $1.45 |
 
 ### Tella Ball Boxes
 
