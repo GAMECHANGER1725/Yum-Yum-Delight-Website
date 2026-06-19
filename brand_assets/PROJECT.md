@@ -1,8 +1,8 @@
-# PROJECT.md — Yum Yums Delight Website
+# PROJECT.md — Yum Yum Delight Website
 
 ## Business Context
 
-- **Business name**: Yum Yums Delight
+- **Business name**: Yum Yum Delight
 - **ABN**: 44 651 091 744
 - **Model**: B2B only — sells to cafés and distributors
 - **Location**: Sydney-wide delivery. Factory is in Yennora, Western Sydney — **never mention Yennora on any public-facing page**. Use "Sydney" externally.

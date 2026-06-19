@@ -1,4 +1,4 @@
-# Yum Yums Delight — Wholesale Price List 2026
+# Yum Yum Delight — Wholesale Price List 2026
 
 > All prices are **GST-inclusive** · Wholesale only · Minimum order $50 per delivery
 > Delivery days: Sunday–Friday · Sydney-wide delivery · Orders via email only
@@ -97,6 +97,7 @@
 | Product | Large | Medium | Small |
 |---------|-------|--------|-------|
 | Blueberry Danish | $2.07 | $1.72 | $1.18 |
+| Blueberry Danish Round | $2.07 | $1.72 | $1.18 |
 | Sour Cherry Danish | $2.07 | $1.72 | $1.18 |
 | Raspberry Danish | $2.07 | $1.72 | $1.18 |
 | Apple Danish | $2.07 | $1.72 | $1.18 |
@@ -105,6 +106,8 @@
 | Fresh Mixed Fruit Danish | $2.55 | $2.00 | $1.35 |
 | Cinnamon Snail | $1.95 | — | $1.18 |
 | Apple & Cinnamon Snail | $2.10 | — | — |
+| Apricot Danish | $2.07 | $1.72 | $1.18 |
+| Apricot Danish Round | $2.07 | $1.72 | $1.18 |
 | Premium Danish | $2.55 | — | $1.35 |
 
 ### Danish Boxes
