@@ -1036,7 +1036,9 @@
         </div>
 
         <div class="form-card" data-reveal data-reveal-delay="100">
-          <form class="w-form" action="mailto:info.yumyumdelight@gmail.com" method="POST" enctype="text/plain">
+          <form class="w-form" name="wholesale" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="wholesale">
+            <p hidden aria-hidden="true"><label>Leave this field empty: <input name="bot-field"></label></p>
             <div class="field-row">
               <div class="field-group">
                 <label for="business-name">Business Name *</label>
